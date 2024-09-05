@@ -6,5 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true
-  }
+  },
+  resolve: {
+    alias: {
+      '@': '/src', // 设置别名
+    },
+  },
 })

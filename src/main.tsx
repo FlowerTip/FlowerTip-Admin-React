@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
-import App from './App.tsx';
+import { RouterModel } from '@/router'
 import './styles/reset.scss';
 import './styles/index.scss';
+
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,12 +15,12 @@ createRoot(document.getElementById('root')!).render(
       components: {
         Layout: {
           headerHeight: 50,
-          headerPadding: 16
+          headerPadding: 16,
         }
       }
     }}>
       <HashRouter>
-        <App />
+        <RouterModel />
       </HashRouter>
     </ConfigProvider>
   </StrictMode>,

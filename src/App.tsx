@@ -1,14 +1,6 @@
-import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import routes from './router';
+import Layout from '@/layout';
+import withGuard from '@/router/control';
 
-const App: React.FC = () => {
-  const element = useRoutes(routes);
-  return (
-    <div>
-      {element}
-    </div>
-  );
-};
+const App: React.FC = withGuard(Layout);
 
 export default App;

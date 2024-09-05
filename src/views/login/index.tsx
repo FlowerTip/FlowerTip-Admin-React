@@ -3,11 +3,12 @@ import { Button, Form, Input, Carousel, FormInstance } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import {
   UserOutlined, LockOutlined,
-} from '@ant-design/icons';
+} from '@ant-design/icons'; 
 import defaultSetting from '../../setting'
 import './index.scss';
 
 import { reqLogin } from '../../api/user';
+import { userStore } from '@/store';
 
 const Login: React.FC = () => {
   const formRef = useRef(null); // 创建一个 ref 
@@ -17,11 +18,15 @@ const Login: React.FC = () => {
       const res = await (formRef.current as FormInstance).validateFields();
       if (res) {
         const loginParam = res;
-        const { code, data } = await reqLogin(loginParam);
-        if (code === 200) {
-          sessionStorage.setItem('token', data.token);
-          navigate('/home')
-        }
+        console.log(userStore.login, 'userStore');
+        
+        await userStore.login(loginParam)
+        navigate('/')
+        // const { code, data } = await reqLogin(loginParam);
+        // if (code === 200) {
+        //   sessionStorage.setItem('token', data.token);
+        //   navigate('/home')
+        // }
       }
     }
   }
