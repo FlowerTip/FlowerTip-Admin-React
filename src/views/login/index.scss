@@ -84,4 +84,18 @@
       }
     }
   }
+  .dotsClass {
+    li {
+      button {
+        background-color: #8c8c8c;
+        opacity: 1;
+      }
+      &.slick-active {
+        button {
+          opacity: 1;
+          background-color: #1677ff;
+        }
+      }
+    }
+  }
 }

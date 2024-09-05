@@ -1,10 +1,13 @@
 import React from 'react';
-import { RouterProvider } from 'react-router-dom';
-import router from './router';
+import { useRoutes } from 'react-router-dom';
+import routes from './router';
 
 const App: React.FC = () => {
+  const element = useRoutes(routes);
   return (
-    <RouterProvider router={router}/>
+    <div>
+      {element}
+    </div>
   );
 };
 

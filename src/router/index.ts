@@ -1,28 +1,27 @@
-import { createHashRouter } from 'react-router-dom';
-
 import Layout from '../layout';
 import Login from '../views/login';
 import Cockpit from '../views/cockpit';
 
-const router = createHashRouter([
+const routes = [
   {
     path: '/login',
-    Component: Login,
+    Component: Login
   },
   {
     path: '/home',
     Component: Layout,
+    redirect: '/home/cockpit',
     children: [
       {
-        index: true,
-        Component: Cockpit
-      },
-      {
         path: 'cockpit',
-        Component: Cockpit,
+        Component: Cockpit
       }
     ]
+  },
+  {
+    path: '/',
+    Component: Login
   }
-])
+]
 
-export default router;
+export default routes;

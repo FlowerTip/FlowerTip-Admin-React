@@ -45,6 +45,21 @@ const App: React.FC = () => {
     setCollapsed(!collapsed);
   };
 
+  const items = [  
+    {  
+        title: '驾驶舱',  
+        href: '/home/cockpit',  
+    },  
+    {  
+        title: '表格组件',  
+        href: '/category',  
+    },  
+    {  
+        title: '高级表格',  
+        href: '/category/subcategory',  
+    },  
+];  
+
   return (
     <Layout className='layout-wrapper'>
       <Header className='layout-header'>
@@ -70,10 +85,7 @@ const App: React.FC = () => {
           />
         </Sider>
         <Layout className='wrapper'>
-          <Breadcrumb className='navbar' separator=">">
-            <Breadcrumb.Item>驾驶舱</Breadcrumb.Item>
-            <Breadcrumb.Item>表格组件</Breadcrumb.Item>
-            <Breadcrumb.Item>高级表格</Breadcrumb.Item>
+          <Breadcrumb className='navbar' separator=">" items={items}>
           </Breadcrumb>
           <Content
             className='view-layout'
