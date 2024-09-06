@@ -3,11 +3,9 @@ import { Button, Form, Input, Carousel, FormInstance } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import {
   UserOutlined, LockOutlined,
-} from '@ant-design/icons'; 
+} from '@ant-design/icons';
 import defaultSetting from '../../setting'
 import './index.scss';
-
-import { reqLogin } from '../../api/user';
 import { userStore } from '@/store';
 
 const Login: React.FC = () => {
@@ -19,14 +17,10 @@ const Login: React.FC = () => {
       if (res) {
         const loginParam = res;
         console.log(userStore.login, 'userStore');
-        
-        await userStore.login(loginParam)
-        navigate('/')
-        // const { code, data } = await reqLogin(loginParam);
-        // if (code === 200) {
-        //   sessionStorage.setItem('token', data.token);
-        //   navigate('/home')
-        // }
+        const result = await userStore.login(loginParam)
+        if (result?.token) {
+          navigate('/')
+        }
       }
     }
   }
@@ -50,7 +44,7 @@ const Login: React.FC = () => {
           <Form.Item
             style={{ width: '100%' }}
             name="username"
-            initialValue={'超级管理员'}
+            initialValue={'狗尾巴花的尖'}
             rules={[{ required: true, message: "请输入用户名" },
             { min: 2, max: 6, message: "长度只能输入2到6位" }]}
           >

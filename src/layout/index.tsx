@@ -1,21 +1,75 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useSnapshot } from 'valtio'
 import {
   LaptopOutlined, NotificationOutlined, UserOutlined, MenuFoldOutlined,
   MenuUnfoldOutlined, DownOutlined, ChromeOutlined, LogoutOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message } from 'antd';
-
+import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
-import {userStore} from '@/store'
-
+import { userStore } from '@/store'
 const { Header, Content, Sider } = Layout;
 
-const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+const items1: MenuProps['items'] = [
+  {
+    key: '/home',
+    label: '驾驶舱',
+  },
+  {
+    key: '/table',
+    label: '表格组件',
+  },
+  {
+    key: '/upload',
+    label: '上传组件',
+  },
+  {
+    key: '/form',
+    label: '表单组件',
+  },
+  {
+    key: '/chart',
+    label: '图表组件',
+  },
+  {
+    key: '/tool',
+    label: '常用功能',
+  },
+  {
+    key: '/document',
+    label: (
+      <a href="https://juejin.cn/column/7388686221892976703" target="_blank" rel="noopener noreferrer">
+        在线文档
+      </a>
+    ),
+  },
+  {
+    key: '/project',
+    label: (
+      <a href="https://gitee.com/CodeTV" target="_blank" rel="noopener noreferrer">
+        开源项目
+      </a>
+    ),
+  },
+  {
+    key: '/setting',
+    label: '系统管理',
+    children: [
+      {
+        key: 'permission',
+        label: '权限管理'
+      },
+      {
+        key: 'department',
+        label: '部门管理'
+      }
+    ]
+  },
+];
+
+
 
 const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -58,7 +112,8 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const App: React.FC = () => {
+const LayoutWrapper: React.FC = () => {
+
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -85,10 +140,10 @@ const App: React.FC = () => {
   ];
   const navigate = useNavigate();
 
-  const onClick: MenuProps['onClick'] = ({ key }) => {
+  const onClick: MenuProps['onClick'] = async ({ key }) => {
     switch (key) {
       case 'logout':
-        sessionStorage.removeItem('token');
+        await userStore.logout(true)
         navigate('/login', {
           replace: true
         });
@@ -103,6 +158,31 @@ const App: React.FC = () => {
         messageApi.info(`点击了 ${key}`);
     }
   };
+  const { userInfo } = useSnapshot(userStore);
+
+  const [currPath, setCurrPath] = useState('/')
+  let routeMeta = useRouteMeta(userInfo.backMenuList);
+  useEffect(() => {
+    console.log(routeMeta, '@@@routeMeta');
+    navigate(routeMeta.redirect);
+  }, [currPath])
+
+  const handlerSelect = ({ key, keyPath, selectedKeys }: any) => {
+    console.log(key, keyPath, selectedKeys, 'params1@@@@');
+    let redirectUrl = '';
+    if (keyPath.length > 1) {
+      redirectUrl = keyPath[keyPath.length - 1] + '/' + key
+    } else {
+      redirectUrl = key;
+    }
+    setCurrPath(redirectUrl);
+    navigate(redirectUrl);
+    console.log(key, keyPath, selectedKeys, 'params2@@@@');
+  }
+
+
+  const topMenuList = userInfo.authMenuList as unknown as any;
+
   return (
     <Layout className='layout-wrapper'>
       <Header className='layout-header' style={{
@@ -120,15 +200,16 @@ const App: React.FC = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['2']}
+          defaultSelectedKeys={[currPath]}
           items={items1}
           style={{ flex: 1, minWidth: 0 }}
+          onSelect={handlerSelect}
         />
         {contextHolder}
         <Dropdown menu={{ items, onClick }}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {userStore.userInfo.username}
+              {userInfo.username}
               <DownOutlined />
             </Space>
           </a>
@@ -137,7 +218,7 @@ const App: React.FC = () => {
       <Layout className='layout-content'>
         <Sider width={200} style={{ background: colorBgContainer }} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
           <Menu
-            items={items2}
+            items={topMenuList}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
@@ -160,4 +241,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default LayoutWrapper;

@@ -1,6 +1,4 @@
-import Layout from '@/layout';
-import withGuard from '@/router/control';
-
-const App: React.FC = withGuard(Layout);
+import { RouterModel } from '@/router';
+const App: React.FC = RouterModel;
 
 export default App;

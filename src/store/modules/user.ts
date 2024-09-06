@@ -1,6 +1,9 @@
 import { proxy } from 'valtio'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
+import { asyncRoute } from '@/router/modules/routes';
+import { reorganizeMenu } from '@/utils/tool';
+import { devtools } from 'valtio/utils';
 
 export const userStore = proxy({
   // 状态数据
@@ -18,13 +21,15 @@ export const userStore = proxy({
    * @returns 
    */
   async login({ username, password }: Req.loginParam) {
-    const result = await reqLogin({
+    const { code, data } = await reqLogin({
       username,
       password,
     });
-    userStore.userInfo.token = result.data.token;
-    setToken(result.data.token);
-    return Promise.resolve(result.data);
+    if (code === 200) {
+      userStore.userInfo.token = data.token;
+      setToken(data.token);
+      return Promise.resolve(data);
+    }
   },
   /**
    * 获取当前登录账号的信息
@@ -33,13 +38,18 @@ export const userStore = proxy({
   async getUserInfo() {
     const { code, data } = await reqUserInfo();
     if (code === 200) {
-      const userInfo = userStore.userInfo;
-      userInfo.username = data.checkUser.username;
-      if (data.list.length > 0) {
-        console.log(data.list, 'datlist@@@');
-      } else {
-        userStore.logout(false);
-      }
+      userStore.userInfo.username = data.checkUser.username;
+      // if (data.list.length > 0) {
+      //   console.log(data.list, 'datlist@@@');
+      //   userStore.userInfo.backMenuList = data.list as unknown as any;
+      // } else {
+      //   userStore.logout(false);
+      // }
+      userStore.userInfo.backMenuList = asyncRoute as unknown as any;
+      userStore.userInfo.authMenuList = reorganizeMenu(asyncRoute) as unknown as any;
+
+      console.log(userStore.userInfo.authMenuList, 'userStore.userInfo.authMenuList@@@@@');
+
     }
     return Promise.resolve(data.list);
   },
@@ -54,5 +64,15 @@ export const userStore = proxy({
       window.location.reload();
     }
   },
+  /**
+   * 更新侧边栏菜单
+   * @param menuList 
+   */
+  updateLeftMenus(menuList: any) {
+    userStore.userInfo.sidebarMenuList = menuList;
+  },
 
 })
+
+
+devtools(userStore, { name: 'userStore', enabled: true })

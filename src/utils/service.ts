@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { message } from "antd";
-import {  redirect   } from 'react-router-dom'
+import { redirect } from 'react-router-dom'
+import { getToken } from '@/utils/auth'
 
 interface Result {
   code: number;
@@ -17,7 +18,6 @@ const config = {
   timeout: 5000, // 请求超时时间，这里的单位是毫秒
 };
 
-const token = sessionStorage.getItem('token');
 
 const errorHandler = (statusCode: number) => {
   switch (statusCode) {
@@ -68,6 +68,7 @@ class FlowerTipRequest {
 
     // 请求拦截器
     this.instance.interceptors.request.use((config) => {
+      const token = getToken();
       if (token) {
         config.headers["token"] = token;
       }

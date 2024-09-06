@@ -1,4 +1,4 @@
-import instance from "../utils/service";
+import instance from "@/utils/service";
 
 // 用户接口相关的的枚举类型
 enum API {
