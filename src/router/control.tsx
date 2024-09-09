@@ -11,7 +11,7 @@ const Guard: React.FC = () => {
   const { userInfo } = useSnapshot(userStore);
   const token = getToken();
 
-  console.log('当前拦截的路由为：' + pathname, 'token的值为：' + token);
+  // console.log('当前拦截的路由为：' + pathname, 'token的值为：' + token);
 
   // 若有用户信息正常展示组件，若没有跳转到登录页
   if (token) {

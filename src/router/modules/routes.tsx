@@ -44,6 +44,9 @@ import Software from '@/views/setting/department/software/index.tsx';
 
 import RouterViewPage from '@/views/tool/test/index.tsx';
 
+import { MacCommandOutlined, ConsoleSqlOutlined, SortDescendingOutlined, UsergroupAddOutlined, BorderOuterOutlined, ExperimentOutlined, MenuOutlined, SettingOutlined, VerifiedOutlined, PaperClipOutlined, ToolOutlined, HistoryOutlined, FieldTimeOutlined, FileWordOutlined, ProductOutlined, DotChartOutlined, StockOutlined, AreaChartOutlined, RadarChartOutlined, LineChartOutlined, BarChartOutlined, PieChartOutlined, FundOutlined, FormOutlined, EditOutlined, OrderedListOutlined, CompassOutlined, InsertRowAboveOutlined, TableOutlined, InsertRowLeftOutlined, FolderAddOutlined, UserSwitchOutlined, FileImageOutlined, FileAddOutlined } from '@ant-design/icons';
+
+
 /**
  * 路由meta对象参数说明
  * meta: {
@@ -111,7 +114,7 @@ export const asyncRoute = [
     redirect: "/home/cockpit",
     meta: {
       title: "驾驶舱",
-      icon: "ele-Stopwatch",
+      icon: <CompassOutlined />,
     },
     children: [
       {
@@ -120,7 +123,7 @@ export const asyncRoute = [
         Component: Cockpit,
         meta: {
           title: "驾驶舱",
-          icon: "ele-Stopwatch",
+          icon: <CompassOutlined />,
         },
       },
     ],
@@ -131,7 +134,7 @@ export const asyncRoute = [
     name: "table",
     meta: {
       title: "表格组件",
-      icon: "ele-Grid",
+      icon: <TableOutlined />,
     },
     redirect: "/table/advanced-table",
     children: [
@@ -141,7 +144,7 @@ export const asyncRoute = [
         Component: AdvancedTable,
         meta: {
           title: "高级表格",
-          icon: "ele-Film",
+          icon: <InsertRowAboveOutlined />,
         },
       },
       {
@@ -150,7 +153,7 @@ export const asyncRoute = [
         Component: DialogTable,
         meta: {
           title: "表格筛选",
-          icon: "ele-Postcard",
+          icon: <InsertRowLeftOutlined />,
         },
       },
     ],
@@ -161,7 +164,7 @@ export const asyncRoute = [
     name: "upload",
     meta: {
       title: "上传组件",
-      icon: "ele-UploadFilled",
+      icon: <FolderAddOutlined />,
     },
     redirect: "/upload/avatar-upload",
     children: [
@@ -171,7 +174,7 @@ export const asyncRoute = [
         Component: AvatarUpload,
         meta: {
           title: "头像上传",
-          icon: "ele-Avatar",
+          icon: <UserSwitchOutlined />,
         },
       },
       {
@@ -180,7 +183,7 @@ export const asyncRoute = [
         Component: FileUpload,
         meta: {
           title: "图片上传",
-          icon: "ele-PictureFilled",
+          icon: <FileImageOutlined />,
         },
       },
       {
@@ -189,7 +192,7 @@ export const asyncRoute = [
         Component: ImageUpload,
         meta: {
           title: "文件上传",
-          icon: "ele-Files",
+          icon: <FileAddOutlined />,
         },
       },
     ],
@@ -200,7 +203,7 @@ export const asyncRoute = [
     name: "form",
     meta: {
       title: "表单组件",
-      icon: "ele-EditPen",
+      icon: <FormOutlined />,
     },
     redirect: "/form/basic-form",
     children: [
@@ -210,7 +213,7 @@ export const asyncRoute = [
         Component: BasicForm,
         meta: {
           title: "基础表单",
-          icon: "ele-Tickets",
+          icon: <EditOutlined />,
         },
       },
       {
@@ -219,7 +222,7 @@ export const asyncRoute = [
         Component: StepForm,
         meta: {
           title: "分步表单",
-          icon: "ele-Reading",
+          icon: <OrderedListOutlined />,
         },
       },
     ],
@@ -230,7 +233,7 @@ export const asyncRoute = [
     name: "chart",
     meta: {
       title: "图表组件",
-      icon: "ele-TrendCharts",
+      icon: <FundOutlined />,
     },
     redirect: "/chart/pie-chart",
     children: [
@@ -240,7 +243,7 @@ export const asyncRoute = [
         Component: PieChartPage,
         meta: {
           title: "饼图图表",
-          icon: "ele-PieChart",
+          icon: <PieChartOutlined />,
         },
       },
       {
@@ -249,7 +252,7 @@ export const asyncRoute = [
         Component: BarChartPage,
         meta: {
           title: "柱状图表",
-          icon: "ele-Histogram",
+          icon: <BarChartOutlined />,
         },
       },
       {
@@ -258,7 +261,7 @@ export const asyncRoute = [
         Component: LineChartPage,
         meta: {
           title: "折线图表",
-          icon: "ele-TrendCharts",
+          icon: <LineChartOutlined />,
         },
       },
       {
@@ -267,7 +270,7 @@ export const asyncRoute = [
         Component: MapChartPage,
         meta: {
           title: "地图图表",
-          icon: "ele-WindPower",
+          icon: <RadarChartOutlined />,
         },
       },
       {
@@ -276,7 +279,7 @@ export const asyncRoute = [
         Component: MixChartPage,
         meta: {
           title: "混合图表",
-          icon: "ele-Football",
+          icon: <AreaChartOutlined />,
         },
       },
       {
@@ -285,7 +288,7 @@ export const asyncRoute = [
         Component: MoreLineChartPage,
         meta: {
           title: "多折线图表",
-          icon: "ele-Collection",
+          icon: <StockOutlined />,
         },
       },
       {
@@ -294,7 +297,7 @@ export const asyncRoute = [
         Component: MoreBarChartPage,
         meta: {
           title: "多柱状图表",
-          icon: "ele-DataBoard",
+          icon: <DotChartOutlined />,
         },
       },
     ],
@@ -305,7 +308,7 @@ export const asyncRoute = [
     name: "tool",
     meta: {
       title: "常用功能",
-      icon: "ele-Menu",
+      icon: <ToolOutlined />,
     },
     redirect: "/tool/dayjs-tool",
     children: [
@@ -315,7 +318,7 @@ export const asyncRoute = [
         Component: DayjsTool,
         meta: {
           title: "时间操作",
-          icon: "ele-Calendar",
+          icon: <HistoryOutlined />,
         },
       },
       {
@@ -324,7 +327,7 @@ export const asyncRoute = [
         Component: ThrottleTool,
         meta: {
           title: "防抖节流",
-          icon: "ele-Timer",
+          icon: <FieldTimeOutlined />,
         },
       },
       {
@@ -333,7 +336,7 @@ export const asyncRoute = [
         Component: PreviewFile,
         meta: {
           title: "文档预览",
-          icon: "ele-Printer",
+          icon: <FileWordOutlined />,
         },
       },
       {
@@ -342,7 +345,7 @@ export const asyncRoute = [
         Component: RouterViewPage,
         meta: {
           title: "多级菜单",
-          icon: "ele-Reading",
+          icon: <ProductOutlined />,
         },
         redirect: "/tool/test/list",
         children: [
@@ -352,7 +355,7 @@ export const asyncRoute = [
             Component: ListPage,
             meta: {
               title: "列表页面",
-              icon: "ele-Reading",
+              icon: <ProductOutlined />,
               parentName: "test",
             },
           },
@@ -362,7 +365,7 @@ export const asyncRoute = [
             Component: Detail,
             meta: {
               title: "添加页面",
-              icon: "ele-Reading",
+              icon: <ProductOutlined />,
               parentName: "test",
             },
           },
@@ -372,7 +375,7 @@ export const asyncRoute = [
             Component: RouterViewPage,
             meta: {
               title: "详情页面",
-              icon: "ele-Reading",
+              icon: <ProductOutlined />,
               parentName: "test",
             },
             children: [
@@ -382,7 +385,7 @@ export const asyncRoute = [
                 Component: Demo01Page,
                 meta: {
                   title: "人员详情",
-                  icon: "ele-Reading",
+                  icon: <ProductOutlined />,
                   parentName: "test/demo",
                 },
               },
@@ -392,7 +395,7 @@ export const asyncRoute = [
                 Component: Demo02Page,
                 meta: {
                   title: "公司详情",
-                  icon: "ele-Reading",
+                  icon: <ProductOutlined />,
                   parentName: "test/demo",
                 },
               },
@@ -407,7 +410,7 @@ export const asyncRoute = [
     name: "document",
     meta: {
       title: "在线文档",
-      icon: "ele-Link",
+      icon: '',
       hidden: false,
     },
     Component: withGuard,
@@ -419,9 +422,9 @@ export const asyncRoute = [
         meta: {
           title: (
             <a href="https://juejin.cn/column/7388686221892976703" target="_blank" rel="noopener noreferrer">
-              在线文档
+              <PaperClipOutlined /><span>在线文档</span>
             </a>
-          ), icon: "ele-Link", hidden: false
+          ), icon: '', hidden: false
         },
       },
     ],
@@ -431,7 +434,7 @@ export const asyncRoute = [
     name: "project",
     meta: {
       title: "开源项目",
-      icon: "ele-HelpFilled",
+      icon: '',
       hidden: false,
     },
     Component: withGuard,
@@ -443,9 +446,9 @@ export const asyncRoute = [
         meta: {
           title: (
             <a href="https://gitee.com/CodeTV" target="_blank" rel="noopener noreferrer">
-              开源项目
+              <VerifiedOutlined /> <span>开源项目</span>
             </a>
-          ), icon: "ele-HelpFilled", hidden: false
+          ), icon: '', hidden: false
         },
       },
     ],
@@ -455,13 +458,13 @@ export const asyncRoute = [
     path: "/setting",
     Component: withGuard,
     redirect: "/setting/permission",
-    meta: { title: "系统管理", icon: "ele-Setting" },
+    meta: { title: "系统管理", icon: <SettingOutlined /> },
     children: [
       {
         name: "permission",
-        path: "/setting/permission",
+        path: "permission",
         Component: RouterViewPage,
-        meta: { title: "权限管理", icon: "ele-UserFilled" },
+        meta: { title: "权限管理", icon: <ExperimentOutlined /> },
         redirect: "/setting/permission/menu",
         children: [
           {
@@ -470,7 +473,7 @@ export const asyncRoute = [
             Component: PerMenu,
             meta: {
               title: "菜单管理",
-              icon: "ele-Menu",
+              icon: <MenuOutlined />,
             },
           },
           {
@@ -479,7 +482,7 @@ export const asyncRoute = [
             Component: PerRole,
             meta: {
               title: "角色管理",
-              icon: "ele-Promotion",
+              icon: <BorderOuterOutlined />,
             },
           },
           {
@@ -488,16 +491,16 @@ export const asyncRoute = [
             Component: PerUser,
             meta: {
               title: "用户管理",
-              icon: "ele-Avatar",
+              icon: <UsergroupAddOutlined />,
             },
           },
         ],
       },
       {
         name: "department",
-        path: "/setting/department",
+        path: "department",
         Component: RouterViewPage,
-        meta: { title: "部门管理", icon: "ele-Postcard" },
+        meta: { title: "部门管理", icon: <SortDescendingOutlined /> },
         redirect: "/setting/department/software",
         children: [
           {
@@ -506,7 +509,7 @@ export const asyncRoute = [
             Component: Maintenance,
             meta: {
               title: "软件人员",
-              icon: "ele-Management",
+              icon: <ConsoleSqlOutlined />,
             },
           },
           {
@@ -515,7 +518,7 @@ export const asyncRoute = [
             Component: Software,
             meta: {
               title: "运维人员",
-              icon: "ele-VideoCamera",
+              icon: <MacCommandOutlined />,
             },
           },
         ],

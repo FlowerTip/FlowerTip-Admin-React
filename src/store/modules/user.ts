@@ -48,7 +48,7 @@ export const userStore = proxy({
       userStore.userInfo.backMenuList = asyncRoute as unknown as any;
       userStore.userInfo.authMenuList = reorganizeMenu(asyncRoute) as unknown as any;
 
-      console.log(userStore.userInfo.authMenuList, 'userStore.userInfo.authMenuList@@@@@');
+      // console.log(userStore.userInfo.authMenuList, 'userStore.userInfo.authMenuList@@@@@');
 
     }
     return Promise.resolve(data.list);
