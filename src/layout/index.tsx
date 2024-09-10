@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import {
-  LaptopOutlined, NotificationOutlined, UserOutlined, MenuFoldOutlined,
+  UserOutlined, MenuFoldOutlined,
   MenuUnfoldOutlined, DownOutlined, ChromeOutlined, LogoutOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -10,85 +10,9 @@ import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message } fro
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore } from '@/store'
+import { isExternalFn } from '@/utils/validate';
+import { reorganizeMenu } from '@/utils/tool';
 const { Header, Content, Sider } = Layout;
-
-// const items1: MenuProps['items'] = [
-//   {
-//     key: '/home',
-//     label: '驾驶舱',
-//   },
-//   {
-//     key: '/table',
-//     label: '表格组件',
-//   },
-//   {
-//     key: '/upload',
-//     label: '上传组件',
-//   },
-//   {
-//     key: '/form',
-//     label: '表单组件',
-//   },
-//   {
-//     key: '/chart',
-//     label: '图表组件',
-//   },
-//   {
-//     key: '/tool',
-//     label: '常用功能',
-//   },
-//   {
-//     key: '/document',
-//     label: (
-//       <a href="https://juejin.cn/column/7388686221892976703" target="_blank" rel="noopener noreferrer">
-//         在线文档
-//       </a>
-//     ),
-//   },
-//   {
-//     key: '/project',
-//     label: (
-//       <a href="https://gitee.com/CodeTV" target="_blank" rel="noopener noreferrer">
-//         开源项目
-//       </a>
-//     ),
-//   },
-//   {
-//     key: '/setting',
-//     label: '系统管理',
-//     children: [
-//       {
-//         key: 'permission',
-//         label: '权限管理'
-//       },
-//       {
-//         key: 'department',
-//         label: '部门管理'
-//       }
-//     ]
-//   },
-// ];
-
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
 
 const items: MenuProps['items'] = [
   {
@@ -121,6 +45,7 @@ const LayoutWrapper: React.FC = () => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+  const [showSidebar, setShowSidebar] = useState(true)
   const siderStyle: React.CSSProperties = {
     overflow: 'auto',
     height: 'calc(100vh - 50px)',
@@ -130,7 +55,11 @@ const LayoutWrapper: React.FC = () => {
     bottom: 0,
     scrollbarWidth: 'thin',
     scrollbarColor: 'unset',
-    background: colorBgContainer
+    background: colorBgContainer,
+    display: showSidebar ? 'block' : 'none'
+  };
+  const contentStyle: React.CSSProperties = {
+    marginLeft: showSidebar && collapsed ? '50px' : showSidebar && !collapsed ? '200px' : !showSidebar ? '0px' : '0px'
   };
   const breadcrumbItems = [
     {
@@ -168,9 +97,33 @@ const LayoutWrapper: React.FC = () => {
   };
   const uStore = useSnapshot(userStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
-  let routeMeta = useRouteMeta(uStore.userInfo.backMenuList);
+
+  const splitMenuList = topMenuList.map((item: any) => {
+    const obj = {
+      key: item.key,
+      label: item.label,
+      icon: item.icon,
+      children: null
+    }
+    if (item.children && item.children[0].redirect) {
+      obj.children = item.children.map((child: any) => {
+        return {
+          key: child.key,
+          label: child.label,
+          icon: item.icon,
+        }
+      })
+    }
+    return obj;
+  })
+
+
+
+  let {routeMeta, topRoute} = useRouteMeta(uStore.userInfo.backMenuList);
   const [currPath, setCurrPath] = useState(routeMeta.path)
   useEffect(() => {
+    console.log(routeMeta, 'ashdahshd');
+
     // navigate(routeMeta.redirect);
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
@@ -187,11 +140,22 @@ const LayoutWrapper: React.FC = () => {
 
     console.log(key, keyPath, selectedKeys, '####routeMeta');
     handlerSelect({ key, keyPath, selectedKeys })
-  }, [])
-
+    if (routeMeta.children && routeMeta.children.length === 1) {
+      setShowSidebar(false);
+    } else {
+      setShowSidebar(true);
+    }
+    const childList = topRoute.children as unknown as any;
+    const menuList = reorganizeMenu(childList)
+    uStore.updateLeftMenus(menuList as unknown as any)
+  }, [currPath])
 
   const handlerSelect = ({ key, keyPath, selectedKeys }: any) => {
-    console.log(key, keyPath, selectedKeys, 'params1@@@@');
+    // console.log(key, keyPath, selectedKeys, 'params1@@@@');
+    console.log(topRoute, routeMeta, '点击后更新菜单');
+    
+
+    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -201,24 +165,28 @@ const LayoutWrapper: React.FC = () => {
           redirectUrl = redirectUrl + '/' + path;
         }
       })
-
     } else {
-      const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
-      console.log(topMenuList, hasOnlyOne, 'hasOnlyOne');
-
+      // console.log(topMenuList, hasOnlyOne, 'hasOnlyOne');
       if (hasOnlyOne && hasOnlyOne.redirect) {
         redirectUrl = hasOnlyOne.redirect
+        setShowSidebar(false)
       } else {
         redirectUrl = key;
+        setShowSidebar(true)
       }
     }
-    setCurrPath(redirectUrl);
-    navigate(redirectUrl);
-    console.log(redirectUrl, routeMeta, key, keyPath, selectedKeys, 'params2@@@@');
-    const sideMenuList: unknown = [];
-    uStore.updateLeftMenus(sideMenuList as unknown as any)
+    setCurrPath(key);
+    if (!isExternalFn(redirectUrl)) {
+      navigate(redirectUrl);
+    }
+    // console.log(redirectUrl, routeMeta, key, keyPath, selectedKeys, 'params2@@@@');
   }
 
+
+  const sidebarSelect = ({ key, keyPath, selectedKeys }: any) => {
+    console.log(key, keyPath, selectedKeys, '侧边栏目');
+    navigate(key);
+  }
 
   return (
     <Layout className='layout-wrapper'>
@@ -237,8 +205,8 @@ const LayoutWrapper: React.FC = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[currPath]}
-          items={topMenuList}
+          selectedKeys={[currPath]}
+          items={splitMenuList}
           style={{ minWidth: 0, flex: 1 }}
           onSelect={handlerSelect}
         />
@@ -252,12 +220,11 @@ const LayoutWrapper: React.FC = () => {
           </a>
         </Dropdown>
       </Header>
-      <Layout className='layout-content' style={collapsed ? { 'marginLeft': '50px' } : { 'marginLeft': '200px' }}>
+      <Layout className='layout-content' style={contentStyle}>
         <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
           <Menu
-            items={topMenuList}
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            items={uStore.userInfo.sidebarMenuList as any}
+            onSelect={sidebarSelect}
             mode="inline"
           />
         </Sider>
