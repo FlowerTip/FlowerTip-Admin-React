@@ -6,7 +6,7 @@ import {
   MenuUnfoldOutlined, DownOutlined, ChromeOutlined, LogoutOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore } from '@/store'
@@ -34,8 +34,20 @@ const items: MenuProps['items'] = [
     icon: <LogoutOutlined />,
   },
 ];
-const LayoutWrapper: React.FC = () => {
 
+const config = {
+  title: '退出提示',
+  content: (
+    <>
+      <span>确定要退出账号吗？</span>
+    </>
+  ),
+  width: 400
+};
+
+
+const LayoutWrapper: React.FC = () => {
+  const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -76,14 +88,17 @@ const LayoutWrapper: React.FC = () => {
     },
   ];
   const navigate = useNavigate();
-
+  const [activeIndex, setActiveIndex] = useState('');
   const onClick: MenuProps['onClick'] = async ({ key }) => {
     switch (key) {
       case 'logout':
-        await userStore.logout(true)
-        navigate('/login', {
-          replace: true
-        });
+        const confirmed = await modal.confirm(config);
+        if (confirmed) {
+          await userStore.logout(true)
+          navigate('/login', {
+            replace: true
+          });
+        }
         break;
       case 'person':
         messageApi.info(`点击了 ${key}`);
@@ -119,12 +134,13 @@ const LayoutWrapper: React.FC = () => {
 
 
 
-  let {routeMeta, topRoute} = useRouteMeta(uStore.userInfo.backMenuList);
-  const [currPath, setCurrPath] = useState(routeMeta.path)
-  useEffect(() => {
-    console.log(routeMeta, 'ashdahshd');
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
 
-    // navigate(routeMeta.redirect);
+  const [currPath, setCurrPath] = useState('/')
+  const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
+
+
+  useEffect(() => {
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
     const keys: string[] = [];
@@ -138,7 +154,6 @@ const LayoutWrapper: React.FC = () => {
     const keyPath = keys.reverse();
     const selectedKeys = [key];
 
-    console.log(key, keyPath, selectedKeys, '####routeMeta');
     handlerSelect({ key, keyPath, selectedKeys })
     if (routeMeta.children && routeMeta.children.length === 1) {
       setShowSidebar(false);
@@ -146,14 +161,24 @@ const LayoutWrapper: React.FC = () => {
       setShowSidebar(true);
     }
     const childList = topRoute.children as unknown as any;
-    const menuList = reorganizeMenu(childList)
-    uStore.updateLeftMenus(menuList as unknown as any)
+    let menuList = [];
+    if (childList.length > 1 && childList.every((item: any) => item.redirect)) {
+      if (routeMeta.children) {
+        menuList = reorganizeMenu(routeMeta.children);
+        setActiveIndex(topRoute.path as any);
+      } else {
+        const findChildren = childList.find((child: any) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
+        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children))
+        findChildren && setActiveIndex(findChildren.path as any);
+      }
+    } else {
+      menuList = reorganizeMenu(childList);
+      setActiveIndex(topRoute.path as any);
+    }
+    uStore.updateLeftMenus(menuList as unknown as any);
   }, [currPath])
 
   const handlerSelect = ({ key, keyPath, selectedKeys }: any) => {
-    // console.log(key, keyPath, selectedKeys, 'params1@@@@');
-    console.log(topRoute, routeMeta, '点击后更新菜单');
-    
 
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
@@ -175,17 +200,67 @@ const LayoutWrapper: React.FC = () => {
         setShowSidebar(true)
       }
     }
-    setCurrPath(key);
     if (!isExternalFn(redirectUrl)) {
+
+      const childList = topRoute.children as unknown as any;
+      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
+
+      console.log(redirectUrl, isMoreLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
+
+      if (isMoreLevel) {
+        console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
+        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
+        console.log(findChild, '测试举手哈');
+        if (findChild) {
+          redirectUrl = findChild.redirect
+          setCurrPath(findChild.path as unknown as any);
+          setSidebarPath(findChild.children[0].path);
+        } else {
+          setCurrPath(key)
+          setSidebarPath(key);
+        }
+      } else {
+        const tempPath = redirectUrl.replace('/' + key, '');
+        console.log(tempPath, 'tempPath');
+        setCurrPath(tempPath)
+        setSidebarPath(key);
+      }
+
+      console.log(redirectUrl, 'redirectUrl');
+
       navigate(redirectUrl);
+    } else {
+      console.log('是链接', hasOnlyOne, redirectUrl);
+      setActiveIndex(hasOnlyOne.key);
+      setShowSidebar(true);
     }
-    // console.log(redirectUrl, routeMeta, key, keyPath, selectedKeys, 'params2@@@@');
   }
 
 
-  const sidebarSelect = ({ key, keyPath, selectedKeys }: any) => {
-    console.log(key, keyPath, selectedKeys, '侧边栏目');
-    navigate(key);
+  const sidebarSelect = ({ key, keyPath }: any) => {
+    let url = ''
+    if (keyPath.length > 1) {
+      keyPath.reverse().forEach((path: string) => {
+        url += ('/' + path)
+      })
+      url = topRoute.path + url;
+    } else {
+      let splitList = routeMeta.redirect.split('/').filter((path: string) => path);
+      splitList = splitList.slice(0, splitList.length - 1);
+      if (keyPath.length === 1 && splitList.length === 2) {
+        let temp = '';
+        splitList.forEach((path: string) => {
+          temp += ('/' + path)
+        })
+        url = temp + '/' + url + key;
+      } else {
+        url = key
+      }
+      console.log(key, keyPath, url, splitList, '###2222splitList');
+    }
+    // return
+    setSidebarPath(key);
+    navigate(url);
   }
 
   return (
@@ -205,12 +280,11 @@ const LayoutWrapper: React.FC = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          selectedKeys={[currPath]}
+          selectedKeys={[activeIndex as unknown as any]}
           items={splitMenuList}
           style={{ minWidth: 0, flex: 1 }}
           onSelect={handlerSelect}
         />
-        {contextHolder}
         <Dropdown menu={{ items, onClick }}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
@@ -225,6 +299,7 @@ const LayoutWrapper: React.FC = () => {
           <Menu
             items={uStore.userInfo.sidebarMenuList as any}
             onSelect={sidebarSelect}
+            selectedKeys={[sidebarPath]}
             mode="inline"
           />
         </Sider>
@@ -233,14 +308,13 @@ const LayoutWrapper: React.FC = () => {
           </Breadcrumb>
           <Content
             className='view-layout'
-            style={{
-              background: colorBgContainer,
-            }}
           >
             <Outlet />
           </Content>
         </Layout>
       </Layout>
+      {modalContextHolder}
+      {contextHolder}
     </Layout>
   );
 };
