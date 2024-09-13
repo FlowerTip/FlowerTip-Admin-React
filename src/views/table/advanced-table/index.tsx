@@ -1,7 +1,7 @@
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Dropdown, Space } from 'antd';
+import { Button, Space } from 'antd';
 import { useRef, useState, useEffect } from 'react';
 import { reqStudentList } from '@/api/student'
 import useTableHeight from '@/hooks/useTableHeight'
@@ -59,7 +59,7 @@ const columns: ProColumns<StudentItem>[] = [
     key: 'option',
     align: 'center',
     width: 300,
-    render: (text, record, _, action) => [
+    render: () => [
       <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button size='small'>编辑</Button>
         <Button size='small'>删除</Button>
@@ -133,6 +133,7 @@ export default () => {
         setting: {
           listsHeight: 400,
         },
+        fullScreen: true
       }}
       form={{
         // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下

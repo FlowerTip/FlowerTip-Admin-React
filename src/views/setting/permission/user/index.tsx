@@ -1,7 +1,7 @@
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Dropdown, Space } from 'antd';
+import { Button, Space } from 'antd';
 import { useRef } from 'react';
 import { reqAccountList } from '@/api/account'
 
@@ -28,7 +28,7 @@ const columns: ProColumns<AccountItem>[] = [
     key: 'option',
     align: 'center',
     width: 300,
-    render: (text, record, _, action) => [
+    render: () => [
       <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button size='small'>编辑</Button>
         <Button size='small'>删除</Button>
@@ -82,7 +82,7 @@ export default () => {
         },
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
         onChange: (page) => console.log(page),
       }}
       dateFormatter="string"

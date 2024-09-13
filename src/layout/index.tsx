@@ -178,7 +178,7 @@ const LayoutWrapper: React.FC = () => {
     uStore.updateLeftMenus(menuList as unknown as any);
   }, [currPath])
 
-  const handlerSelect = ({ key, keyPath, selectedKeys }: any) => {
+  const handlerSelect = ({ key, keyPath }: any) => {
 
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
