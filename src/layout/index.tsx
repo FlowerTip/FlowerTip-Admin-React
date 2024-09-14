@@ -73,20 +73,7 @@ const LayoutWrapper: React.FC = () => {
   const contentStyle: React.CSSProperties = {
     marginLeft: showSidebar && collapsed ? '50px' : showSidebar && !collapsed ? '200px' : !showSidebar ? '0px' : '0px'
   };
-  const breadcrumbItems = [
-    {
-      title: '驾驶舱',
-      href: '/home/cockpit',
-    },
-    {
-      title: '表格组件',
-      href: '/category',
-    },
-    {
-      title: '高级表格',
-      href: '/category/subcategory',
-    },
-  ];
+  const breadcrumbItems = [];
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState('');
   const onClick: MenuProps['onClick'] = async ({ key }) => {
@@ -136,9 +123,23 @@ const LayoutWrapper: React.FC = () => {
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
 
+  console.log(routeMeta, topRoute, '你是是多喝会更好湖广会馆哈哈');
+
   const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
-
+  const parentItem = {
+    title: (topRoute as any).meta.title,
+    href: topRoute.path as string
+  }
+  const childItem = {
+    title: routeMeta.title,
+    href: routeMeta.redirect as string
+  }
+  if (parentItem.title === childItem.title) {
+    breadcrumbItems.push(parentItem);
+  } else {
+    breadcrumbItems.push(parentItem, childItem);
+  }
 
   useEffect(() => {
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);

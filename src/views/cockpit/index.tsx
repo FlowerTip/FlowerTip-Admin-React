@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Col, Row } from 'antd';
 
 const Cockpit: React.FC = () => (
-  <div style={{ width: 'calc(100vw - 36px)', boxSizing: 'border-box', padding: 0, margin: 0 }}>
+  <div style={{ padding: '10px'}}>
     <Row gutter={10} style={{marginBottom: '10px'}}>
       <Col span={8}>
         <Card title="Card title" bordered={false} style={{height: '300px'}}>

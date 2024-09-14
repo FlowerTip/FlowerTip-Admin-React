@@ -1,3 +1,5 @@
+import defaultSetting from '@/setting'
+
 /**
  * 重构菜单数据的工具方法
  * @param menuList 
@@ -33,4 +35,16 @@ export const reorganizeMenu = (menuList: any[]): any[] => {
       }
     }
   })
+}
+
+/**
+ * 获取当前显示路由的标题
+ * @param {*} to
+ * @returns title
+ */
+
+export function getPageTitle(meta: any): string {
+  return meta && meta.title
+    ? `${meta.title} - ${defaultSetting.title}`
+    : defaultSetting.title;
 }

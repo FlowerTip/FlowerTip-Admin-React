@@ -29,14 +29,6 @@ body {
   overflow: hidden;
 
   .layout-header {
-    // position: fixed;
-    // left: 0;
-    // top: 0;
-    // z-index: 99;
-    // width: 100%;
-    // display: flex;
-    // align-items: center;
-
     .layout-header-logo {
       width: 168px;
       height: 32px;
@@ -54,8 +46,6 @@ body {
   }
 
   .layout-content {
-    // padding-top: 50px;
-    // height: calc(100vh - 50px);
     display: flex;
     .sidebar {
       height: 100%;
@@ -67,7 +57,6 @@ body {
       }
       .view-layout {
         overflow-y: auto;
-        margin: 0 12px 12px 12px;
       }
     }
   }
