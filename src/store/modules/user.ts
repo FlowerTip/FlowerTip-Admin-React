@@ -1,7 +1,7 @@
 import { proxy } from 'valtio'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
-import { anyRoute, asyncRoute } from '@/router/modules/routes';
+import { asyncRoute } from '@/router/modules/routes';
 import { reorganizeMenu, filterAsyncRoutes } from '@/utils/tool';
 import { devtools } from 'valtio/utils';
 
@@ -41,7 +41,7 @@ export const userStore = proxy({
       userStore.userInfo.username = data.checkUser.username;
       if (data.list.length > 0) {
         let menuList = [];
-        if (process.env.NODE_ENV === "development") {
+        if (process.env.NODE_ENV === "production") {
           menuList = filterAsyncRoutes(
             asyncRoute,
             data.list.map((item) => item.code)

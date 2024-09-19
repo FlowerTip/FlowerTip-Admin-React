@@ -13,7 +13,7 @@
     "@ant-design/charts": "^2.2.1",
     "@ant-design/icons": "^5.4.0",
     "@ant-design/pro-components": "^2.7.16",
-    "antd": "^5.20.6",
+    "antd": "^5.20.5",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "rc-resize-observer": "^1.4.0",

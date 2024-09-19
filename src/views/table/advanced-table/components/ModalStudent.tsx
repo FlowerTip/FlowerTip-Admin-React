@@ -75,6 +75,7 @@ const ModalStudent = ({ }, ref: any) => {
     formData.append("itemId", fileParams.id as string);
     formData.append("file", fileList[0] as FileType);
     setUploading(true);
+    console.log(uploading);
     const { code, data } = await reqUploadAvatar(formData);
     if (code === 200) {
       setUploading(false);

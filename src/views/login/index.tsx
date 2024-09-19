@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { Button, Form, Input, Carousel, FormInstance } from 'antd';
 import { useNavigate } from 'react-router-dom'
-import {
-  UserOutlined, LockOutlined,
-} from '@ant-design/icons';
+import UserOutlined from '@ant-design/icons/UserOutlined';
+import LockOutlined from '@ant-design/icons/LockOutlined';
+
 import defaultSetting from '../../setting'
 import './index.scss';
 import { userStore } from '@/store';

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
-import {
-  UserOutlined, MenuFoldOutlined,
-  MenuUnfoldOutlined, DownOutlined, ChromeOutlined, LogoutOutlined
-} from '@ant-design/icons';
+import UserOutlined from '@ant-design/icons/UserOutlined';
+import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
+import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
+import DownOutlined from '@ant-design/icons/DownOutlined';
+import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
+import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
