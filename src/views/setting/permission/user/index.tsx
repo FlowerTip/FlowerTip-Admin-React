@@ -1,104 +1,162 @@
-import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Space } from 'antd';
-import { useRef } from 'react';
-import { reqAccountList } from '@/api/account'
-
-const columns: ProColumns<AccountItem>[] = [
-  {
-    dataIndex: 'index',
-    valueType: 'indexBorder',
-    width: 48,
-    align: 'center'
-  },
-  {
-    title: '账号名称',
-    dataIndex: 'username',
-    align: 'center'
-  },
-  {
-    title: '账号密码',
-    dataIndex: 'password',
-    align: 'center'
-  },
-  {
-    title: '操作',
-    valueType: 'option',
-    key: 'option',
-    align: 'center',
-    width: 300,
-    render: () => [
-      <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Button size='small'>编辑</Button>
-        <Button size='small'>删除</Button>
-      </Space >
-      ,
-    ],
-  },
-];
+import { Button, Space, message, Popconfirm } from 'antd';
+import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import { useRef, useState } from 'react';
+import { reqBatchRole, reqAccountList, reqSaveAccount, reqDelAccount } from '@/api/account'
+import ModalAccount from './components/ModalAccount';
+import RoleModal from './components/RoleModal';
 
 export default () => {
+  const columns: ProColumns<AccountItem>[] = [
+    {
+      title: '账号名称',
+      dataIndex: 'username',
+      align: 'center',
+    },
+    {
+      title: '账号密码',
+      dataIndex: 'password',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      key: 'option',
+      align: 'center',
+      width: 300,
+      render: (_, record) => [
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Button size='small' onClick={() => batchModal(record)}>分配角色</Button>
+          <Button size='small' onClick={() => editModal(record)}>编辑账号</Button>
+          <Popconfirm
+            title="删除提示"
+            description="确认要删除该账号吗?"
+            onConfirm={() => delModal(record)}
+            onCancel={() => message.info('取消操作')}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Button danger size='small'>删除账号</Button>
+          </Popconfirm>
+        </Space >
+        ,
+      ],
+    },
+  ];
   const actionRef = useRef<ActionType>();
+  const ModalAccountRef = useRef<any>();
+  const RoleModalRef = useRef<any>();
+
+  const updateTableList = async (params: any): Promise<any> => {
+    const { code, data } = await reqAccountList({
+      currentPage: params.current,
+      pageSize: params.pageSize,
+      username: params.keyword
+    });
+    if (code === 200) {
+      return {
+        data: data.list,
+        success: true,
+        total: data.total
+      }
+    }
+  }
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10
+  })
+  const addAccount = () => {
+    ModalAccountRef.current!.acceptParams({
+      api: reqSaveAccount,
+      reload: actionRef.current?.reload,
+      rowData: {
+        username: '',
+        password: '123456'
+      }
+    })
+  }
+  const editModal = (rowData: any) => {
+    ModalAccountRef.current!.acceptParams({
+      api: reqSaveAccount,
+      reload: actionRef.current?.reload,
+      rowData
+    })
+  }
+  const delModal = async (rowData: any) => {
+    const { code } = await reqDelAccount({
+      ids: [rowData.id!],
+    });
+    if (code === 200) {
+      message.success('删除成功');
+      actionRef.current?.reload();
+    }
+  }
+  const batchModal = (rowData: any) => {
+    RoleModalRef.current.acceptParams({
+      api: reqBatchRole,
+      reload: actionRef.current?.reload,
+      rowData
+    })
+  }
   return (
-    <ProTable<AccountItem>
-      columns={columns}
-      actionRef={actionRef}
-      cardBordered
-      request={async (params, sort, filter): Promise<any> => {
-        console.log(sort, filter);
-        const { code, data } = await reqAccountList({
-          currentPage: params.current,
-          pageSize: params.pageSize,
-          username: params.keyword
-        });
-        if (code === 200) {
-          return {
-            data: data.list,
-            success: true,
-            total: data.total
-          }
-        }
-      }}
-      rowKey="id"
-      search={{
-        labelWidth: 'auto',
-      }}
-      options={{
-        setting: {
-          listsHeight: 400,
-        },
-      }}
-      form={{
-        // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-        syncToUrl: (values, type) => {
-          if (type === 'get') {
-            return {
-              ...values,
-              created_at: [values.startTime, values.endTime],
-            };
-          }
-          return values;
-        },
-      }}
-      pagination={{
-        pageSize: 10,
-        onChange: (page) => console.log(page),
-      }}
-      dateFormatter="string"
-      headerTitle="账号列表"
-      toolBarRender={() => [
-        <Button
-          key="button"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            actionRef.current?.reload();
-          }}
-          type="primary"
-        >
-          新建
-        </Button>,
-      ]}
-    />
+    <>
+      <ProTable<AccountItem>
+        style={{
+          padding: '10px'
+        }}
+        columns={columns}
+        actionRef={actionRef}
+        cardBordered
+        request={updateTableList}
+        rowKey="id"
+        search={{
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
+        }}
+        form={{
+          // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
+          syncToUrl: (values, type) => {
+            if (type === 'get') {
+              return {
+                ...values,
+                created_at: [values.startTime, values.endTime],
+              };
+            }
+            return values;
+          },
+        }}
+        pagination={{
+          showSizeChanger: true,
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          onChange: (page, size) => {
+            setPagination({
+              current: page,
+              pageSize: size
+            })
+          },
+        }}
+        dateFormatter="string"
+        headerTitle="账号列表"
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={addAccount}
+            type="primary"
+          >
+            添加账号
+          </Button>,
+        ]}
+      />
+      <ModalAccount ref={ModalAccountRef} />
+      <RoleModal ref={RoleModalRef} />
+    </>
   );
 };

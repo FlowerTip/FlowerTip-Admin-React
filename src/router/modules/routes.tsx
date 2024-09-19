@@ -43,6 +43,7 @@ import Maintenance from '@/views/setting/department/maintenance/index.tsx';
 import Software from '@/views/setting/department/software/index.tsx';
 
 import RouterViewPage from '@/views/tool/test/index.tsx';
+import { userStore } from '@/store';
 
 import { MacCommandOutlined, ConsoleSqlOutlined, SortDescendingOutlined, UsergroupAddOutlined, BorderOuterOutlined, ExperimentOutlined, MenuOutlined, SettingOutlined, VerifiedOutlined, PaperClipOutlined, ToolOutlined, HistoryOutlined, FieldTimeOutlined, FileWordOutlined, ProductOutlined, DotChartOutlined, StockOutlined, AreaChartOutlined, RadarChartOutlined, LineChartOutlined, BarChartOutlined, PieChartOutlined, FundOutlined, FormOutlined, EditOutlined, OrderedListOutlined, CompassOutlined, InsertRowAboveOutlined, TableOutlined, InsertRowLeftOutlined, FolderAddOutlined, UserSwitchOutlined, FileImageOutlined, FileAddOutlined } from '@ant-design/icons';
 

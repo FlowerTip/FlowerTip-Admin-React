@@ -48,3 +48,50 @@ export function getPageTitle(meta: any): string {
     ? `${meta.title} - ${defaultSetting.title}`
     : defaultSetting.title;
 }
+
+/**
+ * 过滤掉属性children为空的
+ * @param data 
+ * @returns 
+ */
+export function delChildren(data: any) {
+  let tempList: any[] = []
+  data.forEach((item: any) => {
+    let obj;
+    if (item.children && item.children.length === 0) {
+      obj = { ...item }
+      delete obj.children
+      tempList.push(obj);
+    }
+    if (item.children && item.children.length > 0) {
+      obj = {
+        ...item,
+        children: delChildren(item.children)
+      }
+      tempList.push(obj);
+    }
+  });
+  return tempList;
+}
+
+/**
+ *
+ * @param dynamicRoutes
+ * @param authRouterList
+ * @returns
+ */
+export function filterAsyncRoutes(
+  dynamicRoutes: any[],
+  authRouterList: string[]
+) {
+  return dynamicRoutes.filter((route) => {
+    // 1.如果route的name在routeNames中没有, 直接过滤掉
+    if (!authRouterList.includes(route.name as string)) return false;
+
+    // 2.如果当前route还有子路由(也就是有children), 需要对子路由也进行权限过滤
+    if (route.children && route.children.length > 0) {
+      route.children = filterAsyncRoutes(route.children, authRouterList);
+    }
+    return true;
+  });
+}

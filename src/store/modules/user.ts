@@ -1,8 +1,8 @@
 import { proxy } from 'valtio'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
-import { asyncRoute } from '@/router/modules/routes';
-import { reorganizeMenu } from '@/utils/tool';
+import { anyRoute, asyncRoute } from '@/router/modules/routes';
+import { reorganizeMenu, filterAsyncRoutes } from '@/utils/tool';
 import { devtools } from 'valtio/utils';
 
 export const userStore = proxy({
@@ -39,17 +39,21 @@ export const userStore = proxy({
     const { code, data } = await reqUserInfo();
     if (code === 200) {
       userStore.userInfo.username = data.checkUser.username;
-      // if (data.list.length > 0) {
-      //   console.log(data.list, 'datlist@@@');
-      //   userStore.userInfo.backMenuList = data.list as unknown as any;
-      // } else {
-      //   userStore.logout(false);
-      // }
-      userStore.userInfo.backMenuList = asyncRoute as unknown as any;
-      userStore.userInfo.authMenuList = reorganizeMenu(asyncRoute) as unknown as any;
-
-      // console.log(userStore.userInfo.authMenuList, 'userStore.userInfo.authMenuList@@@@@');
-
+      if (data.list.length > 0) {
+        let menuList = [];
+        if (process.env.NODE_ENV === "development") {
+          menuList = filterAsyncRoutes(
+            asyncRoute,
+            data.list.map((item) => item.code)
+          );
+        } else {
+          menuList = [...asyncRoute];
+        }
+        userStore.userInfo.backMenuList = menuList as unknown as any;
+        userStore.userInfo.permissionButtonList = data.buttons as unknown as any;
+        // 左侧菜单需要数组
+        userStore.userInfo.authMenuList = reorganizeMenu(menuList) as unknown as any;
+      }
     }
     return Promise.resolve(data.list);
   },

@@ -44,7 +44,7 @@ const Login: React.FC = () => {
           <Form.Item
             style={{ width: '100%' }}
             name="username"
-            initialValue={'狗尾巴花的尖'}
+            initialValue={'系统管理员'}
             rules={[{ required: true, message: "请输入用户名" },
             { min: 2, max: 6, message: "长度只能输入2到6位" }]}
           >
