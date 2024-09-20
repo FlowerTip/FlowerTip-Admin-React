@@ -20,6 +20,10 @@ createRoot(document.getElementById('root')!).render(
         headerSortActiveBg: '#3170FF',
         headerSortHoverBg: '#3170FF',
       },
+      Menu: {
+        darkItemBg: '#282E38',
+        darkPopupBg: '#282E38',
+      }
     },
     token: {
     }

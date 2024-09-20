@@ -103,11 +103,8 @@ export default () => {
     })
   }
   return (
-    <>
+    <div>
       <ProTable<AccountItem>
-        style={{
-          padding: '10px'
-        }}
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -147,6 +144,6 @@ export default () => {
       />
       <ModalAccount ref={ModalAccountRef} />
       <RoleModal ref={RoleModalRef} />
-    </>
+    </div>
   );
 };

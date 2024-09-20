@@ -36,7 +36,7 @@ export default () => {
     });
     if (code === 200) {
       console.log(delChildren(data.list), 'delChildren(data.list)');
-      
+
       return {
         data: delChildren(data.list),
         success: true,
@@ -44,26 +44,25 @@ export default () => {
     }
   }
   return (
-    <ProTable<AccountItem>
-      style={{
-        padding: '10px'
-      }}
-      columns={columns}
-      actionRef={actionRef}
-      cardBordered
-      request={updateTableList}
-      rowKey="id"
-      search={{
-        labelWidth: 'auto',
-      }}
-      options={{
-        setting: {
-          listsHeight: 400,
-        },
-      }}
-      pagination={false}
-      dateFormatter="string"
-      headerTitle="菜单列表"
-    />
+    <div>
+      <ProTable<AccountItem>
+        columns={columns}
+        actionRef={actionRef}
+        cardBordered
+        request={updateTableList}
+        rowKey="id"
+        search={{
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
+        }}
+        pagination={false}
+        dateFormatter="string"
+        headerTitle="菜单列表"
+      />
+    </div>
   );
 };

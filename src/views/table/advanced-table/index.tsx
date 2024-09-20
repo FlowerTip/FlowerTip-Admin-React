@@ -2,9 +2,8 @@ import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Image, Button, Space, Popconfirm, message } from 'antd';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { reqStudentList, reqSaveStudent, reqDelStudent } from '@/api/student'
-import useTableHeight from '@/hooks/useTableHeight'
 import dayjs from 'dayjs';
 import ModalStudent from './components/ModalStudent';
 
@@ -159,39 +158,13 @@ export default () => {
     }
   }
   const actionRef = useRef<ActionType>();
-  const [scrollY, setScrollY] = useState<number | string>('auto')
-  const [collapsed, setCollapsed] = useState(true)
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10
   })
-  const toggleCollapsed = (val: boolean) => {
-    setCollapsed(val)
-  }
-  useEffect(() => {
-    const h = useTableHeight({
-      extraHeight: 200,
-      id: null
-    });
-    setScrollY(h);
-  }, [])
-  useEffect(() => {
-    const h = useTableHeight({
-      extraHeight: 200,
-      id: null
-    });
-    setScrollY(h);
-  }, [collapsed])
   return (
-    <>
+    <div>
       <ProTable<StudentItem>
-        tableLayout='fixed'
-        scroll={
-          {
-            y: scrollY,
-            scrollToFirstRowOnChange: true
-          }
-        }
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -218,7 +191,6 @@ export default () => {
         rowKey="id"
         search={{
           labelWidth: 100,
-          onCollapse: toggleCollapsed,
         }}
         options={{
           setting: {
@@ -250,6 +222,6 @@ export default () => {
         ]}
       />
       <ModalStudent ref={ModalStudentRef} />
-    </>
+    </div>
   );
 };

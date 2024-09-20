@@ -10,14 +10,15 @@ const NotNetWorkPage: React.FC = () => {
     navigate('/')
   }
   return (
-    <Result
-      status="500"
-      title="500"
-      subTitle="很抱歉, 目前网络繁忙，请稍后再试，如有问题请联系管理员操作"
-      extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
-    />
+    <div style={{ height: '100%', backgroundColor: '#fff' }}>
+      <Result
+        status="500"
+        title="500"
+        subTitle="很抱歉, 目前网络繁忙，请稍后再试，如有问题请联系管理员操作"
+        extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
+      />
+    </div>
   )
-}
-  ;
+};
 
 export default NotNetWorkPage;

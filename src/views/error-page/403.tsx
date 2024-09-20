@@ -10,12 +10,14 @@ const NotPermissionPage: React.FC = () => {
   }
 
   return (
-    <Result
-      status="403"
-      title="403"
-      subTitle="很抱歉, 您没有权限访问这个页面，请联系管理员操作"
-      extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
-    />
+    <div style={{ height: '100%', backgroundColor: '#fff' }}>
+      <Result
+        status="403"
+        title="403"
+        subTitle="很抱歉, 您没有权限访问这个页面，请联系管理员操作"
+        extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
+      />
+    </div>
   );
 }
 

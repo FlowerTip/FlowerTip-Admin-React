@@ -8,7 +8,7 @@ import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Button, Dropdown, Space, message, Modal } from 'antd';
+import { Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore } from '@/store'
@@ -47,14 +47,33 @@ const config = {
   width: 400
 };
 
+const tabItems: MenuProps['items'] = [
+  {
+    key: 'current',
+    label: '关闭当前',
+    icon: <UserOutlined />,
+  },
+  {
+    key: 'other',
+    label: '关闭其他',
+    icon: <ChromeOutlined />,
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'all',
+    label: '关闭所有',
+    icon: <ChromeOutlined />,
+  },
+]
+
+console.log(tabItems);
 
 const LayoutWrapper: React.FC = () => {
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -69,7 +88,6 @@ const LayoutWrapper: React.FC = () => {
     bottom: 0,
     scrollbarWidth: 'thin',
     scrollbarColor: 'unset',
-    background: colorBgContainer,
     display: showSidebar ? 'block' : 'none'
   };
   const contentStyle: React.CSSProperties = {
@@ -281,7 +299,7 @@ const LayoutWrapper: React.FC = () => {
           {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </Button>
         <Menu
-          theme="dark"
+          theme='dark'
           mode="horizontal"
           selectedKeys={[activeIndex as unknown as any]}
           items={splitMenuList}
@@ -289,17 +307,21 @@ const LayoutWrapper: React.FC = () => {
           onSelect={handlerSelect}
         />
         <Dropdown menu={{ items, onClick }}>
-          <a onClick={(e) => e.preventDefault()}>
+          <div style={{ color: '#fff', cursor: 'pointer' }}>
             <Space>
               {uStore.userInfo.username}
               <DownOutlined />
             </Space>
-          </a>
+          </div>
         </Dropdown>
       </Header>
       <Layout className='layout-content' style={contentStyle}>
         <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
           <Menu
+            theme='dark'
+            style={{
+              height: '100%'
+            }}
             items={uStore.userInfo.sidebarMenuList as any}
             onSelect={sidebarSelect}
             selectedKeys={[sidebarPath]}
@@ -307,8 +329,29 @@ const LayoutWrapper: React.FC = () => {
           />
         </Sider>
         <Layout className='wrapper'>
-          <Breadcrumb className='navbar' separator=">" items={breadcrumbItems}>
-          </Breadcrumb>
+          <div className='navbar' style={showSidebar ? { display: 'block' } : { display: 'none' }}>
+            <Breadcrumb separator=">" items={breadcrumbItems} style={{
+              padding: '5px 12px'
+            }}>
+            </Breadcrumb>
+            <Tabs
+              tabBarExtraContent={<Dropdown menu={{ items, onClick }}>
+                <Space>
+                  <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
+                </Space>
+              </Dropdown>}
+              size='small'
+              defaultActiveKey="1"
+              style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px' }}
+              items={new Array(30).fill(null).map((_, i) => {
+                const id = String(i);
+                return {
+                  label: `菜单${Number(id) + 1}`,
+                  key: id
+                };
+              })}
+            />
+          </div>
           <Content
             className='view-layout'
           >

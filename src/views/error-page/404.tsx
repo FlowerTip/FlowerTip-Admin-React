@@ -10,12 +10,14 @@ const NotFoundPage: React.FC = () => {
     navigate('/')
   }
   return (
-    <Result
-      status="404"
-      title="404"
-      subTitle="很抱歉, 您访问的这个页面没有找到，请联系管理员操作"
-      extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
-    />
+    <div style={{ height: '100%', backgroundColor: '#fff' }}>
+      <Result
+        status="404"
+        title="404"
+        subTitle="很抱歉, 您访问的这个页面没有找到，请联系管理员操作"
+        extra={<Button type="primary" icon={<ArrowLeftOutlined />} onClick={backHome}>返回首页</Button>}
+      />
+    </div>
   )
 };
 

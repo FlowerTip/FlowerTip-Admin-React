@@ -1,7 +1,48 @@
-import React from "react";
+import { Line } from '@ant-design/plots';
+import React, { useState, useEffect } from 'react';
 
-const MoreLineChartPage: React.FC = () => {
-  return <div>多折线图表</div>
-}
+const DemoLine: React.FC = () => {
+  const [data, setData] = useState([]);
 
-export default MoreLineChartPage;
+  useEffect(() => {
+    asyncFetch();
+  }, []);
+
+  const asyncFetch = () => {
+    fetch('https://gw.alipayobjects.com/os/bmw-prod/c48dbbb1-fccf-4a46-b68f-a3ddb4908b68.json')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => {
+        console.log('fetch data failed', error);
+      });
+  };
+  const config = {
+    data,
+    xField: 'date',
+    yField: 'value',
+    colorField: 'type',
+    axis: {
+      y: {
+        labelFormatter: (v: any) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      },
+    },
+    scale: { color: { range: ['#30BF78', '#F4664A', '#FAAD14'] } },
+    style: {
+      lineWidth: 2,
+      lineDash: (data: { type: string; }[]) => {
+        if (data[0].type === 'register') return [4, 4];
+      },
+      opacity: (data: { type: string; }[]) => {
+        if (data[0].type !== 'register') return 0.5;
+      },
+    },
+  };
+
+  return (
+    <div style={{backgroundColor: '#fff', height: '100%'}}>
+      <Line {...config} />
+    </div>
+  );
+};
+
+export default DemoLine;

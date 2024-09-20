@@ -116,11 +116,8 @@ export default () => {
     console.log(rowData, '@@2rowData');
   }
   return (
-    <>
+    <div>
       <ProTable<RoleItem>
-        style={{
-          padding: '10px'
-        }}
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -160,6 +157,6 @@ export default () => {
       />
       <ModalRole ref={ModalRoleRef} />
       <ModalAssign ref={ModalAssignRef} />
-    </>
+    </div>
   );
 };
