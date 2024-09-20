@@ -1,6 +1,5 @@
 import React from 'react';
 import { Line } from '@ant-design/plots';
-import { channel } from 'process';
 
 const LineChart: React.FC = () => {
   const data = [
