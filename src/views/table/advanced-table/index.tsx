@@ -198,12 +198,10 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         cardBordered
-        request={async (params, sort, filter): Promise<any> => {
-          console.log(params, sort, filter, '请求参数');
+        request={async (params): Promise<any> => {
           const { code, data } = await reqStudentList({
-            ...params,
             currentPage: params.current,
-            pageSize: params.pageSize,
+            ...params
           });
           if (code === 200) {
             return {
@@ -223,25 +221,13 @@ export default () => {
         rowKey="id"
         search={{
           labelWidth: 100,
-          onCollapse: toggleCollapsed
+          onCollapse: toggleCollapsed,
         }}
         options={{
           setting: {
             listsHeight: 400,
           },
           fullScreen: true
-        }}
-        form={{
-          // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-                created_at: [values.startTime, values.endTime],
-              };
-            }
-            return values;
-          },
         }}
         pagination={{
           showSizeChanger: true,
@@ -254,7 +240,6 @@ export default () => {
             })
           },
         }}
-        dateFormatter="string"
         headerTitle="学员列表"
         toolBarRender={() => [
           <Button

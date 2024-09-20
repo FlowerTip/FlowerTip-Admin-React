@@ -10,6 +10,9 @@ export default () => {
       title: '菜单名称',
       dataIndex: 'name',
       align: 'center',
+      fieldProps: {
+        placeholder: '请输入菜单名称'
+      }
     },
     {
       title: '权限值',
@@ -56,18 +59,6 @@ export default () => {
       options={{
         setting: {
           listsHeight: 400,
-        },
-      }}
-      form={{
-        // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-        syncToUrl: (values, type) => {
-          if (type === 'get') {
-            return {
-              ...values,
-              created_at: [values.startTime, values.endTime],
-            };
-          }
-          return values;
         },
       }}
       pagination={false}

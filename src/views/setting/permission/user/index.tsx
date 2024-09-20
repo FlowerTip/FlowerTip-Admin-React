@@ -13,6 +13,9 @@ export default () => {
       title: '账号名称',
       dataIndex: 'username',
       align: 'center',
+      fieldProps: {
+        placeholder: '请输入账号名称'
+      }
     },
     {
       title: '账号密码',
@@ -52,8 +55,7 @@ export default () => {
   const updateTableList = async (params: any): Promise<any> => {
     const { code, data } = await reqAccountList({
       currentPage: params.current,
-      pageSize: params.pageSize,
-      username: params.keyword
+      ...params
     });
     if (code === 200) {
       return {
@@ -117,18 +119,6 @@ export default () => {
         options={{
           setting: {
             listsHeight: 400,
-          },
-        }}
-        form={{
-          // 由于配置了 transform，提交的参数与定义的不同这里需要转化一下
-          syncToUrl: (values, type) => {
-            if (type === 'get') {
-              return {
-                ...values,
-                created_at: [values.startTime, values.endTime],
-              };
-            }
-            return values;
           },
         }}
         pagination={{
