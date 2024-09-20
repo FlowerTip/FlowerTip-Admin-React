@@ -23,7 +23,7 @@ const LineChartPage: React.FC = () => {
 
 
   return (
-    <div style={{ backgroundColor: '#fff', height: '100%', margin: '0 10px', padding: '10px'}}>
+    <div style={{ backgroundColor: '#fff', height: '100%'}}>
       <Line {...config} />
     </div>
   )

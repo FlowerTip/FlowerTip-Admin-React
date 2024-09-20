@@ -185,9 +185,6 @@ export default () => {
   return (
     <>
       <ProTable<StudentItem>
-        style={{
-          padding: '10px'
-        }}
         tableLayout='fixed'
         scroll={
           {

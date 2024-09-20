@@ -47,16 +47,23 @@ body {
 
   .layout-content {
     display: flex;
+
     .sidebar {
       height: 100%;
     }
+
     .wrapper {
       flex: 1;
+
       .navbar {
         padding: 10px 12px;
       }
+
       .view-layout {
+        height: calc(100vh - 126px);
+        margin: 10px;
         overflow-y: auto;
+        overflow-x: hidden;
       }
     }
   }

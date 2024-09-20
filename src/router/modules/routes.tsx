@@ -77,6 +77,8 @@ import FolderAddOutlined from '@ant-design/icons/FolderAddOutlined';
 import UserSwitchOutlined from '@ant-design/icons/UserSwitchOutlined';
 import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
 import FileAddOutlined from '@ant-design/icons/FileAddOutlined';
+import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
+
 
 /**
  * 路由meta对象参数说明
@@ -385,7 +387,7 @@ export const asyncRoute = [
             path: "list",
             Component: ListPage,
             meta: {
-              title: "列表页面",
+              title: "菜单1",
               icon: <ProductOutlined />,
               parentName: "test",
             },
@@ -395,7 +397,7 @@ export const asyncRoute = [
             path: "detail",
             Component: Detail,
             meta: {
-              title: "添加页面",
+              title: "菜单2",
               icon: <ProductOutlined />,
               parentName: "test",
             },
@@ -405,7 +407,7 @@ export const asyncRoute = [
             path: "demo",
             Component: RouterViewPage,
             meta: {
-              title: "详情页面",
+              title: "菜单3",
               icon: <ProductOutlined />,
               parentName: "test",
             },
@@ -415,7 +417,7 @@ export const asyncRoute = [
                 path: "demo1",
                 Component: Demo01Page,
                 meta: {
-                  title: "人员详情",
+                  title: "菜单3-1",
                   icon: <ProductOutlined />,
                   parentName: "test/demo",
                 },
@@ -425,12 +427,54 @@ export const asyncRoute = [
                 path: "demo2",
                 Component: Demo02Page,
                 meta: {
-                  title: "公司详情",
+                  title: "菜单3-2",
                   icon: <ProductOutlined />,
                   parentName: "test/demo",
                 },
               },
             ],
+          },
+        ],
+      },
+      {
+        name: "error",
+        path: "error",
+        Component: RouterViewPage,
+        meta: {
+          title: "错误页面",
+          icon: <CloseSquareOutlined />,
+        },
+        redirect: "/error/403",
+        children: [
+          {
+            name: "403",
+            path: "403",
+            Component: NotPermissionPage,
+            meta: {
+              title: "403页面",
+              icon: <ProductOutlined />,
+              parentName: "error",
+            },
+          },
+          {
+            name: "404",
+            path: "404",
+            Component: NotFoundPage,
+            meta: {
+              title: "404页面",
+              icon: <ProductOutlined />,
+              parentName: "error",
+            },
+          },
+          {
+            name: "500",
+            path: "500",
+            Component: NotNetWorkPage,
+            meta: {
+              title: "500页面",
+              icon: <ProductOutlined />,
+              parentName: "error",
+            },
           },
         ],
       },
