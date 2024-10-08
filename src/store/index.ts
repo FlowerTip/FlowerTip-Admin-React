@@ -1,4 +1,4 @@
 // index.ts
 export * from './modules/user'
-export * from './modules/tagsview'
+export * from './modules/tagsView'
 
