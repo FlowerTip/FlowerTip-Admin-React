@@ -1,7 +1,7 @@
 
 import React, { Fragment } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom'
-import withGuard from '@/router/control';
+import HighFnComponent from './tool';
 import NotFoundPage from '@/views/error-page/404.tsx';
 import NotNetWorkPage from '@/views/error-page/500.tsx';
 import NotPermissionPage from '@/views/error-page/403.tsx';
@@ -89,12 +89,13 @@ import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
  *      parentName:     父级菜单的路由路径
  * }
  */
+
 // 目前模版项目中的全部的路由
 // login登录   一级路由
 // 404页面     一级路由
 // 任意路由    一级路由重定向404
 
-// 根路由      一级路由(withGuard/index)
+// 根路由      一级路由(HighFnComponent/index)
 export const staticRoute = [
   {
     path: "/login",
@@ -143,7 +144,7 @@ export const asyncRoute = [
   {
     path: "/home",
     name: "home",
-    Component: withGuard,
+    Component: HighFnComponent,
     redirect: "/home/cockpit",
     meta: {
       title: "驾驶舱",
@@ -163,7 +164,7 @@ export const asyncRoute = [
   },
   {
     path: "/table",
-    Component: withGuard,
+    Component: HighFnComponent,
     name: "table",
     meta: {
       title: "表格组件",
@@ -193,7 +194,7 @@ export const asyncRoute = [
   },
   {
     path: "/upload",
-    Component: withGuard,
+    Component: HighFnComponent,
     name: "upload",
     meta: {
       title: "上传组件",
@@ -232,7 +233,7 @@ export const asyncRoute = [
   },
   {
     path: "/form",
-    Component: withGuard,
+    Component: HighFnComponent,
     name: "form",
     meta: {
       title: "表单组件",
@@ -262,7 +263,7 @@ export const asyncRoute = [
   },
   {
     path: "/chart",
-    Component: withGuard,
+    Component: HighFnComponent,
     name: "chart",
     meta: {
       title: "图表组件",
@@ -337,7 +338,7 @@ export const asyncRoute = [
   },
   {
     path: "/tool",
-    Component: withGuard,
+    Component: HighFnComponent,
     name: "tool",
     meta: {
       title: "常用功能",
@@ -488,7 +489,7 @@ export const asyncRoute = [
       icon: '',
       hidden: false,
     },
-    Component: withGuard,
+    Component: HighFnComponent,
     redirect: "https://juejin.cn/column/7388686221892976703",
     children: [
       {
@@ -512,7 +513,7 @@ export const asyncRoute = [
       icon: '',
       hidden: false,
     },
-    Component: withGuard,
+    Component: HighFnComponent,
     redirect: "https://gitee.com/CodeTV",
     children: [
       {
@@ -531,7 +532,7 @@ export const asyncRoute = [
   {
     name: "setting",
     path: "/setting",
-    Component: withGuard,
+    Component: HighFnComponent,
     redirect: "/setting/permission",
     meta: { title: "系统管理", icon: <SettingOutlined /> },
     children: [
@@ -613,11 +614,10 @@ export const anyRoute = [{
   },
 }];
 
-
-//以函数形式，并在内部导出
-const AppRoutes: React.FC = () => {
+// 全局的路由组件
+const RouterComponent: React.FC = () => {
   const element = useRoutes([...staticRoute, ...asyncRoute, ...anyRoute] as any);
   return <Fragment>{element}</Fragment>
 }
 
-export default AppRoutes;
+export default RouterComponent;

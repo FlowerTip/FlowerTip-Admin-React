@@ -11,12 +11,12 @@ import type { MenuProps } from 'antd';
 import { Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
-import { userStore } from '@/store'
+import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
 const { Header, Content, Sider } = Layout;
 
-const items: MenuProps['items'] = [
+const clickItems: any[] = [
   {
     key: 'preson',
     label: '个人中心',
@@ -47,7 +47,7 @@ const config = {
   width: 400
 };
 
-const tabItems: MenuProps['items'] = [
+const items: MenuProps['items'] = [
   {
     key: 'current',
     label: '关闭当前',
@@ -67,9 +67,6 @@ const tabItems: MenuProps['items'] = [
     icon: <ChromeOutlined />,
   },
 ]
-
-console.log(tabItems);
-
 const LayoutWrapper: React.FC = () => {
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
@@ -117,6 +114,7 @@ const LayoutWrapper: React.FC = () => {
         messageApi.info(`点击了 ${key}`);
     }
   };
+  const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
@@ -160,7 +158,6 @@ const LayoutWrapper: React.FC = () => {
   } else {
     breadcrumbItems.push(parentItem, childItem);
   }
-
   useEffect(() => {
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
@@ -200,7 +197,6 @@ const LayoutWrapper: React.FC = () => {
   }, [currPath])
 
   const handlerSelect = ({ key, keyPath }: any) => {
-
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
@@ -279,9 +275,21 @@ const LayoutWrapper: React.FC = () => {
       }
       console.log(key, keyPath, url, splitList, '###2222splitList');
     }
-    // return
     setSidebarPath(key);
     navigate(url);
+  }
+
+  
+  const onTabClick = (key: string) => {
+    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
+    currTab && navigate(currTab.redirect);
+    if (key == '/home') {
+      setSidebarPath('/home');
+      setActiveIndex('/home');
+      setShowSidebar(false);
+    } else {
+      setSidebarPath(key)
+    }
   }
 
   return (
@@ -306,7 +314,7 @@ const LayoutWrapper: React.FC = () => {
           style={{ minWidth: 0, flex: 1 }}
           onSelect={handlerSelect}
         />
-        <Dropdown menu={{ items, onClick }}>
+        <Dropdown menu={{ items: clickItems, onClick }}>
           <div style={{ color: '#fff', cursor: 'pointer' }}>
             <Space>
               {uStore.userInfo.username}
@@ -341,15 +349,12 @@ const LayoutWrapper: React.FC = () => {
                 </Space>
               </Dropdown>}
               size='small'
-              defaultActiveKey="1"
+              activeKey={sidebarPath}
+              type="editable-card"
+              hideAdd
               style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px' }}
-              items={new Array(30).fill(null).map((_, i) => {
-                const id = String(i);
-                return {
-                  label: `菜单${Number(id) + 1}`,
-                  key: id
-                };
-              })}
+              items={tStore.tabsMenuList || []}
+              onTabClick={onTabClick}
             />
           </div>
           <Content

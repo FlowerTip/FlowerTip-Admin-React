@@ -1,0 +1,14 @@
+.ant-card-body {
+  height: calc(100% - 56px);
+  padding: 10px !important;
+}
+
+.chart-children-wrapper {
+  display: flex;
+  height: 100%;
+  .child-item {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+  }
+}

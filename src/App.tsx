@@ -1,4 +1,8 @@
-import { RouterModel } from '@/router';
-const App: React.FC = RouterModel;
+import React from 'react';
+import RouterComponent from '@/router/modules/routes';
+
+const App: React.FC = () => {
+  return <RouterComponent />
+};
 
 export default App;

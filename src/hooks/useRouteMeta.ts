@@ -2,7 +2,6 @@ import { useLocation, matchRoutes } from 'react-router-dom';
 
 const useRouteMeta = (routes: any) => {
   const location = useLocation();
-
   const matchedRoutes = matchRoutes(routes, location);
 
   console.log(location, matchedRoutes, '情啊啥');
@@ -19,7 +18,6 @@ const useRouteMeta = (routes: any) => {
       originRoute = matchedRoutes[matchedRoutes.length - 1].route as any; // 获取最后一个匹配的路由 
     }
     console.log(originRoute, 'originRoute');
-
     return {
       routeMeta: {
         ...originRoute.meta,

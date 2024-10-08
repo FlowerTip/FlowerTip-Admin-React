@@ -12,8 +12,6 @@ interface ResultData<T> extends Result {
   data: T;
 }
 
-console.log(import.meta, 'import.meta@@');
-
 const config = {
   baseURL: import.meta.env.VITE_APP_BASE_API, // 请求基础路径
   timeout: 5000, // 请求超时时间，这里的单位是毫秒
