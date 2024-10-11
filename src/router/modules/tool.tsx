@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, redirect, useLocation } from "react-router-dom";
 import { useSnapshot } from "valtio";
 import { userStore } from '@/store';
 import LayoutWrapper from "@/layout";
@@ -24,7 +24,7 @@ const RouterGuard: React.FC = () => {
       return <Navigate to={'/'} />
     } else {
       if (userInfo.username) {
-        tagsViewStore.addTab({
+        !routeMeta.children && tagsViewStore.addTab({
           key: routeMeta.path,
           label: routeMeta.title,
           closable: true,
