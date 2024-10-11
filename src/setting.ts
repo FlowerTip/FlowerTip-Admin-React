@@ -1,3 +1,4 @@
 export default {
-  title: 'FlowerTip Admin'
+  title: 'FlowerTip Admin',
+  color: '#3170FF'
 }
