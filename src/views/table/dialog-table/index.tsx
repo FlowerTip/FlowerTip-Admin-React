@@ -65,28 +65,12 @@ const getParentKey = (key: React.Key, tree: TreeDataNode[]): React.Key => {
 };
 
 const DialogTable: React.FC = () => {
-  const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
 
-  const onExpand = (newExpandedKeys: React.Key[]) => {
-    setExpandedKeys(newExpandedKeys);
-    setAutoExpandParent(false);
-  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const newExpandedKeys = dataList
-      .map((item) => {
-        if (item.title.indexOf(value) > -1) {
-          return getParentKey(item.key, defaultData);
-        }
-        return null;
-      })
-      .filter((item, i, self): item is React.Key => !!(item && self.indexOf(item) === i));
-    setExpandedKeys(newExpandedKeys);
     setSearchValue(value);
-    setAutoExpandParent(true);
   };
 
   const treeData = useMemo(() => {
