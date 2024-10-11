@@ -15,7 +15,7 @@ import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
 import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
 import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
 import type { MenuProps } from 'antd';
-import { Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal, Avatar } from 'antd';
+import { Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore, tagsViewStore } from '@/store'
