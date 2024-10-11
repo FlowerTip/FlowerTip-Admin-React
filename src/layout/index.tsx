@@ -7,18 +7,26 @@ import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
+import RedoOutlined from '@ant-design/icons/RedoOutlined';
+import FullscreenOutlined from '@ant-design/icons/FullscreenOutlined';
+import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
+import DoubleLeftOutlined from '@ant-design/icons/DoubleLeftOutlined';
+import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
+import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
+import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
 import type { MenuProps } from 'antd';
-import { Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
+import { Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal, Avatar } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
+import './index.scss';
 const { Header, Content, Sider } = Layout;
 
 const clickItems: any[] = [
   {
-    key: 'preson',
+    key: 'person',
     label: '个人中心',
     icon: <UserOutlined />,
   },
@@ -49,22 +57,45 @@ const config = {
 
 const items: MenuProps['items'] = [
   {
-    key: 'current',
-    label: '关闭当前',
-    icon: <UserOutlined />,
+    key: 'refresh',
+    label: '刷新页面',
+    icon: <RedoOutlined />,
   },
   {
-    key: 'other',
-    label: '关闭其他',
-    icon: <ChromeOutlined />,
+    key: 'max',
+    label: '最大化',
+    icon: <FullscreenOutlined />,
   },
   {
     type: 'divider',
   },
   {
+    key: 'current',
+    label: '关闭当前',
+    icon: <CloseSquareOutlined />,
+  },
+  {
+    key: 'left',
+    label: '关门左侧',
+    icon: <DoubleLeftOutlined />,
+  },
+  {
+    key: 'right',
+    label: '关闭右侧',
+    icon: <DoubleRightOutlined />,
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: 'other',
+    label: '关闭其他',
+    icon: <MinusCircleOutlined />,
+  },
+  {
     key: 'all',
     label: '关闭所有',
-    icon: <ChromeOutlined />,
+    icon: <CloseCircleOutlined />,
   },
 ]
 const LayoutWrapper: React.FC = () => {
@@ -92,6 +123,8 @@ const LayoutWrapper: React.FC = () => {
   };
   const breadcrumbItems = [];
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [settingOpen, setSettingOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState('');
   const onClick: MenuProps['onClick'] = async ({ key }) => {
     switch (key) {
@@ -105,10 +138,10 @@ const LayoutWrapper: React.FC = () => {
         }
         break;
       case 'person':
-        messageApi.info(`点击了 ${key}`);
+        setOpen(true)
         break;
       case 'setting':
-        messageApi.info(`点击了 ${key}`);
+        setSettingOpen(true)
         break;
       default:
         messageApi.info(`点击了 ${key}`);
@@ -249,7 +282,7 @@ const LayoutWrapper: React.FC = () => {
     } else {
       console.log('是链接', hasOnlyOne, redirectUrl);
       setActiveIndex(hasOnlyOne.key);
-      setShowSidebar(true);
+      setShowSidebar(false);
     }
   }
 
@@ -266,7 +299,7 @@ const LayoutWrapper: React.FC = () => {
       splitList = splitList.slice(0, splitList.length - 1);
       if (keyPath.length === 1 && splitList.length === 2) {
         let temp = '';
-        if(splitList.includes(key)) {
+        if (splitList.includes(key)) {
           splitList.forEach((path: string) => {
             temp += ('/' + path)
           })
@@ -290,7 +323,7 @@ const LayoutWrapper: React.FC = () => {
     navigate(url);
   }
 
-  
+
   const onTabClick = (key: string) => {
     const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
     currTab && navigate(currTab.redirect);
@@ -307,7 +340,7 @@ const LayoutWrapper: React.FC = () => {
     key?: string;
     children?: LevelKeysProps[];
   }
-  
+
   const getLevelKeys = (items1: LevelKeysProps[]) => {
     const key: Record<string, number> = {};
     const func = (items2: LevelKeysProps[], level = 1) => {
@@ -323,12 +356,12 @@ const LayoutWrapper: React.FC = () => {
     func(items1);
     return key;
   };
-  
+
   const levelKeys = getLevelKeys(uStore.userInfo.sidebarMenuList as unknown as LevelKeysProps[]);
   const [stateOpenKeys, setStateOpenKeys] = useState(['', '']);
   const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
     console.log(openKeys, 'openKeys');
-    
+
     const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
     // open
     if (currentOpenKey !== undefined) {
@@ -348,84 +381,130 @@ const LayoutWrapper: React.FC = () => {
       setStateOpenKeys(openKeys);
     }
   };
+  const onClose = () => {
+    setOpen(false);
+    setSettingOpen(false);
+  };
   return (
-    <Layout className='layout-wrapper'>
-      <Header className='layout-header' style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 1,
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-      }}>
-        <div className="layout-header-logo">{defaultSetting.title}</div>
-        <Button type="primary" onClick={toggleCollapsed} style={{ marginRight: 16 }}>
-          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </Button>
-        <Menu
-          theme='dark'
-          mode="horizontal"
-          selectedKeys={[activeIndex as unknown as any]}
-          items={splitMenuList}
-          style={{ minWidth: 0, flex: 1 }}
-          onSelect={handlerSelect}
-        />
-        <Dropdown menu={{ items: clickItems, onClick }}>
-          <div style={{ color: '#fff', cursor: 'pointer' }}>
-            <Space>
-              {uStore.userInfo.username}
-              <DownOutlined />
-            </Space>
-          </div>
-        </Dropdown>
-      </Header>
-      <Layout className='layout-content' style={contentStyle}>
-        <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
+    <>
+      <Layout className='layout-wrapper'>
+        <Header className='layout-header' style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <div className="layout-header-logo">{defaultSetting.title}</div>
+          <Button type="primary" onClick={toggleCollapsed} style={{ marginRight: 16 }}>
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </Button>
           <Menu
             theme='dark'
-            style={{
-              height: '100%'
-            }}
-            items={uStore.userInfo.sidebarMenuList as any}
-            onSelect={sidebarSelect}
-            selectedKeys={[sidebarPath]}
-            defaultSelectedKeys={[routeMeta.name]}
-            openKeys={stateOpenKeys}
-            onOpenChange={onOpenChange}
-            mode="inline"
+            mode="horizontal"
+            selectedKeys={[activeIndex as unknown as any]}
+            items={splitMenuList}
+            style={{ minWidth: 0, flex: 1 }}
+            onSelect={handlerSelect}
           />
-        </Sider>
-        <Layout className='wrapper'>
-          <div className='navbar' style={showSidebar ? { display: 'block' } : { display: 'none' }}>
-            <Breadcrumb separator=">" items={breadcrumbItems} style={{
-              padding: '5px 12px'
-            }}>
-            </Breadcrumb>
-            <Tabs
-              tabBarExtraContent={<Dropdown menu={{ items, onClick }}>
-                <Space>
-                  <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
-                </Space>
-              </Dropdown>}
-              size='small'
-              activeKey={sidebarPath}
-              type="editable-card"
-              hideAdd
-              style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px' }}
-              items={tStore.tabsMenuList || []}
-              onTabClick={onTabClick}
+          <Dropdown menu={{ items: clickItems, onClick }}>
+            <div style={{ color: '#fff', cursor: 'pointer' }}>
+              <Space>
+                {uStore.userInfo.username}
+                <DownOutlined />
+              </Space>
+            </div>
+          </Dropdown>
+        </Header>
+        <Layout className='layout-content' style={contentStyle}>
+          <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
+            <Menu
+              theme='dark'
+              style={{
+                height: '100%'
+              }}
+              items={uStore.userInfo.sidebarMenuList as any}
+              onSelect={sidebarSelect}
+              selectedKeys={[sidebarPath]}
+              defaultSelectedKeys={[routeMeta.name]}
+              openKeys={stateOpenKeys}
+              onOpenChange={onOpenChange}
+              mode="inline"
             />
-          </div>
-          <Content
-            className='view-layout'
-          >
-            <Outlet />
-          </Content>
+          </Sider>
+          <Layout className='wrapper'>
+            <div className='navbar' style={showSidebar ? { display: 'block' } : { display: 'none' }}>
+              <Breadcrumb separator=">" items={breadcrumbItems} style={{
+                padding: '5px 12px'
+              }}>
+              </Breadcrumb>
+              <Tabs
+                tabBarExtraContent={<Dropdown menu={{ items, onClick }}>
+                  <Space>
+                    <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
+                  </Space>
+                </Dropdown>}
+                size='small'
+                activeKey={sidebarPath}
+                type="editable-card"
+                hideAdd
+                style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px' }}
+                items={tStore.tabsMenuList || []}
+                onTabClick={onTabClick}
+              />
+            </div>
+            <Content
+              className='view-layout'
+            >
+              <Outlet />
+            </Content>
+          </Layout>
         </Layout>
+        {modalContextHolder}
+        {contextHolder}
       </Layout>
-      {modalContextHolder}
-      {contextHolder}
-    </Layout>
+      <Drawer title="个人信息" open={open} onClose={onClose}>
+        <div className="drawer-box">
+          <div className="divider-item">
+            <div className="wrapper">
+              <div className="author-layout">
+                <h1>高级前端进阶</h1>
+                <h2>深夜改BUG，专注于前端开发</h2>
+                <h3>
+                  一个前端进阶路上的学习者，有输入就要有输出，愿你前端技术学习的热忱永远不会被辜负
+                </h3>
+              </div>
+              <div className="project-layout">
+                掘金地址：<Button
+                  href="https://juejin.cn/user/2295436009546920/posts"
+                  type="link"
+                  target="_blank"
+                >狗尾巴花的尖</Button>
+              </div>
+              <div className="project-layout">
+                博客地址：<Button
+                  href="https://www.flowertip.site/vitepress-blog"
+                  target="_blank"
+                  type="link"
+                >狗尾巴花的知识库</Button>
+              </div>
+              <div className="project-layout">
+                源码地址：<Button
+                  href="https://gitee.com/CodeTV/flower-tip-admin-react"
+                  type="link"
+                >后台管理系统模版</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Drawer>
+      <Drawer title="系统设置" open={settingOpen} onClose={onClose}>
+        <div className="drawer-box">
+          系统设置
+        </div>
+      </Drawer>
+    </>
   );
 };
 
