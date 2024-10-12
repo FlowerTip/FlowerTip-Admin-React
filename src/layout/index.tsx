@@ -110,16 +110,16 @@ const items: MenuProps['items'] = [
 ]
 const LayoutWrapper: React.FC = () => {
   const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
-  // const { currentTime, clearTimer } = useRefreshTime();
-  // const ymd = () => {
-  //   const splitTime = currentTime.split(" ");
-  //   return Array.isArray(splitTime) && splitTime[0];
-  // };
+  const { currentTime, clearTimer } = useRefreshTime();
+  const ymd = () => {
+    const splitTime = currentTime.split(" ");
+    return Array.isArray(splitTime) && splitTime[0];
+  };
 
-  // const hms = () => {
-  //   const splitTime = currentTime.split(" ");
-  //   return Array.isArray(splitTime) && splitTime[1];
-  // };
+  const hms = () => {
+    const splitTime = currentTime.split(" ");
+    return Array.isArray(splitTime) && splitTime[1];
+  };
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
@@ -550,10 +550,10 @@ const LayoutWrapper: React.FC = () => {
           />
           <div className="right-bar">
             {/* 当前时间 */}
-            {/* <div className="current-time">
+            <div className="current-time">
               <span className="ymd">{ymd()}</span>
               <span className="hms">{hms()}</span>
-            </div> */}
+            </div>
             {/* 消息通知 */}
             <Popover placement="bottom" content={content}>
               <Badge size="small" count={5}>
