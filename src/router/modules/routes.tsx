@@ -79,7 +79,6 @@ import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
 import FileAddOutlined from '@ant-design/icons/FileAddOutlined';
 import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
 
-
 /**
  * 路由meta对象参数说明
  * meta: {
@@ -599,7 +598,7 @@ export const staticRoute = [
   },
   {
     path: '/',
-    element: <Navigate to={asyncRoute[0].redirect} />,
+    element: <Navigate to={'/home/cockpit'} />
   }
 ];
 

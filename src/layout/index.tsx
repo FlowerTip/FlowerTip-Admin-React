@@ -192,8 +192,6 @@ const LayoutWrapper: React.FC = () => {
     return obj;
   })
 
-
-
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
 
   console.log(routeMeta, topRoute, '你是是多喝会更好湖广会馆哈哈');
@@ -201,7 +199,7 @@ const LayoutWrapper: React.FC = () => {
   const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
-    title: (topRoute as any).meta.title,
+    title: (topRoute as any).meta?.title,
     href: topRoute.path as string
   }
   const childItem = {
@@ -215,6 +213,10 @@ const LayoutWrapper: React.FC = () => {
   }
   const [isFullScreen, setIsFullScreen] = useState(false);
   useEffect(() => {
+    if (!routeMeta.redirect) {
+      navigate((uStore.userInfo.backMenuList[0] as any).redirect);
+      setCurrPath((uStore.userInfo.backMenuList[0] as any).path);
+    }
     screenfull.on("change", () => {
       if (screenfull.isFullscreen) setIsFullScreen(true);
       else setIsFullScreen(false);
@@ -225,6 +227,7 @@ const LayoutWrapper: React.FC = () => {
     }
   }, [])
   useEffect(() => {
+    if (!routeMeta.redirect) return;
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
     const keys: string[] = [];

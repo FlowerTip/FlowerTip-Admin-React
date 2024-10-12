@@ -24,7 +24,7 @@ const RouterGuard: React.FC = () => {
       return <Navigate to={'/'} />
     } else {
       if (userInfo.username) {
-        !routeMeta.children && tagsViewStore.addTab({
+        !routeMeta.children && routeMeta.redirect && tagsViewStore.addTab({
           key: routeMeta.path,
           label: routeMeta.title,
           closable: true,

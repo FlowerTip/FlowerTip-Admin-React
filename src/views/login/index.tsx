@@ -16,7 +16,6 @@ const Login: React.FC = () => {
       const res = await (formRef.current as FormInstance).validateFields();
       if (res) {
         const loginParam = res;
-        console.log(userStore.login, 'userStore');
         const result = await userStore.login(loginParam)
         if (result?.token) {
           navigate('/')
