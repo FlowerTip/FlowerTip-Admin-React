@@ -35,6 +35,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.26.1
     version: 6.26.1(react-dom@18.3.1)(react@18.3.1)
+  screenfull:
+    specifier: ^6.0.2
+    version: 6.0.2
   umi-request:
     specifier: ^1.4.0
     version: 1.4.0
@@ -3018,6 +3021,11 @@ packages:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==, tarball: https://registry.npmmirror.com/scheduler/-/scheduler-0.23.2.tgz}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /screenfull@6.0.2:
+    resolution: {integrity: sha512-AQdy8s4WhNvUZ6P8F6PB21tSPIYKniic+Ogx0AacBMjKP1GUHN2E9URxQHtCusiwxudnCKkdy4GrHXPPJSkCCw==, tarball: https://registry.npmmirror.com/screenfull/-/screenfull-6.0.2.tgz}
+    engines: {node: ^14.13.1 || >=16.0.0}
     dev: false
 
   /scroll-into-view-if-needed@3.1.0:

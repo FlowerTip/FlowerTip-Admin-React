@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
+import Icon from '@ant-design/icons';
+import screenfull from "screenfull";
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
 import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
@@ -14,13 +16,20 @@ import DoubleLeftOutlined from '@ant-design/icons/DoubleLeftOutlined';
 import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
 import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
 import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
-import type { MenuProps } from 'antd';
-import { Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
+import SettingOutlined from '@ant-design/icons/SettingOutlined';
+import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
+import BellOutlined from '@ant-design/icons/BellOutlined';
+import CommentOutlined from '@ant-design/icons/CommentOutlined';
+import AlertOutlined from '@ant-design/icons/AlertOutlined';
+import MessageOutlined from '@ant-design/icons/MessageOutlined';
+import type { MenuProps, TabsProps } from 'antd';
+import { Switch, Divider, Popover, Badge, Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import defaultSetting from '../setting';
 import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
+import { useRefreshTime } from '@/hooks/useRefreshTime';
 import './index.scss';
 const { Header, Content, Sider } = Layout;
 
@@ -99,6 +108,16 @@ const items: MenuProps['items'] = [
   },
 ]
 const LayoutWrapper: React.FC = () => {
+  const { currentTime, clearTimer } = useRefreshTime();
+  const ymd = () => {
+    const splitTime = currentTime.split(" ");
+    return Array.isArray(splitTime) && splitTime[0];
+  };
+
+  const hms = () => {
+    const splitTime = currentTime.split(" ");
+    return Array.isArray(splitTime) && splitTime[1];
+  };
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
@@ -191,6 +210,17 @@ const LayoutWrapper: React.FC = () => {
   } else {
     breadcrumbItems.push(parentItem, childItem);
   }
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  useEffect(() => {
+    screenfull.on("change", () => {
+      if (screenfull.isFullscreen) setIsFullScreen(true);
+      else setIsFullScreen(false);
+    });
+
+    return () => {
+      clearTimer();
+    }
+  }, [])
   useEffect(() => {
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
@@ -385,6 +415,104 @@ const LayoutWrapper: React.FC = () => {
     setOpen(false);
     setSettingOpen(false);
   };
+
+  const onChange = (key: string) => {
+    console.log(key);
+  };
+  const noticeList: any = [
+    {
+      id: 1,
+      message: '撒基督教啊时间'
+    },
+    {
+      id: 2,
+      message: '撒基督教啊时间'
+    },
+    {
+      id: 3,
+      message: '撒基督教啊时间'
+    },
+    {
+      id: 4,
+      message: '撒基督教啊时间'
+    },
+    {
+      id: 5,
+      message: '撒基督教啊时间'
+    },
+    {
+      id: 6,
+      message: '撒基督教啊时间'
+    }
+  ];
+
+  const tabItems: TabsProps['items'] = [
+    {
+      key: 'first',
+      label: '通知消息',
+      children: noticeList.map(() => {
+        return (
+          <div className="message-item">
+            <div className="left-icon">
+              <Icon className="icon-style" component={CommentOutlined as React.ForwardRefExoticComponent<any>}>
+              </Icon>
+            </div><div className="right-box">
+              <span className="content">一键三连GuiGu-Admin-Template</span>
+              <span className="time">2024-06-04 09:38</span>
+            </div>
+          </div>
+        )
+      }),
+    },
+    {
+      key: 'second',
+      label: '报警消息',
+      children: noticeList.map(() => {
+        return (
+          <div className="message-item">
+            <div className="left-icon">
+              <Icon className="icon-style" component={AlertOutlined as React.ForwardRefExoticComponent<any>}>
+              </Icon>
+            </div><div className="right-box">
+              <span className="content">一键三连GuiGu-Admin-Template</span>
+              <span className="time">2024-06-04 09:38</span>
+            </div>
+          </div>
+        )
+      }),
+    },
+    {
+      key: 'third',
+      label: '待办消息',
+      children: noticeList.map(() => {
+        return (
+          <div className="message-item">
+            <div className="left-icon">
+              <Icon className="icon-style" component={MessageOutlined as React.ForwardRefExoticComponent<any>}>
+              </Icon>
+            </div><div className="right-box">
+              <span className="content">一键三连GuiGu-Admin-Template</span>
+              <span className="time">2024-06-04 09:38</span>
+            </div>
+          </div>
+        )
+      }),
+    },
+  ];
+  const content = (
+    <div className="message-box-wrapper">
+      <Tabs defaultActiveKey="first" items={tabItems} onChange={onChange} />
+    </div>
+  );
+  const toggleFullScreen = () => {
+    if (!screenfull.isEnabled) messageApi.warning("当前您的浏览器不支持全屏 ❌");
+    screenfull.toggle();
+  };
+
+  const openRightSetting = () => {
+    setSettingOpen(true);
+  }
+
   return (
     <>
       <Layout className='layout-wrapper'>
@@ -408,15 +536,71 @@ const LayoutWrapper: React.FC = () => {
             style={{ minWidth: 0, flex: 1 }}
             onSelect={handlerSelect}
           />
-          <Dropdown menu={{ items: clickItems, onClick }}>
-            <div style={{ color: '#fff', cursor: 'pointer' }}>
-              <Space>
-                {uStore.userInfo.username}
-                <DownOutlined />
-              </Space>
+          <div className="right-bar">
+            {/* 当前时间 */}
+            <div className="current-time">
+              <span className="ymd">{ymd()}</span>
+              <span className="hms">{hms()}</span>
             </div>
-          </Dropdown>
-        </Header>
+            {/* 消息通知 */}
+            <Popover placement="bottom" content={content}>
+              <Badge size="small" count={5}>
+                <BellOutlined style={{ fontSize: '22px', color: '#fff', cursor: 'pointer' }} />
+              </Badge>
+            </Popover>
+            {/* 全屏功能 */}
+            <div className="screen-box">
+              {
+                isFullScreen && (
+                  <svg
+                    className="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="9805"
+                    width="30"
+                    height="30"
+                    onClick={toggleFullScreen}
+                  >
+                    <path
+                      d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
+                      fill="#ffffff"
+                      p-id="9806"
+                    ></path>
+                  </svg>
+                )
+              }
+              {
+                !isFullScreen && (<svg
+                  className="icon"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="9338"
+                  id="mx_n_1717408008762"
+                  width="30"
+                  height="30"
+                  onClick={toggleFullScreen}
+                >
+                  <path
+                    d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
+                    fill="#ffffff"
+                    p-id="9339"
+                  ></path>
+                </svg>)
+              }
+            </div>
+            {/* 个人信息 */}
+            <Dropdown menu={{ items: clickItems, onClick }}>
+              <div style={{ color: '#fff', cursor: 'pointer' }}>
+                <Space>
+                  {uStore.userInfo.username}
+                  <DownOutlined />
+                </Space>
+              </div>
+            </Dropdown>
+          </div >
+        </Header >
         <Layout className='layout-content' style={contentStyle}>
           <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
             <Menu
@@ -463,8 +647,8 @@ const LayoutWrapper: React.FC = () => {
         </Layout>
         {modalContextHolder}
         {contextHolder}
-      </Layout>
-      <Drawer title="个人信息" open={open} onClose={onClose}>
+      </Layout >
+      <Drawer title="个人信息" open={open} onClose={onClose} width={290}>
         <div className="drawer-box">
           <div className="divider-item">
             <div className="wrapper">
@@ -499,11 +683,175 @@ const LayoutWrapper: React.FC = () => {
           </div>
         </div>
       </Drawer>
-      <Drawer title="系统设置" open={settingOpen} onClose={onClose}>
+      <Drawer title="系统设置" open={settingOpen} onClose={onClose} width={290}>
         <div className="drawer-box">
-          系统设置
-        </div>
-      </Drawer>
+          <div className="divider-item">
+            <Divider plain>
+              <div className="title">
+                <Icon className="icon-style" component={AppstoreOutlined as React.ForwardRefExoticComponent<any>} />
+                <span className="title-txt">布局设置</span>
+              </div>
+            </Divider>
+            <div className="wrapper">
+              <div className="nav-group">
+                <div className="nav-layout">
+                  {/* 经典导航 */}
+                  <div
+                    className="nav-style-item"
+                  >
+                    <div className="left-box"></div>
+                    <div className="right-box">
+                      <div className="bot-box-wrap"></div>
+                    </div>
+                  </div>
+                  <div className="layout-title">经典导航</div>
+                </div>
+                <div className="nav-layout">
+                  {/* 左侧导航 */}
+                  <div
+                    className="nav-style-item"
+                  >
+                    <div className="left-box"></div>
+                    <div className="right-box">
+                      <div className="top-box-wrap"></div>
+                      <div className="bot-box-wrap"></div>
+                    </div>
+                  </div>
+                  <div className="layout-title">简约导航</div>
+                </div>
+              </div>
+              <div className="nav-group">
+                <div className="nav-layout">
+                  {/* 顶部导航 */}
+                  <div
+                    className="nav-style-item"
+                  >
+                    <div className="top-box"></div>
+                    <div className="bot-box"></div>
+                  </div>
+                  <div className="layout-title">大屏导航</div>
+                </div>
+                <div className="nav-layout">
+                  {/* 混合导航 */}
+                  <div
+                    className="nav-style-item style3"
+                  >
+                    <div className="top-box"></div>
+                    <div className="bot-box">
+                      <div className="right-box-wrap"></div>
+                      <div className="left-box-wrap"></div>
+                    </div>
+                  </div>
+                  <div className="layout-title">混合导航</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="divider-item">
+            <Divider plain>
+              <div className="title">
+                <Icon className="icon-style" component={ChromeOutlined as React.ForwardRefExoticComponent<any>} />
+                <span className="title-txt">搭配设置</span>
+              </div>
+            </Divider>
+            <div className="wrapper">
+              <div className="color-layout-wrapper">
+                <h4
+                >
+                  经典主题
+                </h4>
+                <div className="color-layout">
+                  <div
+                    className="color-item"
+                  ></div>
+                </div>
+              </div>
+              <div className="color-layout-wrapper">
+                <h4
+                >
+                  时尚主题
+                </h4>
+                <div className="color-layout">
+                  <div
+                    className="color-item"
+                  ></div>
+                </div>
+              </div>
+              <div className="color-layout-wrapper">
+                <h4
+                >
+                  清新主题
+                </h4>
+                <div className="color-layout">
+                  <div
+                    className="color-item"
+                  ></div>
+                </div >
+              </div >
+              <div className="color-layout-wrapper">
+                <h4
+                >
+                  热情主题
+                </h4>
+                <div className="color-layout">
+                  <div
+                    className="color-item"
+                  ></div>
+                </div >
+              </div >
+              <div className="current-layout">
+                <div className="color-value">
+                  当前风格：<span>测试风格</span>
+                  主题颜色：
+                </div>
+                <div
+                  className="color-item"
+                ></div >
+              </div >
+            </div >
+          </div >
+          <div className="divider-item">
+            <Divider plain>
+              <div className="title">
+                <Icon className="icon-style" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
+                <span className="title-txt">界面设置</span>
+              </div>
+            </Divider>
+            <div className="wrapper">
+              <div className="item">
+                <span className="right-txt">顶部区域</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+              <div className="item">
+                <span className="right-txt">系统名称</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+              <div className="item">
+                <span className="right-txt">顶部收缩菜单</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+              <div className="item">
+                <span className="right-txt">面包屑</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+              <div className="item">
+                <span className="right-txt">标签栏</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+              <div className="item">
+                <span className="right-txt">页脚</span>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+              </div>
+            </div>
+          </div>
+        </div >
+      </Drawer >
+      <div
+        className="setting-btn"
+        onClick={openRightSetting}
+      >
+        <Icon className="setting-icon"  component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
+      </div >
     </>
   );
 };
