@@ -95,50 +95,6 @@ import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
 // 404页面     一级路由
 // 任意路由    一级路由重定向404
 
-// 根路由      一级路由(HighFnComponent/index)
-export const staticRoute = [
-  {
-    path: "/login",
-    name: "Login",
-    Component: Login,
-    meta: {
-      hidden: true,
-      title: "登录",
-    },
-  },
-  {
-    path: "/403",
-    name: "403",
-    Component: NotPermissionPage,
-    meta: {
-      hidden: true,
-      title: "403",
-    },
-  },
-  {
-    path: "/404",
-    name: "404",
-    Component: NotFoundPage,
-    meta: {
-      hidden: true,
-      title: "404",
-    },
-  },
-  {
-    path: "/500",
-    name: "500",
-    Component: NotNetWorkPage,
-    meta: {
-      hidden: true,
-      title: "500",
-    },
-  },
-  {
-    path: '/',
-    element: <Navigate to={'/home/cockpit'} />,
-  },
-];
-
 // 异步路由
 export const asyncRoute = [
   {
@@ -602,6 +558,51 @@ export const asyncRoute = [
     ],
   },
 ];
+
+// 根路由      一级路由(HighFnComponent/index)
+export const staticRoute = [
+  {
+    path: "/login",
+    name: "Login",
+    Component: Login,
+    meta: {
+      hidden: true,
+      title: "登录",
+    },
+  },
+  {
+    path: "/403",
+    name: "403",
+    Component: NotPermissionPage,
+    meta: {
+      hidden: true,
+      title: "403",
+    },
+  },
+  {
+    path: "/404",
+    name: "404",
+    Component: NotFoundPage,
+    meta: {
+      hidden: true,
+      title: "404",
+    },
+  },
+  {
+    path: "/500",
+    name: "500",
+    Component: NotNetWorkPage,
+    meta: {
+      hidden: true,
+      title: "500",
+    },
+  },
+  {
+    path: '/',
+    element: <Navigate to={asyncRoute[0].redirect} />,
+  }
+];
+
 
 // 任意路由
 export const anyRoute = [{

@@ -25,8 +25,9 @@ import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import type { MenuProps, TabsProps } from 'antd';
 import { Switch, Divider, Popover, Badge, Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
+import useThemeColor from '@/hooks/useThemeColor';
 import defaultSetting from '../setting';
-import { userStore, tagsViewStore } from '@/store'
+import { userStore, tagsViewStore, settingStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
 import { useRefreshTime } from '@/hooks/useRefreshTime';
@@ -108,6 +109,7 @@ const items: MenuProps['items'] = [
   },
 ]
 const LayoutWrapper: React.FC = () => {
+  const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
   const { currentTime, clearTimer } = useRefreshTime();
   const ymd = () => {
     const splitTime = currentTime.split(" ");
@@ -168,6 +170,7 @@ const LayoutWrapper: React.FC = () => {
   };
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
+  const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
   const splitMenuList = topMenuList.map((item: any) => {
@@ -648,7 +651,7 @@ const LayoutWrapper: React.FC = () => {
         {modalContextHolder}
         {contextHolder}
       </Layout >
-      <Drawer title="个人信息" open={open} onClose={onClose} width={290}>
+      <Drawer title="个人中心" open={open} onClose={onClose} width={300}>
         <div className="drawer-box">
           <div className="divider-item">
             <div className="wrapper">
@@ -683,7 +686,7 @@ const LayoutWrapper: React.FC = () => {
           </div>
         </div>
       </Drawer>
-      <Drawer title="系统设置" open={settingOpen} onClose={onClose} width={290}>
+      <Drawer title="偏好设置" open={settingOpen} onClose={onClose} width={300}>
         <div className="drawer-box">
           <div className="divider-item">
             <Divider plain>
@@ -697,7 +700,7 @@ const LayoutWrapper: React.FC = () => {
                 <div className="nav-layout">
                   {/* 经典导航 */}
                   <div
-                    className="nav-style-item"
+                    className={sStore.globalSet.layout === 'simplebar' ? 'nav-style-item is-active' : 'nav-style-item'}
                   >
                     <div className="left-box"></div>
                     <div className="right-box">
@@ -709,7 +712,7 @@ const LayoutWrapper: React.FC = () => {
                 <div className="nav-layout">
                   {/* 左侧导航 */}
                   <div
-                    className="nav-style-item"
+                    className={sStore.globalSet.layout === 'sidebar' ? 'nav-style-item is-active' : 'nav-style-item'}
                   >
                     <div className="left-box"></div>
                     <div className="right-box">
@@ -724,7 +727,7 @@ const LayoutWrapper: React.FC = () => {
                 <div className="nav-layout">
                   {/* 顶部导航 */}
                   <div
-                    className="nav-style-item"
+                    className={sStore.globalSet.layout === 'topbar' ? 'nav-style-item is-active' : 'nav-style-item'}
                   >
                     <div className="top-box"></div>
                     <div className="bot-box"></div>
@@ -734,7 +737,7 @@ const LayoutWrapper: React.FC = () => {
                 <div className="nav-layout">
                   {/* 混合导航 */}
                   <div
-                    className="nav-style-item style3"
+                    className={sStore.globalSet.layout === 'mixbar' ? 'nav-style-item style3 is-active' : 'nav-style-item style3'}
                   >
                     <div className="top-box"></div>
                     <div className="bot-box">
@@ -757,55 +760,80 @@ const LayoutWrapper: React.FC = () => {
             <div className="wrapper">
               <div className="color-layout-wrapper">
                 <h4
+                  className={currentTheme == 'classicThemeColors' ? 'active-bg' : ''}
                 >
                   经典主题
                 </h4>
                 <div className="color-layout">
-                  <div
-                    className="color-item"
-                  ></div>
+                  {
+                    themeColorName['classicThemeColors'].map((color: string) => (
+                      <div
+                        className="color-item"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))
+                  }
                 </div>
               </div>
               <div className="color-layout-wrapper">
                 <h4
+                  className={currentTheme == 'fashionThemeColors' ? 'active-bg' : ''}
                 >
                   时尚主题
                 </h4>
                 <div className="color-layout">
-                  <div
-                    className="color-item"
-                  ></div>
+                  {
+                    themeColorName['fashionThemeColors'].map((color: string) => (
+                      <div
+                        className="color-item"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))
+                  }
                 </div>
               </div>
               <div className="color-layout-wrapper">
                 <h4
+                  className={currentTheme == 'freshThemeColors' ? 'active-bg' : ''}
                 >
                   清新主题
                 </h4>
                 <div className="color-layout">
-                  <div
-                    className="color-item"
-                  ></div>
+                  {
+                    themeColorName['freshThemeColors'].map((color: string) => (
+                      <div
+                        className="color-item"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))
+                  }
                 </div >
               </div >
               <div className="color-layout-wrapper">
                 <h4
+                  className={currentTheme == 'coolThemeColors' ? 'active-bg' : ''}
                 >
                   热情主题
                 </h4>
                 <div className="color-layout">
-                  <div
-                    className="color-item"
-                  ></div>
+                  {
+                    themeColorName['coolThemeColors'].map((color: string) => (
+                      <div
+                        className="color-item"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))
+                  }
                 </div >
               </div >
               <div className="current-layout">
                 <div className="color-value">
-                  当前风格：<span>测试风格</span>
-                  主题颜色：
+                  当前风格:&nbsp;<span style={{ color: currentColor }}>{currentThemeName}</span>
+                  &nbsp;主题颜色:&nbsp;
                 </div>
                 <div
                   className="color-item"
+                  style={{ backgroundColor: currentColor }}
                 ></div >
               </div >
             </div >
@@ -850,7 +878,7 @@ const LayoutWrapper: React.FC = () => {
         className="setting-btn"
         onClick={openRightSetting}
       >
-        <Icon className="setting-icon"  component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
+        <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
       </div >
     </>
   );

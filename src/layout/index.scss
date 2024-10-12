@@ -49,6 +49,7 @@
 .right-bar {
   display: flex;
   align-items: center;
+
   .current-time {
     margin-right: 10px;
     display: flex;
@@ -62,6 +63,7 @@
       text-align: center;
     }
   }
+
   .screen-box {
     width: 42px;
     color: #fff;
@@ -76,13 +78,16 @@
     }
   }
 }
+
 .ant-tabs-content-holder {
   max-height: 300px;
   overflow-y: auto;
 }
+
 .message-box-wrapper {
   display: flex;
   flex-direction: column;
+
   .message-item {
     display: flex;
     align-items: center;
@@ -184,7 +189,7 @@
         color: #656565;
 
         &.active-bg {
-          background-color: var(--el-color-primary);
+          background-color: #3170FF;
           color: #fff;
         }
       }
@@ -285,7 +290,7 @@
           width: 22px;
           height: 22px;
           font-size: 22px;
-          color: var(--el-color-primary);
+          color: #3170FF;
         }
       }
 
