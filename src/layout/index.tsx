@@ -110,16 +110,16 @@ const items: MenuProps['items'] = [
 ]
 const LayoutWrapper: React.FC = () => {
   const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
-  const { currentTime, clearTimer } = useRefreshTime();
-  const ymd = () => {
-    const splitTime = currentTime.split(" ");
-    return Array.isArray(splitTime) && splitTime[0];
-  };
+  // const { currentTime, clearTimer } = useRefreshTime();
+  // const ymd = () => {
+  //   const splitTime = currentTime.split(" ");
+  //   return Array.isArray(splitTime) && splitTime[0];
+  // };
 
-  const hms = () => {
-    const splitTime = currentTime.split(" ");
-    return Array.isArray(splitTime) && splitTime[1];
-  };
+  // const hms = () => {
+  //   const splitTime = currentTime.split(" ");
+  //   return Array.isArray(splitTime) && splitTime[1];
+  // };
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
@@ -200,11 +200,16 @@ const LayoutWrapper: React.FC = () => {
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
     title: (topRoute as any).meta?.title,
-    href: topRoute.path as string
+    onClick: () => {
+      navigate((topRoute as any).redirect);
+      setCurrPath(routeMeta.redirect)
+    }
   }
   const childItem = {
     title: routeMeta.title,
-    href: routeMeta.redirect as string
+    onClick: () => {
+      navigate(routeMeta.redirect)
+    }
   }
   if (parentItem.title === childItem.title) {
     breadcrumbItems.push(parentItem);
@@ -223,9 +228,10 @@ const LayoutWrapper: React.FC = () => {
     });
 
     return () => {
-      clearTimer();
+      // clearTimer();
     }
   }, [])
+  
   useEffect(() => {
     if (!routeMeta.redirect) return;
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
@@ -544,10 +550,10 @@ const LayoutWrapper: React.FC = () => {
           />
           <div className="right-bar">
             {/* 当前时间 */}
-            <div className="current-time">
+            {/* <div className="current-time">
               <span className="ymd">{ymd()}</span>
               <span className="hms">{hms()}</span>
-            </div>
+            </div> */}
             {/* 消息通知 */}
             <Popover placement="bottom" content={content}>
               <Badge size="small" count={5}>
