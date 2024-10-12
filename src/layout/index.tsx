@@ -228,7 +228,7 @@ const LayoutWrapper: React.FC = () => {
     });
 
     return () => {
-      // clearTimer();
+      clearTimer();
     }
   }, [])
   
