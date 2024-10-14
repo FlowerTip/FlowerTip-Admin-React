@@ -231,7 +231,7 @@ const LayoutWrapper: React.FC = () => {
       clearTimer();
     }
   }, [])
-  
+
   useEffect(() => {
     if (!routeMeta.redirect) return;
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
@@ -276,7 +276,7 @@ const LayoutWrapper: React.FC = () => {
     // if (fRmoreIndex !== -1) {
     //   keyPath.splice(fRmoreIndex, 1)
     // }
-    
+
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
@@ -530,7 +530,7 @@ const LayoutWrapper: React.FC = () => {
     setSettingOpen(true);
   }
 
-  
+
 
   return (
     <>
@@ -544,9 +544,9 @@ const LayoutWrapper: React.FC = () => {
           alignItems: 'center',
         }}>
           <div className="layout-header-logo">{defaultSetting.title}</div>
-          <Button type="primary" onClick={toggleCollapsed} style={{ marginRight: 16 }}>
+          {/* <Button type="primary" onClick={toggleCollapsed} style={{ marginRight: 16 }}>
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </Button>
+          </Button> */}
           <Menu
             theme='dark'
             mode="horizontal"
@@ -638,10 +638,14 @@ const LayoutWrapper: React.FC = () => {
           </Sider>
           <Layout className='wrapper'>
             <div className='navbar' style={showSidebar ? { display: 'block' } : { display: 'none' }}>
-              <Breadcrumb separator=">" items={breadcrumbItems} style={{
-                padding: '5px 12px'
-              }}>
-              </Breadcrumb>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span style={{ marginLeft: '12px', cursor: 'pointer', fontSize: '16px' }} onClick={toggleCollapsed}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
+                <Breadcrumb separator=">" items={breadcrumbItems} style={{
+                  padding: '5px 12px',
+                  cursor: 'pointer'
+                }}>
+                </Breadcrumb>
+              </div>
               <Tabs
                 tabBarExtraContent={<Dropdown menu={{ items, onClick }}>
                   <Space>
@@ -652,7 +656,7 @@ const LayoutWrapper: React.FC = () => {
                 activeKey={sidebarPath}
                 type="editable-card"
                 hideAdd
-                style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px' }}
+                style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
                 items={tStore.tabsMenuList || []}
                 onTabClick={onTabClick}
               />
