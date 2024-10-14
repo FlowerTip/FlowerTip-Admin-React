@@ -272,6 +272,11 @@ const LayoutWrapper: React.FC = () => {
   }, [currPath])
 
   const handlerSelect = ({ key, keyPath }: any) => {
+    // const fRmoreIndex = keyPath.findIndex((item: string) => item === 'rc-menu-more')
+    // if (fRmoreIndex !== -1) {
+    //   keyPath.splice(fRmoreIndex, 1)
+    // }
+    
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
@@ -324,7 +329,7 @@ const LayoutWrapper: React.FC = () => {
     } else {
       console.log('是链接', hasOnlyOne, redirectUrl);
       setActiveIndex(hasOnlyOne.key);
-      setShowSidebar(false);
+      setShowSidebar(showSidebar);
     }
   }
 
@@ -524,6 +529,8 @@ const LayoutWrapper: React.FC = () => {
   const openRightSetting = () => {
     setSettingOpen(true);
   }
+
+  
 
   return (
     <>

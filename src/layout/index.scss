@@ -348,3 +348,19 @@
     color: #fff;
   }
 }
+
+
+
+/* 屏幕宽度小于 1920px */
+@media screen and (max-width: 1919px) {
+  .layout-header {
+    .layout-header-logo {
+      display: none;
+    }
+    .right-bar {
+      .current-time {
+        display: none;
+      }
+    }
+  }
+}

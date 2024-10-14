@@ -18,7 +18,8 @@ export default () => {
         height={80}
         src={record.avatarUrl}
       />),
-      hideInSearch: true
+      hideInSearch: true,
+      width: 160
     },
     {
       title: '学员名称',
@@ -27,13 +28,15 @@ export default () => {
       fieldProps: {
         placeholder: '请输入学员名称'
       },
+      width: 160
     },
     {
       title: '年龄',
       dataIndex: 'age',
       align: 'center',
       sorter: true,
-      hideInSearch: true
+      hideInSearch: true,
+      width: 160
     },
     {
       title: '个头大小',
@@ -53,6 +56,7 @@ export default () => {
         ],
         placeholder: '请选择个头大小'
       },
+      width: 160
     },
     {
       title: '性格色彩',
@@ -61,7 +65,8 @@ export default () => {
       render: (_, record) => (<div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: '30px', height: '30px', backgroundColor: record.color }}></div>
       </div>),
-      hideInSearch: true
+      hideInSearch: true,
+      width: 160
     },
     {
       title: '兴趣',
@@ -89,6 +94,7 @@ export default () => {
         ],
         placeholder: '请选择性别'
       },
+      width: 160
     },
     {
       title: '学校',
