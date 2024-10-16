@@ -4,8 +4,6 @@ import { useSnapshot } from 'valtio'
 import Icon from '@ant-design/icons';
 import screenfull from "screenfull";
 import UserOutlined from '@ant-design/icons/UserOutlined';
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';

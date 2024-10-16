@@ -31,7 +31,7 @@ import { userStore, tagsViewStore, settingStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 import './index.scss';
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const clickItems: any[] = [
   {
