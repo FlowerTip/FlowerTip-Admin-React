@@ -6,12 +6,12 @@ import { useState } from 'react'
 export const useRefreshTime = () => {
   let [currentTime, setCurrentTime] = useState(dayjs().format("YYYY-MM-DD HH:mm:ss"));
 
-  const timer = setInterval(() => {
-    setCurrentTime(dayjs().format("YYYY-MM-DD HH:mm:ss"))
-  }, 1000);
+  // const timer = setTimeout(() => {
+  //   setCurrentTime(dayjs().format("YYYY-MM-DD HH:mm:ss"))
+  // }, 1000);
 
   const clearTimer = () => {
-    clearInterval(timer);
+    // clearInterval(timer);
   };
   return {
     currentTime,

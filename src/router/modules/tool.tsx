@@ -2,11 +2,14 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSnapshot } from "valtio";
 import { userStore } from '@/store';
-import LayoutWrapper from "@/layout";
+import LayoutWrapper from "@/layout/index";
+import LayoutWrapper1 from "@/layout/index1";
+import LayoutWrapper2 from "@/layout/index2";
+import LayoutWrapper3 from "@/layout/index3";
 import useRouteMeta from "@/hooks/useRouteMeta";
 import { getToken } from '@/utils/auth'
 import { getPageTitle } from '@/utils/tool'
-import { tagsViewStore } from '@/store'
+import { tagsViewStore, settingStore } from '@/store'
 
 // 全局路由守卫
 const RouterGuard: React.FC = () => {
@@ -30,7 +33,15 @@ const RouterGuard: React.FC = () => {
           closable: true,
           redirect: routeMeta.redirect
         })
-        return <LayoutWrapper />;
+        if (settingStore.globalSet.layout === 'simplebar') {
+          return <LayoutWrapper1 />;
+        } else if (settingStore.globalSet.layout === 'sidebar') {
+          return <LayoutWrapper2 />;
+        } else if (settingStore.globalSet.layout === 'topbar') {
+          return <LayoutWrapper3 />;
+        } else {
+          return <LayoutWrapper />;
+        }
       } else {
         userStore.getUserInfo()
       }

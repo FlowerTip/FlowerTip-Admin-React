@@ -169,7 +169,7 @@ export const asyncRoute = [
       {
         name: "image-upload",
         path: "image-upload",
-        Component: FileUpload,
+        Component: ImageUpload,
         meta: {
           title: "图片上传",
           icon: <FileImageOutlined />,
@@ -178,7 +178,7 @@ export const asyncRoute = [
       {
         name: "file-upload",
         path: "file-upload",
-        Component: ImageUpload,
+        Component: FileUpload,
         meta: {
           title: "文件上传",
           icon: <FileAddOutlined />,
@@ -393,14 +393,14 @@ export const asyncRoute = [
         ],
       },
       {
-        name: "error",
-        path: "error",
+        name: "error-page",
+        path: "error-page",
         Component: RouterViewPage,
         meta: {
           title: "错误页面",
           icon: <CloseSquareOutlined />,
         },
-        redirect: "/error/403",
+        redirect: "/error-page/403",
         children: [
           {
             name: "403",
@@ -408,8 +408,8 @@ export const asyncRoute = [
             Component: NotPermissionPage,
             meta: {
               title: "403页面",
-              icon: <ProductOutlined />,
-              parentName: "error",
+              icon: <CloseSquareOutlined />,
+              parentName: "error-page",
             },
           },
           {
@@ -418,8 +418,8 @@ export const asyncRoute = [
             Component: NotFoundPage,
             meta: {
               title: "404页面",
-              icon: <ProductOutlined />,
-              parentName: "error",
+              icon: <CloseSquareOutlined />,
+              parentName: "error-page",
             },
           },
           {
@@ -428,8 +428,8 @@ export const asyncRoute = [
             Component: NotNetWorkPage,
             meta: {
               title: "500页面",
-              icon: <ProductOutlined />,
-              parentName: "error",
+              icon: <CloseSquareOutlined />,
+              parentName: "error-page",
             },
           },
         ],

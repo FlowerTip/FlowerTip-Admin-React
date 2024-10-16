@@ -28,11 +28,9 @@ import useRouteMeta from '@/hooks/useRouteMeta';
 import useThemeColor from '@/hooks/useThemeColor';
 import defaultSetting from '../setting';
 import { userStore, tagsViewStore, settingStore } from '@/store'
-import { isExternalFn } from '@/utils/validate';
-import { reorganizeMenu } from '@/utils/tool';
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 import './index.scss';
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 
 const clickItems: any[] = [
   {
@@ -123,31 +121,11 @@ const LayoutWrapper: React.FC = () => {
   };
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
-  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  const [showSidebar, setShowSidebar] = useState(true)
-  const siderStyle: React.CSSProperties = {
-    overflow: 'auto',
-    height: 'calc(100vh - 50px)',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 50,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
-    display: showSidebar ? 'block' : 'none'
-  };
-  const contentStyle: React.CSSProperties = {
-    marginLeft: showSidebar && collapsed ? '50px' : showSidebar && !collapsed ? '200px' : !showSidebar ? '0px' : '0px'
-  };
   const breadcrumbItems = [];
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [settingOpen, setSettingOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState('');
   const onClick: MenuProps['onClick'] = async ({ key }) => {
     switch (key) {
       case 'logout':
@@ -172,26 +150,7 @@ const LayoutWrapper: React.FC = () => {
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
-  const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  const splitMenuList = topMenuList.map((item: any) => {
-    const obj = {
-      key: item.key,
-      label: item.label,
-      icon: item.icon,
-      children: null
-    }
-    if (item.children && item.children[0].redirect) {
-      obj.children = item.children.map((child: any) => {
-        return {
-          key: child.key,
-          label: child.label,
-          icon: item.icon,
-        }
-      })
-    }
-    return obj;
-  })
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
 
@@ -215,7 +174,6 @@ const LayoutWrapper: React.FC = () => {
       console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
-        setCurrPath(returnNextTab.key);
       }
     }
   };
@@ -276,13 +234,11 @@ const LayoutWrapper: React.FC = () => {
 
   }
 
-  const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
     title: (topRoute as any).meta?.title,
     onClick: () => {
       navigate((topRoute as any).redirect);
-      setCurrPath(routeMeta.redirect)
     }
   }
   const childItem = {
@@ -300,7 +256,7 @@ const LayoutWrapper: React.FC = () => {
   useEffect(() => {
     if (!routeMeta.redirect) {
       navigate((uStore.userInfo.backMenuList[0] as any).redirect);
-      setCurrPath((uStore.userInfo.backMenuList[0] as any).path);
+      setSidebarPath((uStore.userInfo.backMenuList[0] as any).path);
     }
     screenfull.on("change", () => {
       if (screenfull.isFullscreen) setIsFullScreen(true);
@@ -312,119 +268,20 @@ const LayoutWrapper: React.FC = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (!routeMeta.redirect) return;
-    const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
-    const key = pathList[pathList.length - 1];
-    const keys: string[] = [];
-    pathList.forEach((path: string, index: number) => {
-      if (index === 0) {
-        keys.push('/' + path);
-      } else {
-        keys.push(path);
-      }
-    });
-    const keyPath = keys.reverse();
-    const selectedKeys = [key];
-
-    handlerSelect({ key, keyPath, selectedKeys })
-    if (routeMeta.children && routeMeta.children.length === 1) {
-      setShowSidebar(false);
-    } else {
-      setShowSidebar(true);
-    }
-    const childList = topRoute.children as unknown as any;
-    let menuList = [];
-    if (childList.length > 1 && childList.every((item: any) => item.redirect)) {
-      if (routeMeta.children) {
-        menuList = reorganizeMenu(routeMeta.children);
-        setActiveIndex(topRoute.path as any);
-      } else {
-        const findChildren = childList.find((child: any) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
-        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children))
-        findChildren && setActiveIndex(findChildren.path as any);
-      }
-    } else {
-      menuList = reorganizeMenu(childList);
-      setActiveIndex(topRoute.path as any);
-    }
-    uStore.updateLeftMenus(menuList as unknown as any);
-  }, [currPath])
-
-  const handlerSelect = ({ key, keyPath }: any) => {
-    // const fRmoreIndex = keyPath.findIndex((item: string) => item === 'rc-menu-more')
-    // if (fRmoreIndex !== -1) {
-    //   keyPath.splice(fRmoreIndex, 1)
-    // }
-
-    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
-    let redirectUrl = '';
-    if (keyPath.length > 1) {
-      keyPath.reverse().forEach((path: string, index: number) => {
-        if (index == 0) {
-          redirectUrl = path;
-        } else {
-          redirectUrl = redirectUrl + '/' + path;
-        }
-      })
-    } else {
-      // console.log(topMenuList, hasOnlyOne, 'hasOnlyOne');
-      if (hasOnlyOne && hasOnlyOne.redirect) {
-        redirectUrl = hasOnlyOne.redirect
-        setShowSidebar(false)
-      } else {
-        redirectUrl = key;
-        setShowSidebar(true)
-      }
-    }
-    if (!isExternalFn(redirectUrl)) {
-
-      const childList = topRoute.children as unknown as any;
-      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
-
-      console.log(redirectUrl, isMoreLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
-
-      if (isMoreLevel) {
-        console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
-        console.log(findChild, '测试举手哈');
-        if (findChild) {
-          redirectUrl = findChild.redirect
-          setCurrPath(findChild.path as unknown as any);
-          setSidebarPath(findChild.children[0].path);
-        } else {
-          setCurrPath(key)
-          setSidebarPath(key);
-        }
-      } else {
-        const tempPath = redirectUrl.replace('/' + key, '');
-        console.log(tempPath, 'tempPath');
-        setCurrPath(tempPath)
-        setSidebarPath(key);
-      }
-
-      console.log(redirectUrl, 'redirectUrl');
-
-      navigate(redirectUrl);
-    } else {
-      console.log('是链接', hasOnlyOne, redirectUrl);
-      setActiveIndex(hasOnlyOne.key);
-      setShowSidebar(showSidebar);
-    }
-  }
-
-
   const sidebarSelect = ({ key, keyPath }: any) => {
     let url = ''
     if (keyPath.length > 1) {
-      keyPath.reverse().forEach((path: string) => {
-        url += ('/' + path)
+      keyPath.reverse().forEach((path: string, index: number) => {
+        if (index === 0) {
+          url += path;
+        } else {
+          url += ('/' + path)
+        }
       })
-      url = topRoute.path + url;
     } else {
       let splitList = routeMeta.redirect.split('/').filter((path: string) => path);
       splitList = splitList.slice(0, splitList.length - 1);
-      if (keyPath.length === 1 && splitList.length === 2) {
+      if (keyPath.length === 2 && splitList.length === 3) {
         let temp = '';
         if (splitList.includes(key)) {
           splitList.forEach((path: string) => {
@@ -447,7 +304,7 @@ const LayoutWrapper: React.FC = () => {
       console.log(routeMeta, key, keyPath, url, splitList, '###2222splitList');
     }
     setSidebarPath(key);
-    navigate(url);
+    url.includes('home') ? navigate('/home/cockpit') : navigate(url);
   }
 
 
@@ -456,58 +313,11 @@ const LayoutWrapper: React.FC = () => {
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');
-      setActiveIndex('/home');
-      setShowSidebar(false);
     } else {
       setSidebarPath(key);
-      setCurrPath(currTab.redirect);
     }
   }
-  interface LevelKeysProps {
-    key?: string;
-    children?: LevelKeysProps[];
-  }
 
-  const getLevelKeys = (items1: LevelKeysProps[]) => {
-    const key: Record<string, number> = {};
-    const func = (items2: LevelKeysProps[], level = 1) => {
-      items2.forEach((item) => {
-        if (item.key) {
-          key[item.key] = level;
-        }
-        if (item.children) {
-          func(item.children, level + 1);
-        }
-      });
-    };
-    func(items1);
-    return key;
-  };
-
-  const levelKeys = getLevelKeys(uStore.userInfo.sidebarMenuList as unknown as LevelKeysProps[]);
-  const [stateOpenKeys, setStateOpenKeys] = useState(['', '']);
-  const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
-    console.log(openKeys, 'openKeys');
-
-    const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
-    // open
-    if (currentOpenKey !== undefined) {
-      const repeatIndex = openKeys
-        .filter((key) => key !== currentOpenKey)
-        .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
-
-      setStateOpenKeys(
-        openKeys
-          // remove repeat key
-          .filter((_, index) => index !== repeatIndex)
-          // remove current level all child
-          .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
-      );
-    } else {
-      // close
-      setStateOpenKeys(openKeys);
-    }
-  };
   const onClose = () => {
     setOpen(false);
     setSettingOpen(false);
@@ -610,8 +420,6 @@ const LayoutWrapper: React.FC = () => {
     setSettingOpen(true);
   }
 
-
-
   return (
     <>
       <Layout className='layout-wrapper'>
@@ -624,16 +432,13 @@ const LayoutWrapper: React.FC = () => {
           alignItems: 'center',
         }}>
           <div className="layout-header-logo">{defaultSetting.title}</div>
-          {/* <Button type="primary" onClick={toggleCollapsed} style={{ marginRight: 16 }}>
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </Button> */}
           <Menu
             theme='dark'
             mode="horizontal"
-            selectedKeys={[activeIndex as unknown as any]}
-            items={splitMenuList}
+            selectedKeys={[sidebarPath]}
+            items={uStore.userInfo.authMenuList as any}
             style={{ minWidth: 0, flex: 1 }}
-            onSelect={handlerSelect}
+            onSelect={sidebarSelect}
           />
           <div className="right-bar">
             {/* 当前时间 */}
@@ -700,26 +505,10 @@ const LayoutWrapper: React.FC = () => {
             </Dropdown>
           </div >
         </Header >
-        <Layout className='layout-content' style={contentStyle}>
-          <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
-            <Menu
-              theme='dark'
-              style={{
-                height: '100%'
-              }}
-              items={uStore.userInfo.sidebarMenuList as any}
-              onSelect={sidebarSelect}
-              selectedKeys={[sidebarPath]}
-              defaultSelectedKeys={[routeMeta.name]}
-              openKeys={stateOpenKeys}
-              onOpenChange={onOpenChange}
-              mode="inline"
-            />
-          </Sider>
+        <Layout className='layout-content'>
           <Layout className='wrapper'>
-            <div className='navbar' style={showSidebar ? { display: 'block' } : { display: 'none' }}>
+            <div className='navbar'>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ marginLeft: '12px', cursor: 'pointer', fontSize: '16px' }} onClick={toggleCollapsed}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
                 <Breadcrumb separator=">" items={breadcrumbItems} style={{
                   padding: '5px 12px',
                   cursor: 'pointer'
