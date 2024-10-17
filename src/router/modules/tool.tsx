@@ -1,15 +1,14 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSnapshot } from "valtio";
-import { userStore } from '@/store';
-import LayoutWrapper from "@/layout/index";
-import LayoutWrapper1 from "@/layout/index1";
-import LayoutWrapper2 from "@/layout/index2";
-import LayoutWrapper3 from "@/layout/index3";
+import Mixbar from "@/layout/mixbar";
+import Simplebar from "@/layout/simplebar";
+import Sidebar from "@/layout/sidebar";
+import Topbar from "@/layout/topbar";
 import useRouteMeta from "@/hooks/useRouteMeta";
 import { getToken } from '@/utils/auth'
 import { getPageTitle } from '@/utils/tool'
-import { tagsViewStore, settingStore } from '@/store'
+import { userStore, tagsViewStore, settingStore } from '@/store'
 
 // 全局路由守卫
 const RouterGuard: React.FC = () => {
@@ -19,6 +18,7 @@ const RouterGuard: React.FC = () => {
   const token = getToken();
   const { routeMeta } = useRouteMeta(userInfo.backMenuList);
   document.title = getPageTitle(routeMeta);
+  const sStore = useSnapshot(settingStore);
 
   console.log('当前拦截的路由为：' + pathname, 'token的值为：' + token, '路由元数据为：' + JSON.stringify(routeMeta));
   // 若有用户信息正常展示组件，若没有跳转到登录页
@@ -33,14 +33,14 @@ const RouterGuard: React.FC = () => {
           closable: true,
           redirect: routeMeta.redirect
         })
-        if (settingStore.globalSet.layout === 'simplebar') {
-          return <LayoutWrapper1 />;
-        } else if (settingStore.globalSet.layout === 'sidebar') {
-          return <LayoutWrapper2 />;
-        } else if (settingStore.globalSet.layout === 'topbar') {
-          return <LayoutWrapper3 />;
+        if (sStore.globalSet.layout === 'simplebar') {
+          return <Simplebar />;
+        } else if (sStore.globalSet.layout === 'sidebar') {
+          return <Sidebar />;
+        } else if (sStore.globalSet.layout === 'topbar') {
+          return <Topbar />;
         } else {
-          return <LayoutWrapper />;
+          return <Mixbar />;
         }
       } else {
         userStore.getUserInfo()

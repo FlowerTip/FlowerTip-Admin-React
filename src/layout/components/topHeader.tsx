@@ -1,116 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useSnapshot } from 'valtio'
-import Icon from '@ant-design/icons';
-import screenfull from "screenfull";
 import UserOutlined from '@ant-design/icons/UserOutlined';
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
-import RedoOutlined from '@ant-design/icons/RedoOutlined';
-import FullscreenOutlined from '@ant-design/icons/FullscreenOutlined';
-import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import DoubleLeftOutlined from '@ant-design/icons/DoubleLeftOutlined';
-import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
-import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
-import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
 import BellOutlined from '@ant-design/icons/BellOutlined';
 import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
+import Icon from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { HeaderComponentProps } from '../types/index'
+import { useSnapshot } from 'valtio'
+import screenfull from "screenfull";
 import type { MenuProps, TabsProps } from 'antd';
-import { Switch, Divider, Popover, Badge, Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
-import useRouteMeta from '@/hooks/useRouteMeta';
+import { Switch, Divider, Popover, Badge, Drawer, Tabs, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
 import useThemeColor from '@/hooks/useThemeColor';
-import defaultSetting from '../setting';
-import { userStore, tagsViewStore, settingStore } from '@/store'
-import { isExternalFn } from '@/utils/validate';
+import defaultSetting from '@/setting';
+import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
-import './index.scss';
-const { Header, Content, Sider } = Layout;
+const { Header } = Layout;
 
-const clickItems: any[] = [
-  {
-    key: 'person',
-    label: '个人中心',
-    icon: <UserOutlined />,
-  },
-  {
-    key: 'setting',
-    label: '偏好设置',
-    icon: <ChromeOutlined />,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'logout',
-    label: '退出登录',
-    icon: <LogoutOutlined />,
-  },
-];
-
-const config = {
-  title: '退出提示',
-  content: (
-    <>
-      <span>确定要退出账号吗？</span>
-    </>
-  ),
-  width: 400
-};
-
-const items: MenuProps['items'] = [
-  {
-    key: 'refresh',
-    label: '刷新页面',
-    icon: <RedoOutlined />,
-  },
-  {
-    key: 'fullScreen',
-    label: '最大化',
-    icon: <FullscreenOutlined />,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'closeCurrent',
-    label: '关闭当前',
-    icon: <CloseSquareOutlined />,
-  },
-  {
-    key: 'closeLeft',
-    label: '关门左侧',
-    icon: <DoubleLeftOutlined />,
-  },
-  {
-    key: 'closeRight',
-    label: '关闭右侧',
-    icon: <DoubleRightOutlined />,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    key: 'closeOther',
-    label: '关闭其他',
-    icon: <MinusCircleOutlined />,
-  },
-  {
-    key: 'closeAll',
-    label: '关闭所有',
-    icon: <CloseCircleOutlined />,
-  },
-]
-
-const LayoutWrapper: React.FC = () => {
-  const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
-  const { currentTime, clearTimer } = useRefreshTime();
+const TopHeader = (props: HeaderComponentProps) => {
+  // 当前时间
+  const { currentTime } = useRefreshTime();
   const ymd = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[0];
@@ -120,34 +34,54 @@ const LayoutWrapper: React.FC = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[1];
   };
-  const [modal, modalContextHolder] = Modal.useModal();
-  const [messageApi, contextHolder] = message.useMessage();
-  const [collapsed, setCollapsed] = useState(false);
+  // 主题切换
+  const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  const siderStyle: React.CSSProperties = {
-    overflow: 'auto',
-    height: 'calc(100vh - 50px)',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 50,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
-  };
-  const contentStyle: React.CSSProperties = {
-    marginLeft: collapsed ? '50px' : '200px'
-  };
-  const breadcrumbItems = [];
-  const navigate = useNavigate();
+  // 用户名dropDown的菜单
+  const personalItems: any[] = [
+    {
+      key: 'person',
+      label: '个人中心',
+      icon: <UserOutlined />,
+    },
+    {
+      key: 'setting',
+      label: '偏好设置',
+      icon: <ChromeOutlined />,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      label: '退出登录',
+      icon: <LogoutOutlined />,
+    },
+  ];
+
+  // 抽屉组件
   const [open, setOpen] = useState(false);
   const [settingOpen, setSettingOpen] = useState(false);
-  const onClick: MenuProps['onClick'] = async ({ key }) => {
+  // 确认框组件
+  const [modal, modalContextHolder] = Modal.useModal();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const navigate = useNavigate();
+
+  // 用户名dropDown的菜单点击事件
+  const personalItemClick: MenuProps['onClick'] = async ({ key }) => {
     switch (key) {
       case 'logout':
-        const confirmed = await modal.confirm(config);
+        const logoutConfirm = {
+          title: '退出提示',
+          content: (
+            <>
+              <span>确定要退出账号吗？</span>
+            </>
+          ),
+          width: 400
+        };
+        const confirmed = await modal.confirm(logoutConfirm);
         if (confirmed) {
           await userStore.logout(true)
           navigate('/login', {
@@ -161,198 +95,36 @@ const LayoutWrapper: React.FC = () => {
       case 'setting':
         setSettingOpen(true)
         break;
-      default:
-        messageApi.info(`点击了 ${key}`);
     }
   };
-  const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
-
-  console.log(routeMeta, topRoute, '你是是多喝会更好湖广会馆哈哈');
-  const currentLocation = useLocation();
-  console.log(currentLocation, 'laosdjasj');
-  // 关闭所有菜单
-  const closeAllTab = () => {
-    tagsViewStore.closeMultipleTab();
-    navigate("/")
-  };
-
-  // 关闭当前菜单
-  const closeCurrent = () => {
-    const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
-    );
-    console.log(current, "ccurrent");
-    if (current) {
-      const returnNextTab: any = tStore.removeTab(current.key as string, true);
-      console.log(returnNextTab, 'returnNextTab');
-      if (returnNextTab && returnNextTab.key) {
-        navigate(returnNextTab.redirect);
-        setSidebarPath(returnNextTab.key);
-      }
+  const splitMenuList = topMenuList.map((item: any) => {
+    const obj = {
+      key: item.key,
+      label: item.label,
+      icon: item.icon,
+      children: null
     }
-  };
-
-  // 关闭左侧菜单
-  const closeLeft = () => {
-    const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
-    );
-    current && tStore.closeTabsOnSide(current.key as string, "left");
-  };
-
-  // 关闭右侧菜单
-  const closeRight = () => {
-    const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
-    );
-    current && tStore.closeTabsOnSide(current.key as string, "right");
-  };
-
-  // 关闭其他菜单
-  const closeOther = () => {
-    const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
-    );
-    current && tStore.closeMultipleTab(current.key);
-  };
-  const moreTabClick: MenuProps['onClick'] = ({ key }) => {
-    switch (key) {
-      case "refresh":
-        setTimeout(() => {
-          window.location.reload();
-        }, 0);
-        break;
-      case "fullScreen": {
-        const dom: HTMLDivElement = document.querySelector(".view-layout")!;
-        screenfull.request(dom);
-        break;
-      }
-      case "closeAll":
-        closeAllTab();
-        break;
-      case "closeCurrent":
-        closeCurrent();
-        break;
-      case "closeLeft":
-        closeLeft();
-        break;
-      case "closeRight":
-        closeRight();
-        break;
-      case "closeOther":
-        closeOther();
-        break;
-      default:
-        console.log("默认操作");
-    }
-
-  }
-
-  const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
-  const parentItem = {
-    title: (topRoute as any).meta?.title,
-    onClick: () => {
-      navigate((topRoute as any).redirect);
-    }
-  }
-  const childItem = {
-    title: routeMeta.title,
-    onClick: () => {
-      navigate(routeMeta.redirect)
-    }
-  }
-  if (parentItem.title === childItem.title) {
-    breadcrumbItems.push(parentItem);
-  } else {
-    breadcrumbItems.push(parentItem, childItem);
-  }
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  useEffect(() => {
-    if (!routeMeta.redirect) {
-      navigate((uStore.userInfo.backMenuList[0] as any).redirect);
-    }
-    screenfull.on("change", () => {
-      if (screenfull.isFullscreen) setIsFullScreen(true);
-      else setIsFullScreen(false);
-    });
-
-    return () => {
-      clearTimer();
-    }
-  }, [])
-
-
-  const handlerSelect = ({ key, keyPath }: any) => {
-    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
-    let redirectUrl = '';
-    if (keyPath.length > 1) {
-      keyPath.reverse().forEach((path: string, index: number) => {
-        if (index == 0) {
-          redirectUrl = path;
-        } else {
-          redirectUrl = redirectUrl + '/' + path;
+    if (item.children && item.children[0].redirect) {
+      obj.children = item.children.map((child: any) => {
+        return {
+          key: child.key,
+          label: child.label,
+          icon: item.icon,
         }
       })
-    } else {
-      if (hasOnlyOne && hasOnlyOne.redirect) {
-        redirectUrl = hasOnlyOne.redirect
-      } else {
-        redirectUrl = key;
-      }
     }
-    if (!isExternalFn(redirectUrl)) {
-
-      const childList = topRoute.children as unknown as any;
-      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
-
-
-      if (isMoreLevel) {
-        console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
-        console.log(findChild, '测试举手哈');
-        if (findChild) {
-          redirectUrl = findChild.redirect
-          setSidebarPath(findChild.children[0].path);
-        } else {
-          setSidebarPath(key);
-        }
-      } else {
-        const tempPath = redirectUrl.replace('/' + key, '');
-        console.log(tempPath, 'tempPath');
-        setSidebarPath(key);
-      }
-
-      console.log(redirectUrl, 'redirectUrl');
-
-      navigate(redirectUrl);
-    } else {
-      setSidebarPath(key);
-    }
-  }
-
-  const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
-    currTab && navigate(currTab.redirect);
-    if (key == '/home') {
-      setSidebarPath('/home');
-    } else {
-      setSidebarPath(key);
-    }
-  }
+    return obj;
+  })
 
   const onClose = () => {
     setOpen(false);
     setSettingOpen(false);
   };
 
-  const onChange = (key: string) => {
-    console.log(key);
-  };
   const noticeList: any = [
     {
       id: 1,
@@ -435,153 +207,130 @@ const LayoutWrapper: React.FC = () => {
   ];
   const content = (
     <div className="message-box-wrapper">
-      <Tabs defaultActiveKey="first" items={tabItems} onChange={onChange} />
+      <Tabs defaultActiveKey="first" items={tabItems} />
     </div>
   );
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  // 切换全屏
   const toggleFullScreen = () => {
     if (!screenfull.isEnabled) messageApi.warning("当前您的浏览器不支持全屏 ❌");
     screenfull.toggle();
   };
 
+  // 偏好设置的弹窗
   const openRightSetting = () => {
     setSettingOpen(true);
   }
 
+  // 顶部栏的样式
+  const headerStyle: React.CSSProperties = {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
+  }
 
+  useEffect(() => {
+    screenfull.on("change", () => {
+      if (screenfull.isFullscreen) setIsFullScreen(true);
+      else setIsFullScreen(false);
+    });
+  }, [])
+
+  const toggleLayout = (layoutName: string) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      layout: layoutName
+    })
+    setSettingOpen(false)
+  }
 
   return (
     <>
-      <Layout className='layout-wrapper'>
-        <Header className='layout-header' style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-          <div className="layout-header-logo">{defaultSetting.title}</div>
-          <div style={{ minWidth: 0, flex: 1 }}></div>
-          <div className="right-bar">
-            {/* 当前时间 */}
-            <div className="current-time">
-              <span className="ymd">{ymd()}</span>
-              <span className="hms">{hms()}</span>
-            </div>
-            {/* 消息通知 */}
-            <Popover placement="bottom" content={content}>
-              <Badge size="small" count={5}>
-                <BellOutlined style={{ fontSize: '22px', color: '#fff', cursor: 'pointer' }} />
-              </Badge>
-            </Popover>
-            {/* 全屏功能 */}
-            <div className="screen-box">
-              {
-                isFullScreen && (
-                  <svg
-                    className="icon"
-                    viewBox="0 0 1024 1024"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    p-id="9805"
-                    width="30"
-                    height="30"
-                    onClick={toggleFullScreen}
-                  >
-                    <path
-                      d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
-                      fill="#ffffff"
-                      p-id="9806"
-                    ></path>
-                  </svg>
-                )
-              }
-              {
-                !isFullScreen && (<svg
+      <Header className='layout-header' style={headerStyle}>
+        <div className="layout-header-logo">{defaultSetting.title}</div>
+        <Menu
+          theme='dark'
+          mode="horizontal"
+          selectedKeys={[props.selectedKeys as unknown as any]}
+          items={splitMenuList}
+          style={{ minWidth: 0, flex: 1 }}
+          onSelect={props.onSelect}
+        />
+        <div className="right-bar">
+          {/* 当前时间 */}
+          <div className="current-time">
+            <span className="ymd">{ymd()}</span>
+            <span className="hms">{hms()}</span>
+          </div>
+          {/* 消息通知 */}
+          <Popover placement="bottom" content={content}>
+            <Badge size="small" count={5}>
+              <BellOutlined style={{ fontSize: '22px', color: '#fff', cursor: 'pointer' }} />
+            </Badge>
+          </Popover>
+          {/* 全屏功能 */}
+          <div className="screen-box">
+            {
+              isFullScreen && (
+                <svg
                   className="icon"
                   viewBox="0 0 1024 1024"
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
-                  p-id="9338"
-                  id="mx_n_1717408008762"
+                  p-id="9805"
                   width="30"
                   height="30"
                   onClick={toggleFullScreen}
                 >
                   <path
-                    d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
+                    d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
                     fill="#ffffff"
-                    p-id="9339"
+                    p-id="9806"
                   ></path>
-                </svg>)
-              }
+                </svg>
+              )
+            }
+            {
+              !isFullScreen && (<svg
+                className="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="9338"
+                id="mx_n_1717408008762"
+                width="30"
+                height="30"
+                onClick={toggleFullScreen}
+              >
+                <path
+                  d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
+                  fill="#ffffff"
+                  p-id="9339"
+                ></path>
+              </svg>)
+            }
+          </div>
+          {/* 个人信息 */}
+          <Dropdown menu={{ items: personalItems, onClick: personalItemClick }}>
+            <div style={{ color: '#fff', cursor: 'pointer' }}>
+              <Space>
+                {uStore.userInfo.username}
+                <DownOutlined />
+              </Space>
             </div>
-            {/* 个人信息 */}
-            <Dropdown menu={{ items: clickItems, onClick }}>
-              <div style={{ color: '#fff', cursor: 'pointer' }}>
-                <Space>
-                  {uStore.userInfo.username}
-                  <DownOutlined />
-                </Space>
-              </div>
-            </Dropdown>
-          </div >
-        </Header >
-        <Layout className='layout-content' style={contentStyle}>
-          <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
-            <Menu
-              theme='dark'
-              style={{
-                height: '100%'
-              }}
-              items={uStore.userInfo.authMenuList as any}
-              onSelect={handlerSelect}
-              selectedKeys={[sidebarPath]}
-              mode="inline"
-            />
-          </Sider>
-          <Layout className='wrapper'>
-            <div className='navbar'>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ marginLeft: '12px', cursor: 'pointer', fontSize: '16px' }} onClick={toggleCollapsed}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
-                <Breadcrumb separator=">" items={breadcrumbItems} style={{
-                  padding: '5px 12px',
-                  cursor: 'pointer'
-                }}>
-                </Breadcrumb>
-              </div>
-              <Tabs
-                tabBarExtraContent={<Dropdown menu={{ items, onClick: moreTabClick }}>
-                  <Space>
-                    <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
-                  </Space>
-                </Dropdown>}
-                size='small'
-                activeKey={sidebarPath}
-                type="editable-card"
-                hideAdd
-                style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
-                items={tStore.tabsMenuList || []}
-                onTabClick={onTabClick}
-              />
-            </div>
-            <Content
-              className='view-layout'
-            >
-              <Outlet />
-            </Content>
-          </Layout>
-        </Layout>
-        {modalContextHolder}
-        {contextHolder}
-      </Layout >
+          </Dropdown>
+        </div >
+      </Header >
       <Drawer title="个人中心" open={open} onClose={onClose} width={300}>
         <div className="drawer-box">
           <div className="divider-item">
             <div className="wrapper">
               <div className="author-layout">
                 <h1>高级前端进阶</h1>
-                <h2>深夜改BUG，专注于前端开发</h2>
+                <h2>狗尾巴花的尖，专注于前端开发</h2>
                 <h3>
                   一个前端进阶路上的学习者，有输入就要有输出，愿你前端技术学习的热忱永远不会被辜负
                 </h3>
@@ -604,7 +353,7 @@ const LayoutWrapper: React.FC = () => {
                 源码地址：<Button
                   href="https://gitee.com/CodeTV/flower-tip-admin-react"
                   type="link"
-                >后台管理系统模版</Button>
+                >FlowerTip Admin</Button>
               </div>
             </div>
           </div>
@@ -621,7 +370,7 @@ const LayoutWrapper: React.FC = () => {
             </Divider>
             <div className="wrapper">
               <div className="nav-group">
-                <div className="nav-layout">
+                <div className="nav-layout" onClick={() => toggleLayout('simplebar')}>
                   {/* 经典导航 */}
                   <div
                     className={sStore.globalSet.layout === 'simplebar' ? 'nav-style-item is-active' : 'nav-style-item'}
@@ -633,7 +382,7 @@ const LayoutWrapper: React.FC = () => {
                   </div>
                   <div className="layout-title">经典导航</div>
                 </div>
-                <div className="nav-layout">
+                <div className="nav-layout" onClick={() => toggleLayout('sidebar')}>
                   {/* 左侧导航 */}
                   <div
                     className={sStore.globalSet.layout === 'sidebar' ? 'nav-style-item is-active' : 'nav-style-item'}
@@ -648,7 +397,7 @@ const LayoutWrapper: React.FC = () => {
                 </div>
               </div>
               <div className="nav-group">
-                <div className="nav-layout">
+                <div className="nav-layout" onClick={() => toggleLayout('topbar')}>
                   {/* 顶部导航 */}
                   <div
                     className={sStore.globalSet.layout === 'topbar' ? 'nav-style-item is-active' : 'nav-style-item'}
@@ -658,7 +407,7 @@ const LayoutWrapper: React.FC = () => {
                   </div>
                   <div className="layout-title">大屏导航</div>
                 </div>
-                <div className="nav-layout">
+                <div className="nav-layout" onClick={() => toggleLayout('mixbar')}>
                   {/* 混合导航 */}
                   <div
                     className={sStore.globalSet.layout === 'mixbar' ? 'nav-style-item style3 is-active' : 'nav-style-item style3'}
@@ -692,6 +441,7 @@ const LayoutWrapper: React.FC = () => {
                   {
                     themeColorName['classicThemeColors'].map((color: string) => (
                       <div
+                        key={color}
                         className="color-item"
                         style={{ backgroundColor: color }}
                       ></div>
@@ -709,6 +459,7 @@ const LayoutWrapper: React.FC = () => {
                   {
                     themeColorName['fashionThemeColors'].map((color: string) => (
                       <div
+                        key={color}
                         className="color-item"
                         style={{ backgroundColor: color }}
                       ></div>
@@ -726,6 +477,7 @@ const LayoutWrapper: React.FC = () => {
                   {
                     themeColorName['freshThemeColors'].map((color: string) => (
                       <div
+                        key={color}
                         className="color-item"
                         style={{ backgroundColor: color }}
                       ></div>
@@ -743,6 +495,7 @@ const LayoutWrapper: React.FC = () => {
                   {
                     themeColorName['coolThemeColors'].map((color: string) => (
                       <div
+                        key={color}
                         className="color-item"
                         style={{ backgroundColor: color }}
                       ></div>
@@ -804,8 +557,10 @@ const LayoutWrapper: React.FC = () => {
       >
         <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
       </div >
+      {modalContextHolder}
+      {contextHolder}
     </>
-  );
-};
+  )
+}
 
-export default LayoutWrapper;
+export default TopHeader;

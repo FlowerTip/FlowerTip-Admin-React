@@ -4,8 +4,6 @@ import { useSnapshot } from 'valtio'
 import Icon from '@ant-design/icons';
 import screenfull from "screenfull";
 import UserOutlined from '@ant-design/icons/UserOutlined';
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
@@ -28,10 +26,9 @@ import useRouteMeta from '@/hooks/useRouteMeta';
 import useThemeColor from '@/hooks/useThemeColor';
 import defaultSetting from '../setting';
 import { userStore, tagsViewStore, settingStore } from '@/store'
-import { isExternalFn } from '@/utils/validate';
 import { useRefreshTime } from '@/hooks/useRefreshTime';
-import './index.scss';
-const { Content, Sider } = Layout;
+import './style/index.scss';
+const { Header, Content } = Layout;
 
 const clickItems: any[] = [
   {
@@ -122,24 +119,7 @@ const LayoutWrapper: React.FC = () => {
   };
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
-  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  const siderStyle: React.CSSProperties = {
-    overflow: 'auto',
-    height: 'calc(100vh)',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: 0,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
-  };
-  const contentStyle: React.CSSProperties = {
-    marginLeft: collapsed ? '50px' : '200px'
-  };
   const breadcrumbItems = [];
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -168,7 +148,7 @@ const LayoutWrapper: React.FC = () => {
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
-  const topMenuList = uStore.userInfo.authMenuList as unknown as any;
+
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
 
@@ -192,7 +172,6 @@ const LayoutWrapper: React.FC = () => {
       console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
-        setSidebarPath(returnNextTab.key);
       }
     }
   };
@@ -275,6 +254,7 @@ const LayoutWrapper: React.FC = () => {
   useEffect(() => {
     if (!routeMeta.redirect) {
       navigate((uStore.userInfo.backMenuList[0] as any).redirect);
+      setSidebarPath((uStore.userInfo.backMenuList[0] as any).path);
     }
     screenfull.on("change", () => {
       if (screenfull.isFullscreen) setIsFullScreen(true);
@@ -286,54 +266,45 @@ const LayoutWrapper: React.FC = () => {
     }
   }, [])
 
-
-  const handlerSelect = ({ key, keyPath }: any) => {
-    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
-    let redirectUrl = '';
+  const sidebarSelect = ({ key, keyPath }: any) => {
+    let url = ''
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
-        if (index == 0) {
-          redirectUrl = path;
+        if (index === 0) {
+          url += path;
         } else {
-          redirectUrl = redirectUrl + '/' + path;
+          url += ('/' + path)
         }
       })
     } else {
-      if (hasOnlyOne && hasOnlyOne.redirect) {
-        redirectUrl = hasOnlyOne.redirect
-      } else {
-        redirectUrl = key;
-      }
-    }
-    if (!isExternalFn(redirectUrl)) {
-
-      const childList = topRoute.children as unknown as any;
-      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
-
-
-      if (isMoreLevel) {
-        console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
-        console.log(findChild, '测试举手哈');
-        if (findChild) {
-          redirectUrl = findChild.redirect
-          setSidebarPath(findChild.children[0].path);
+      let splitList = routeMeta.redirect.split('/').filter((path: string) => path);
+      splitList = splitList.slice(0, splitList.length - 1);
+      if (keyPath.length === 2 && splitList.length === 3) {
+        let temp = '';
+        if (splitList.includes(key)) {
+          splitList.forEach((path: string) => {
+            temp += ('/' + path)
+          })
+          url = temp + '/' + url + key;
         } else {
-          setSidebarPath(key);
+          if (!routeMeta.parentName) {
+            splitList.forEach((path: string) => {
+              temp += ('/' + path)
+            })
+            url = temp + '/' + url + key;
+          } else {
+            url = '/' + splitList[0] + '/' + key;
+          }
         }
       } else {
-        const tempPath = redirectUrl.replace('/' + key, '');
-        console.log(tempPath, 'tempPath');
-        setSidebarPath(key);
+        url = key
       }
-
-      console.log(redirectUrl, 'redirectUrl');
-
-      navigate(redirectUrl);
-    } else {
-      setSidebarPath(key);
+      console.log(routeMeta, key, keyPath, url, splitList, '###2222splitList');
     }
+    setSidebarPath(key);
+    url.includes('home') ? navigate('/home/cockpit') : navigate(url);
   }
+
 
   const onTabClick = (key: string) => {
     const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
@@ -450,95 +421,97 @@ const LayoutWrapper: React.FC = () => {
   return (
     <>
       <Layout className='layout-wrapper'>
-        <Layout className='layout-content' style={contentStyle}>
-          <Sider width={200} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={collapsed} collapsedWidth={50}>
-            <div className="layout-header-logo" style={collapsed ? { display: 'none', color: '#fff', fontSize: '20px', fontWeight: 'bold', textAlign: 'center', height: '50px', lineHeight: '50px' } : { display: 'block', color: '#fff', fontSize: '20px', fontWeight: 'bold', textAlign: 'center', height: '50px', lineHeight: '50px' }}>{defaultSetting.title}</div>
-            <Menu
-              theme='dark'
-              style={{
-                height: 'calc(100% - 50px)'
-              }}
-              items={uStore.userInfo.authMenuList as any}
-              onSelect={handlerSelect}
-              selectedKeys={[sidebarPath]}
-              mode="inline"
-            />
-          </Sider>
+        <Header className='layout-header' style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <div className="layout-header-logo">{defaultSetting.title}</div>
+          <Menu
+            theme='dark'
+            mode="horizontal"
+            selectedKeys={[sidebarPath]}
+            items={uStore.userInfo.authMenuList as any}
+            style={{ minWidth: 0, flex: 1 }}
+            onSelect={sidebarSelect}
+          />
+          <div className="right-bar">
+            {/* 当前时间 */}
+            <div className="current-time">
+              <span className="ymd">{ymd()}</span>
+              <span className="hms">{hms()}</span>
+            </div>
+            {/* 消息通知 */}
+            <Popover placement="bottom" content={content}>
+              <Badge size="small" count={5}>
+                <BellOutlined style={{ fontSize: '22px', color: '#fff', cursor: 'pointer' }} />
+              </Badge>
+            </Popover>
+            {/* 全屏功能 */}
+            <div className="screen-box">
+              {
+                isFullScreen && (
+                  <svg
+                    className="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="9805"
+                    width="30"
+                    height="30"
+                    onClick={toggleFullScreen}
+                  >
+                    <path
+                      d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
+                      fill="#ffffff"
+                      p-id="9806"
+                    ></path>
+                  </svg>
+                )
+              }
+              {
+                !isFullScreen && (<svg
+                  className="icon"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="9338"
+                  id="mx_n_1717408008762"
+                  width="30"
+                  height="30"
+                  onClick={toggleFullScreen}
+                >
+                  <path
+                    d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
+                    fill="#ffffff"
+                    p-id="9339"
+                  ></path>
+                </svg>)
+              }
+            </div>
+            {/* 个人信息 */}
+            <Dropdown menu={{ items: clickItems, onClick }}>
+              <div style={{ color: '#fff', cursor: 'pointer' }}>
+                <Space>
+                  {uStore.userInfo.username}
+                  <DownOutlined />
+                </Space>
+              </div>
+            </Dropdown>
+          </div >
+        </Header >
+        <Layout className='layout-content'>
           <Layout className='wrapper'>
             <div className='navbar'>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ marginLeft: '12px', cursor: 'pointer', fontSize: '16px' }} onClick={toggleCollapsed}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
-                  <Breadcrumb separator=">" items={breadcrumbItems} style={{
-                    padding: '5px 12px',
-                    cursor: 'pointer'
-                  }}>
-                  </Breadcrumb>
-                </div>
-                <div className="right-bar" style={{ paddingRight: '10px' }}>
-                  {/* 当前时间 */}
-                  <div className="current-time">
-                    <span className="ymd" style={{ color: '#555' }}>{ymd()}</span>
-                    <span className="hms" style={{ color: '#555' }}>{hms()}</span>
-                  </div>
-                  {/* 消息通知 */}
-                  <Popover placement="bottom" content={content}>
-                    <Badge size="small" count={5}>
-                      <BellOutlined style={{ fontSize: '22px', cursor: 'pointer' }} />
-                    </Badge>
-                  </Popover>
-                  {/* 全屏功能 */}
-                  <div className="screen-box">
-                    {
-                      isFullScreen && (
-                        <svg
-                          className="icon"
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="9805"
-                          width="30"
-                          height="30"
-                          onClick={toggleFullScreen}
-                        >
-                          <path
-                            d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
-                            fill="#555"
-                            p-id="9806"
-                          ></path>
-                        </svg>
-                      )
-                    }
-                    {
-                      !isFullScreen && (<svg
-                        className="icon"
-                        viewBox="0 0 1024 1024"
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        p-id="9338"
-                        id="mx_n_1717408008762"
-                        width="30"
-                        height="30"
-                        onClick={toggleFullScreen}
-                      >
-                        <path
-                          d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
-                          fill="#555"
-                          p-id="9339"
-                        ></path>
-                      </svg>)
-                    }
-                  </div>
-                  {/* 个人信息 */}
-                  <Dropdown menu={{ items: clickItems, onClick }}>
-                    <div style={{ color: '#555', cursor: 'pointer' }}>
-                      <Space>
-                        {uStore.userInfo.username}
-                        <DownOutlined />
-                      </Space>
-                    </div>
-                  </Dropdown>
-                </div >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Breadcrumb separator=">" items={breadcrumbItems} style={{
+                  padding: '5px 12px',
+                  cursor: 'pointer'
+                }}>
+                </Breadcrumb>
               </div>
               <Tabs
                 tabBarExtraContent={<Dropdown menu={{ items, onClick: moreTabClick }}>
@@ -571,7 +544,7 @@ const LayoutWrapper: React.FC = () => {
             <div className="wrapper">
               <div className="author-layout">
                 <h1>高级前端进阶</h1>
-                <h2>深夜改BUG，专注于前端开发</h2>
+                <h2>狗尾巴花的尖，专注于前端开发</h2>
                 <h3>
                   一个前端进阶路上的学习者，有输入就要有输出，愿你前端技术学习的热忱永远不会被辜负
                 </h3>
@@ -594,7 +567,7 @@ const LayoutWrapper: React.FC = () => {
                 源码地址：<Button
                   href="https://gitee.com/CodeTV/flower-tip-admin-react"
                   type="link"
-                >后台管理系统模版</Button>
+                >FlowerTip Admin</Button>
               </div>
             </div>
           </div>
