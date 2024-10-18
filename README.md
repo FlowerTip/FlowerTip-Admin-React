@@ -1,6 +1,6 @@
 # FlowerTip-Admin
 
-> 一个基于 React18 + TypeScript + Antd Design + Axios + React-Router-Dom@6 + Vite 开发的企业级后台管理系统
+> 一个基于 React18 + TypeScript + Antd Design + Axios + React-Router-Dom@6 + Valtio + Vite 开发的企业级后台管理系统
 
 ## 项目预览
 
