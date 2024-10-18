@@ -32,7 +32,7 @@ import screenfull from 'screenfull';
 
 const NavBar = (props: NavbarComponentProps) => {
   // 主题切换
-  const { currentTheme, currentColor, currentThemeName, themeColorName, toggleThemeColor } = useThemeColor();
+  const { currentColor, currentThemeName, themeColorName } = useThemeColor();
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const clickItems: any[] = [

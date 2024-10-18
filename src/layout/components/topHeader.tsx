@@ -35,7 +35,7 @@ const TopHeader = (props: HeaderComponentProps) => {
     return Array.isArray(splitTime) && splitTime[1];
   };
   // 主题切换
-  const { currentTheme, currentColor, currentThemeName, themeColorName, toggleThemeColor } = useThemeColor();
+  const { currentColor, currentThemeName, themeColorName } = useThemeColor();
 
   // 用户名dropDown的菜单
   const personalItems: any[] = [

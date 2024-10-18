@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
-import Icon from '@ant-design/icons';
 import screenfull from "screenfull";
-import UserOutlined from '@ant-design/icons/UserOutlined';
-import DownOutlined from '@ant-design/icons/DownOutlined';
-import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
-import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
-import RedoOutlined from '@ant-design/icons/RedoOutlined';
-import FullscreenOutlined from '@ant-design/icons/FullscreenOutlined';
-import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import DoubleLeftOutlined from '@ant-design/icons/DoubleLeftOutlined';
-import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
-import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
-import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
-import BellOutlined from '@ant-design/icons/BellOutlined';
-import CommentOutlined from '@ant-design/icons/CommentOutlined';
-import AlertOutlined from '@ant-design/icons/AlertOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import type { MenuProps, TabsProps } from 'antd';
-import { Switch, Divider, Popover, Badge, Drawer, Tabs, Breadcrumb, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
+import type { MenuProps } from 'antd';
+import { Layout } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import { userStore, tagsViewStore } from '@/store'
 import TopHeader from './components/topHeader';
