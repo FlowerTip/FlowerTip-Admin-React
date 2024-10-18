@@ -303,6 +303,7 @@ const TopHeader = (props: HeaderComponentProps) => {
     })
     setSettingOpen(false)
   }
+
   return (
     <>
       <Header className='layout-header' style={headerStyle}>
@@ -597,27 +598,27 @@ const TopHeader = (props: HeaderComponentProps) => {
             <div className="wrapper">
               <div className="item">
                 <span className="right-txt">顶部区域</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
               <div className="item">
                 <span className="right-txt">系统名称</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
               <div className="item">
                 <span className="right-txt">顶部收缩菜单</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
               <div className="item">
                 <span className="right-txt">面包屑</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
               <div className="item">
                 <span className="right-txt">标签栏</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
               <div className="item">
                 <span className="right-txt">页脚</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled/>
               </div>
             </div>
           </div>
