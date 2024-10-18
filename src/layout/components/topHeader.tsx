@@ -16,7 +16,7 @@ import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
 import type { MenuProps, TabsProps } from 'antd';
 import { Switch, Divider, Popover, Badge, Drawer, Tabs, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
-import useThemeColor from '@/hooks/useThemeColor';
+// import useThemeColor from '@/hooks/useThemeColor';
 import defaultSetting from '@/setting';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
@@ -34,8 +34,57 @@ const TopHeader = (props: HeaderComponentProps) => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[1];
   };
-  // 主题切换
-  const { currentColor, currentThemeName, themeColorName } = useThemeColor();
+
+  interface ThemeColors {
+    [key: string]: string[];
+  }
+  interface ThemeNames {
+    [key: string]: string;
+  }
+  const formatThemeName: ThemeNames = {
+    classicThemeColors: "经典主题",
+    fashionThemeColors: "时尚主题",
+    freshThemeColors: "清新主题",
+    coolThemeColors: "热情主题",
+  };
+  const themeColorName: ThemeColors = {
+    classicThemeColors: [
+      "#409EFF",
+      "#337ecc",
+      "#79bbff",
+      "#a0cfff",
+      "#c6e2ff",
+      "#d9ecff",
+      "#ecf5ff",
+    ], // 经典配色
+    fashionThemeColors: [
+      "#3170FF",
+      "#296DFF",
+      "#4F8DFF",
+      "#75AAFF",
+      "#9CC5FF",
+      "#C2DDFF",
+      "#E8F3FF",
+    ], // 时尚配色
+    freshThemeColors: [
+      "#67C23A",
+      "#529b2e",
+      "#95d475",
+      "#b3e19d",
+      "#d1edc4",
+      "#e1f3d8",
+      "#f0f9eb",
+    ], // 清新配色
+    coolThemeColors: [
+      "#BF145B",
+      "#E5206C",
+      "#EA457F",
+      "#EF6B95",
+      "#F593AF",
+      "#FABDCC",
+      "#FFE8ED",
+    ], // 热情配色
+  };
 
   // 用户名dropDown的菜单
   const personalItems: any[] = [
@@ -528,12 +577,12 @@ const TopHeader = (props: HeaderComponentProps) => {
               </div >
               <div className="current-layout">
                 <div className="color-value">
-                  当前风格:&nbsp;<span style={{ color: currentColor }}>{currentThemeName}</span>
+                  当前风格:&nbsp;<span style={{ color: sStore.globalSet.color }}>{formatThemeName[sStore.globalSet.themeName as string]}</span>
                   &nbsp;主题颜色:&nbsp;
                 </div>
                 <div
                   className="color-item"
-                  style={{ backgroundColor: currentColor }}
+                  style={{ backgroundColor: sStore.globalSet.color }}
                 ></div >
               </div >
             </div >

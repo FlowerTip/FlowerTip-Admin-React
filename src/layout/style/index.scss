@@ -189,7 +189,7 @@
         color: #656565;
 
         &.active-bg {
-          background-color: #3170FF;
+          background-color: var(--ant-color-primary);
           color: #fff;
         }
       }
@@ -290,7 +290,7 @@
           width: 22px;
           height: 22px;
           font-size: 22px;
-          color: #3170FF;
+          color: var(--ant-color-primary);
         }
       }
 

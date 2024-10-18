@@ -30,7 +30,8 @@ const App: React.FC = () => {
       },
       token: {
         colorPrimary: sStore.globalSet.color,
-      }
+      },
+      cssVar: true
     }}>
       <HashRouter>
         <RouterComponent />
