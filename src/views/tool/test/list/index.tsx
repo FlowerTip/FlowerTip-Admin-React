@@ -1,7 +1,7 @@
 import React from "react";
 
 const ListPage: React.FC = () => {
-  return <div>列表页面</div>
+  return <div>菜单1</div>
 }
 
 export default ListPage;

@@ -7,9 +7,10 @@ import { Layout } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
 import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
-import { SidebarComponentProps, NavbarComponentProps } from './types/index'
+import { SidebarComponentProps, NavbarComponentProps, HeaderComponentProps } from './types/index'
 import Sidebar from './components/sidebar';
 import Navbar from './components/navbar';
+import TopHeader from './components/topHeader';
 import './style/index.scss';
 const { Content } = Layout;
 
@@ -208,8 +209,13 @@ const SidebarLayout: React.FC = () => {
     toggleCollapsed,
     breadcrumbItems
   }
+  const HeaderProps: HeaderComponentProps = {
+    selectedKeys: '',
+    onSelect: handlerSelect
+  }
   return (
     <Layout className='layout-wrapper'>
+      <TopHeader {...HeaderProps} />
       <Layout className='layout-content' style={contentStyle}>
         <Sidebar {...sidebarProps} />
         <Layout className='wrapper'>

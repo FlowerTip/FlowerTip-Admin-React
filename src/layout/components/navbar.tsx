@@ -17,13 +17,12 @@ import BellOutlined from '@ant-design/icons/BellOutlined';
 import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Icon from '@ant-design/icons';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MenuProps, TabsProps } from 'antd';
 import { tagsViewStore } from '@/store'
-// import { Tabs, Breadcrumb, Button, Dropdown, Space } from 'antd';
-import { Switch, Breadcrumb, Divider, Popover, Badge, Drawer, Tabs, Layout, Menu, Button, Dropdown, Space, message, Modal } from 'antd';
+import { Switch, Breadcrumb, Divider, Popover, Badge, Drawer, Tabs, Button, Dropdown, Space, message, Modal } from 'antd';
 import { useSnapshot } from 'valtio'
 import { NavbarComponentProps } from '../types/index'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
@@ -33,7 +32,7 @@ import screenfull from 'screenfull';
 
 const NavBar = (props: NavbarComponentProps) => {
   // 主题切换
-  const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
+  const { currentTheme, currentColor, currentThemeName, themeColorName, toggleThemeColor } = useThemeColor();
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
   const clickItems: any[] = [
@@ -151,7 +150,6 @@ const NavBar = (props: NavbarComponentProps) => {
     setOpen(false);
     setSettingOpen(false);
   };
-  const breadcrumbItems = [];
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [settingOpen, setSettingOpen] = useState(false);
@@ -232,7 +230,7 @@ const NavBar = (props: NavbarComponentProps) => {
   const tStore = useSnapshot(tagsViewStore);
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen] = useState(false);
   // 切换全屏
   const toggleFullScreen = () => {
     if (!screenfull.isEnabled) messageApi.warning("当前您的浏览器不支持全屏 ❌");
@@ -257,14 +255,36 @@ const NavBar = (props: NavbarComponentProps) => {
 
   const rightbarStyle = {
     paddingRight: '10px',
-    display: sStore.globalSet.layout === 'sidebar' ? 'flex' : 'none'
+    display: sStore.globalSet.layout === 'simplebar' ? 'flex' : 'none'
   }
 
+  const toggleBtnStyle = {
+    display: sStore.globalSet.layout === 'topbar' ? 'none' : 'block',
+    marginLeft: '12px',
+    cursor: 'pointer',
+    fontSize: '16px'
+  }
+  const location = useLocation();
+  const [pathName, setPathName] = useState(location.pathname);
+  useEffect(() => {
+    setPathName(location.pathname)
+  }, [location])
+  const navbarstyle = {
+    display: !pathName.includes('home') ? 'block' : sStore.globalSet.layout === 'topbar' && pathName.includes('home') ? 'none' : props.showSidebar ? 'block' : 'none'
+  }
+  const setCurrentColor = (themeName: string) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      themeName,
+      color: themeColorName[themeName][0]
+    })
+    setSettingOpen(false)
+  }
   return (
-    <div className='navbar' style={props.showSidebar ? { display: 'block' } : { display: 'none' }}>
+    <div className='navbar' style={navbarstyle}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ marginLeft: '12px', cursor: 'pointer', fontSize: '16px' }} onClick={props.toggleCollapsed}>{props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
+          <span style={toggleBtnStyle} onClick={props.toggleCollapsed}>{props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
           <Breadcrumb separator=">" items={props.breadcrumbItems} style={{
             padding: '5px 12px',
             cursor: 'pointer'
@@ -459,7 +479,8 @@ const NavBar = (props: NavbarComponentProps) => {
             <div className="wrapper">
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'classicThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'classicThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('classicThemeColors')}
                 >
                   经典主题
                 </h4>
@@ -477,7 +498,8 @@ const NavBar = (props: NavbarComponentProps) => {
               </div>
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'fashionThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'fashionThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('fashionThemeColors')}
                 >
                   时尚主题
                 </h4>
@@ -495,7 +517,8 @@ const NavBar = (props: NavbarComponentProps) => {
               </div>
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'freshThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'freshThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('freshThemeColors')}
                 >
                   清新主题
                 </h4>
@@ -513,7 +536,8 @@ const NavBar = (props: NavbarComponentProps) => {
               </div >
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'coolThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'coolThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('coolThemeColors')}
                 >
                   热情主题
                 </h4>
@@ -579,6 +603,7 @@ const NavBar = (props: NavbarComponentProps) => {
       </Drawer >
       <div
         className="setting-btn"
+        style={{ backgroundColor: sStore.globalSet.color }}
         onClick={openRightSetting}
       >
         <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />

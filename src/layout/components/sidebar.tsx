@@ -10,10 +10,10 @@ const Sidebar = (props: SidebarComponentProps) => {
   const sStore = useSnapshot(settingStore);
   const siderStyle: React.CSSProperties = {
     overflow: 'auto',
-    height: sStore.globalSet.layout === 'mixbar' ? 'calc(100vh - 50px)' : '100vh',
+    height: sStore.globalSet.layout === 'mixbar' ||  sStore.globalSet.layout === 'sidebar' ? 'calc(100vh - 50px)' : '100vh',
     position: 'fixed',
     insetInlineStart: 0,
-    top: sStore.globalSet.layout === 'mixbar' ? 50 : 0,
+    top: sStore.globalSet.layout === 'mixbar' ||  sStore.globalSet.layout === 'sidebar' ? 50 : 0,
     bottom: 0,
     scrollbarWidth: 'thin',
     scrollbarColor: 'unset',
@@ -29,7 +29,7 @@ const Sidebar = (props: SidebarComponentProps) => {
       <Menu
         theme='dark'
         style={{
-          height: sStore.globalSet.layout === 'mixbar' ? '100%' : 'calc(100% - 50px)'
+          height: sStore.globalSet.layout === 'mixbar' ||  sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
         }}
         items={props.menus as any[]}
         onSelect={props.onSelect}

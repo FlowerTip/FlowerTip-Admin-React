@@ -35,7 +35,7 @@ const TopHeader = (props: HeaderComponentProps) => {
     return Array.isArray(splitTime) && splitTime[1];
   };
   // 主题切换
-  const { currentTheme, currentColor, currentThemeName, themeColorName } = useThemeColor();
+  const { currentTheme, currentColor, currentThemeName, themeColorName, toggleThemeColor } = useThemeColor();
 
   // 用户名dropDown的菜单
   const personalItems: any[] = [
@@ -229,7 +229,8 @@ const TopHeader = (props: HeaderComponentProps) => {
     zIndex: 1,
     width: '100%',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 
   useEffect(() => {
@@ -246,19 +247,37 @@ const TopHeader = (props: HeaderComponentProps) => {
     })
     setSettingOpen(false)
   }
-
+  const setCurrentColor = (themeName: string) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      color: themeColorName[themeName][0]
+    })
+    setSettingOpen(false)
+  }
   return (
     <>
       <Header className='layout-header' style={headerStyle}>
         <div className="layout-header-logo">{defaultSetting.title}</div>
-        <Menu
-          theme='dark'
-          mode="horizontal"
-          selectedKeys={[props.selectedKeys as unknown as any]}
-          items={splitMenuList}
-          style={{ minWidth: 0, flex: 1 }}
-          onSelect={props.onSelect}
-        />
+        {
+          sStore.globalSet.layout === 'mixbar' && (<Menu
+            theme='dark'
+            mode="horizontal"
+            selectedKeys={[props.selectedKeys as unknown as any]}
+            items={splitMenuList}
+            style={{ minWidth: 0, flex: 1 }}
+            onSelect={props.onSelect}
+          />)
+        }
+        {
+          sStore.globalSet.layout === 'topbar' && (<Menu
+            theme='dark'
+            mode="horizontal"
+            selectedKeys={[props.selectedKeys as unknown as any]}
+            items={uStore.userInfo.authMenuList as unknown as any}
+            style={{ minWidth: 0, flex: 1 }}
+            onSelect={props.onSelect}
+          />)
+        }
         <div className="right-bar">
           {/* 当前时间 */}
           <div className="current-time">
@@ -433,7 +452,8 @@ const TopHeader = (props: HeaderComponentProps) => {
             <div className="wrapper">
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'classicThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'classicThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('classicThemeColors')}
                 >
                   经典主题
                 </h4>
@@ -451,7 +471,8 @@ const TopHeader = (props: HeaderComponentProps) => {
               </div>
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'fashionThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'fashionThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('fashionThemeColors')}
                 >
                   时尚主题
                 </h4>
@@ -469,7 +490,8 @@ const TopHeader = (props: HeaderComponentProps) => {
               </div>
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'freshThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'freshThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('freshThemeColors')}
                 >
                   清新主题
                 </h4>
@@ -487,7 +509,8 @@ const TopHeader = (props: HeaderComponentProps) => {
               </div >
               <div className="color-layout-wrapper">
                 <h4
-                  className={currentTheme == 'coolThemeColors' ? 'active-bg' : ''}
+                  className={sStore.globalSet.themeName == 'coolThemeColors' ? 'active-bg' : ''}
+                  onClick={() => setCurrentColor('coolThemeColors')}
                 >
                   热情主题
                 </h4>
@@ -553,6 +576,7 @@ const TopHeader = (props: HeaderComponentProps) => {
       </Drawer >
       <div
         className="setting-btn"
+        style={{ backgroundColor: sStore.globalSet.color }}
         onClick={openRightSetting}
       >
         <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
