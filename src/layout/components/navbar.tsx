@@ -102,7 +102,7 @@ const NavBar = (props: NavbarComponentProps) => {
         </Dropdown>}
         size='small'
         activeKey={props.activeKey}
-        type="editable-card"
+        type="line"
         hideAdd
         style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
         items={tStore.tabsMenuList || []}
