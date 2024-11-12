@@ -1,12 +1,15 @@
-import React from 'react';
 
-const DemoWordCloud: React.FC = () => {
+import React from 'react';
+import { Card } from 'antd';
+import MapChart from '@/components/chart/map';
+
+
+const MapChartFC: React.FC = () => {
   return (
-    <div style={{backgroundColor: '#fff', height: '100%'}}>
-    </div>
-  );
+    <Card bordered={false} style={{ height: '100%' }}>
+      <MapChart />
+    </Card>
+  )
 };
 
-
-export default DemoWordCloud;
-
+export default MapChartFC;

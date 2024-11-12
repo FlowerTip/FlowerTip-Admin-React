@@ -14,6 +14,7 @@ const App: React.FC = () => {
         Layout: {
           headerHeight: 50,
           headerPadding: 16,
+          bodyBg: '#f0f0f0'
         },
         Table: {
           headerBg: sStore.globalSet.color,

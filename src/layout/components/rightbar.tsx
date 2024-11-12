@@ -262,6 +262,7 @@ const Rightbar = () => {
   const setCurrentColor = (themeName: string) => {
     sStore.updateSetting({
       ...sStore.globalSet,
+      themeName,
       color: themeColorName[themeName][0]
     })
     setSettingOpen(false)
