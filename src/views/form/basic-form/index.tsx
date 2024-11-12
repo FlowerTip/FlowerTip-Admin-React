@@ -49,7 +49,7 @@ const BasicForm = () => {
       title="新建表单"
       formRef={formRef}
       submitter={{
-        render: (props, doms) => {
+        render: (_, doms) => {
           return [
             ...doms,
             <Button htmlType="button" onClick={onFill} key="edit">
