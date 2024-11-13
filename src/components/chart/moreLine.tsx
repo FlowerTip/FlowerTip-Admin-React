@@ -52,7 +52,7 @@ const MoreLineChart = (props: any) => {
       myChart.resize()
     });
     sidebarMenuNode = document.getElementsByClassName(
-      "content-aside"
+      "sidebar"
     )[0] as HTMLDivElement;
     sidebarMenuNode &&
       sidebarMenuNode.addEventListener("transitionend", () => {
