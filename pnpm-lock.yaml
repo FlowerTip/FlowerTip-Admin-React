@@ -11,6 +11,18 @@ dependencies:
   '@ant-design/pro-components':
     specifier: ^2.7.16
     version: 2.7.16(antd@5.20.6)(rc-field-form@2.4.0)(react-dom@18.3.1)(react@18.3.1)
+  '@js-preview/docx':
+    specifier: ^1.6.2
+    version: 1.6.2
+  '@js-preview/excel':
+    specifier: ^1.7.12
+    version: 1.7.12
+  '@js-preview/pdf':
+    specifier: ^2.0.8
+    version: 2.0.8
+  ahooks:
+    specifier: ^3.8.1
+    version: 3.8.1(react@18.3.1)
   antd:
     specifier: ^5.20.5
     version: 5.20.6(react-dom@18.3.1)(react@18.3.1)
@@ -47,7 +59,7 @@ dependencies:
 
 devDependencies:
   '@eslint/js':
-    specifier: ^9.9.0
+    specifier: ^9.9.1
     version: 9.9.1
   '@types/node':
     specifier: ^22.5.4
@@ -779,6 +791,18 @@ packages:
     engines: {node: '>=18.18'}
     dev: true
 
+  /@js-preview/docx@1.6.2:
+    resolution: {integrity: sha512-DNzUr8l4KwbK10+kCc9wWn5syfDduaMoLnIwcHRo94N0XffJfhiYkfjmY/gvGWj4OmD/gB281bANnHyVMyfA5Q==, tarball: https://registry.npmmirror.com/@js-preview/docx/-/docx-1.6.2.tgz}
+    dev: false
+
+  /@js-preview/excel@1.7.12:
+    resolution: {integrity: sha512-sO2B+SEeBz12NydiOzC9ZiwxyVSQbnFHIO0g7u+AHX4VziGVMT2krAL+oRzoyfgG4jChp0I18nlkpZtbEP/y6Q==, tarball: https://registry.npmmirror.com/@js-preview/excel/-/excel-1.7.12.tgz}
+    dev: false
+
+  /@js-preview/pdf@2.0.8:
+    resolution: {integrity: sha512-x0mb59u2KQ8InBtiwBN0+FaiYyzlW39y5/WYuVpvEI8YEZPDxJBQwstPaN18yHx2ywZCaH38uOy7zapkAaChmg==, tarball: https://registry.npmmirror.com/@js-preview/pdf/-/pdf-2.0.8.tgz}
+    dev: false
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==, tarball: https://registry.npmmirror.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz}
     engines: {node: '>= 8'}
@@ -1378,6 +1402,24 @@ packages:
     resolution: {integrity: sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==, tarball: https://registry.npmmirror.com/add-dom-event-listener/-/add-dom-event-listener-1.1.0.tgz}
     dependencies:
       object-assign: 4.1.1
+    dev: false
+
+  /ahooks@3.8.1(react@18.3.1):
+    resolution: {integrity: sha512-JoP9+/RWO7MnI/uSKdvQ8WB10Y3oo1PjLv+4Sv4Vpm19Z86VUMdXh+RhWvMGxZZs06sq2p0xVtFk8Oh5ZObsoA==, tarball: https://registry.npmmirror.com/ahooks/-/ahooks-3.8.1.tgz}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.25.6
+      dayjs: 1.11.13
+      intersection-observer: 0.12.2
+      js-cookie: 3.0.5
+      lodash: 4.17.21
+      react: 18.3.1
+      react-fast-compare: 3.2.2
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.7.0
     dev: false
 
   /ajv@6.12.6:
@@ -2021,6 +2063,10 @@ packages:
     engines: {node: '>=0.8.19'}
     dev: true
 
+  /intersection-observer@0.12.2:
+    resolution: {integrity: sha512-7m1vEcPCxXYI8HqnL8CKI6siDyD+eIWSwgB3DZA+ZTogxk9I4CDnj4wilt9x/+/QbHI4YG5YZNmC6458/e9Ktg==, tarball: https://registry.npmmirror.com/intersection-observer/-/intersection-observer-0.12.2.tgz}
+    dev: false
+
   /is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==, tarball: https://registry.npmmirror.com/is-binary-path/-/is-binary-path-2.1.0.tgz}
     engines: {node: '>=8'}
@@ -2064,6 +2110,11 @@ packages:
     dependencies:
       node-fetch: 1.7.3
       whatwg-fetch: 3.6.20
+    dev: false
+
+  /js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==, tarball: https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.5.tgz}
+    engines: {node: '>=14'}
     dev: false
 
   /js-tokens@4.0.0:
@@ -2865,6 +2916,10 @@ packages:
       scheduler: 0.23.2
     dev: false
 
+  /react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==, tarball: https://registry.npmmirror.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz}
+    dev: false
+
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==, tarball: https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz}
     dev: false
@@ -3021,6 +3076,11 @@ packages:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==, tarball: https://registry.npmmirror.com/scheduler/-/scheduler-0.23.2.tgz}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /screenfull@5.2.0:
+    resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==, tarball: https://registry.npmmirror.com/screenfull/-/screenfull-5.2.0.tgz}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /screenfull@6.0.2:

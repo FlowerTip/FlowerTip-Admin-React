@@ -12,6 +12,10 @@
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@ant-design/pro-components": "^2.7.16",
+    "@js-preview/docx": "^1.6.2",
+    "@js-preview/excel": "^1.7.12",
+    "@js-preview/pdf": "^2.0.8",
+    "ahooks": "^3.8.1",
     "antd": "^5.20.5",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
@@ -25,7 +29,7 @@
     "valtio": "^2.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
+    "@eslint/js": "^9.9.1",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

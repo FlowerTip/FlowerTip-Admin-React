@@ -27,7 +27,7 @@ const App: React.FC = () => {
           darkItemBg: '#282E38',
           darkPopupBg: '#282E38',
           darkItemSelectedBg: sStore.globalSet.color
-        }
+        },
       },
       token: {
         colorPrimary: sStore.globalSet.color,
