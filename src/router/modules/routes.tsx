@@ -531,7 +531,7 @@ export const asyncRoute = [
         name: "department",
         path: "department",
         Component: RouterViewPage,
-        meta: { title: "部门管理", icon: <SortDescendingOutlined /> },
+        meta: { title: "组织架构", icon: <SortDescendingOutlined /> },
         redirect: "/setting/department/software",
         children: [
           {
@@ -539,7 +539,7 @@ export const asyncRoute = [
             path: "software",
             Component: Maintenance,
             meta: {
-              title: "软件人员",
+              title: "部门管理",
               icon: <ConsoleSqlOutlined />,
             },
           },
@@ -548,7 +548,7 @@ export const asyncRoute = [
             path: "maintenance",
             Component: Software,
             meta: {
-              title: "运维人员",
+              title: "岗位管理",
               icon: <MacCommandOutlined />,
             },
           },

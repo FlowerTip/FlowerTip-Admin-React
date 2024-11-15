@@ -1,35 +1,40 @@
 import {
   ModalForm,
   ProFormText,
+  ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
 import { useState, useImperativeHandle, forwardRef } from 'react';
 
 type ModalProps = {
-  api: (params: AccountItem) => Promise<any>,
+  api: (params: WorkPostItem) => Promise<any>,
   reload: () => {},
-  rowData: AccountItem
+  rowData: WorkPostItem
 }
 
 const ModalAccount = ({ }, ref: any) => {
-  const [form] = Form.useForm<AccountItem>();
+  const [form] = Form.useForm<WorkPostItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalProps, setModalProps] = useState<ModalProps>()
-  const [rowFormItem, setRowFormItem] = useState<AccountItem>()
+  const [rowFormItem, setRowFormItem] = useState<WorkPostItem>()
   const acceptParams = (params: ModalProps) => {
     const row = params.rowData;
     setRowFormItem(row);
     setModalProps(params)
-    if (row.id) {
-      setModalTitle("编辑用户")
+    if (row.workPostId) {
+      setModalTitle("编辑岗位")
     } else {
-      setModalTitle('新增用户')
+      setModalTitle('新增岗位')
     }
     setModalVisiable(true);
   };
 
-  const submitFinish = async (values: AccountItem) => {
+  const submitFinish = async (values: WorkPostItem) => {
+    console.log({
+      ...rowFormItem,
+      ...values,
+    }, '@@@rowFormItem');
     const { code } = await modalProps!.api({
       ...rowFormItem,
       ...values,
@@ -47,7 +52,7 @@ const ModalAccount = ({ }, ref: any) => {
   }))
 
   return (
-    <ModalForm<AccountItem>
+    <ModalForm<WorkPostItem>
       width={500}
       title={modalTitle}
       form={form}
@@ -60,21 +65,32 @@ const ModalAccount = ({ }, ref: any) => {
       submitTimeout={2000}
       onFinish={submitFinish}
     >
-      <ProFormText name="username" label="账号名称" placeholder="请输入账号名称" rules={[
+      <ProFormText name="workPostName" label="岗位名称" placeholder="请输入岗位名称" rules={[
         {
           required: true,
         },
-      ]} initialValue={rowFormItem?.username} />
-      <ProFormText.Password
-        name="password"
-        label="账号密码"
-        placeholder="请输入账号密码"
+      ]} initialValue={rowFormItem?.workPostName} />
+      <ProFormText
+        name="workPostNum"
+        label="岗位编号"
+        placeholder="请输入岗位编号"
         rules={[
           {
             required: true,
           },
         ]}
-        initialValue={rowFormItem?.password}
+        initialValue={rowFormItem?.workPostNum}
+      />
+      <ProFormTextArea
+        name="description"
+        label="岗位描述"
+        placeholder="请填写岗位描述"
+        initialValue={rowFormItem?.description}
+        fieldProps={{
+          rows: 4,
+          maxLength: 50,
+          showCount: true
+        }}
       />
     </ModalForm>
   );

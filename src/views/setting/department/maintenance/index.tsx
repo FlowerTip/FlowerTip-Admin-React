@@ -1,128 +1,59 @@
-import React, { useRef, useMemo, useState } from 'react';
-import { Input, Tree } from 'antd';
-import type { TreeDataNode } from 'antd';
+import React, { useRef, useState } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, message, Popconfirm } from 'antd';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
-import { reqBatchRole, reqAccountList, reqSaveAccount, reqDelAccount } from '@/api/account'
+import { reqDepartmentList, reqSaveDepartment, reqDelDepartMent } from '@/api/department'
 import ModalAccount from './components/ModalAccount';
-import RoleModal from './components/RoleModal';
-
-import './index.scss';
-
-const { Search } = Input;
-
-const x = 3;
-const y = 2;
-const z = 1;
-const defaultData: TreeDataNode[] = [];
-
-const generateData = (_level: number, _preKey?: React.Key, _tns?: TreeDataNode[]) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || defaultData;
-
-  const children: React.Key[] = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
-    if (i < y) {
-      children.push(key);
-    }
-  }
-  if (_level < 0) {
-    return tns;
-  }
-  const level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(level, key, tns[index].children);
-  });
-};
-generateData(z);
-
-const dataList: { key: React.Key; title: string }[] = [];
-const generateList = (data: TreeDataNode[]) => {
-  for (let i = 0; i < data.length; i++) {
-    const node = data[i];
-    const { key } = node;
-    dataList.push({ key, title: key as string });
-    if (node.children) {
-      generateList(node.children);
-    }
-  }
-};
-generateList(defaultData);
-
-const getParentKey = (key: React.Key, tree: TreeDataNode[]): React.Key => {
-  let parentKey: React.Key;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    if (node.children) {
-      if (node.children.some((item) => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
-      }
-    }
-  }
-  return parentKey!;
-};
 
 const Maintenance: React.FC = () => {
-  const [searchValue, setSearchValue] = useState('');
-
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setSearchValue(value);
-  };
-
-  const treeData = useMemo(() => {
-    const loop = (data: TreeDataNode[]): TreeDataNode[] =>
-      data.map((item) => {
-        const strTitle = item.title as string;
-        const index = strTitle.indexOf(searchValue);
-        const beforeStr = strTitle.substring(0, index);
-        const afterStr = strTitle.slice(index + searchValue.length);
-        const title =
-          index > -1 ? (
-            <span key={item.key}>
-              {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
-              {afterStr}
-            </span>
-          ) : (
-            <span key={item.key}>{strTitle}</span>
-          );
-        if (item.children) {
-          return { title, key: item.key, children: loop(item.children) };
-        }
-
-        return {
-          title,
-          key: item.key,
-        };
-      });
-
-    return loop(defaultData);
-  }, [searchValue]);
-
-
   const columns: ProColumns<AccountItem>[] = [
     {
-      title: '账号名称',
-      dataIndex: 'username',
+      title: '部门名称',
+      dataIndex: 'departmentName',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入账号名称'
-      }
+        placeholder: '请输入部门名称'
+      },
+      width: 160,
     },
     {
-      title: '账号密码',
-      dataIndex: 'password',
+      title: '部门编号',
+      dataIndex: 'departmentId',
+      align: 'center',
+      hideInSearch: true,
+      width: 160,
+    },
+    {
+      title: '部门描述',
+      dataIndex: 'description',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '上级部门',
+      dataIndex: 'parentName',
+      align: 'center',
+      hideInSearch: true,
+      width: 160,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      align: 'center',
+      hideInSearch: true,
+      sorter: true,
+      valueType: 'dateTime',
+      width: 160,
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updatedAt',
+      align: 'center',
+      hideInSearch: true,
+      sorter: true,
+      valueType: 'dateTime',
+      width: 160,
     },
     {
       title: '操作',
@@ -132,17 +63,17 @@ const Maintenance: React.FC = () => {
       width: 300,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Button size='small' onClick={() => batchModal(record)}>分配角色</Button>
-          <Button size='small' onClick={() => editModal(record)}>编辑账号</Button>
+          <Button size='small' onClick={() => batchModal(record)}>添加部门</Button>
+          <Button size='small' onClick={() => editModal(record)}>编辑部门</Button>
           <Popconfirm
             title="删除提示"
-            description="确认要删除该账号吗?"
+            description="确认要删除该部门吗?"
             onConfirm={() => delModal(record)}
             onCancel={() => message.info('取消操作')}
             okText="确定"
             cancelText="取消"
           >
-            <Button danger size='small'>删除账号</Button>
+            <Button danger size='small'>删除部门</Button>
           </Popconfirm>
         </Space >
         ,
@@ -151,10 +82,9 @@ const Maintenance: React.FC = () => {
   ];
   const actionRef = useRef<ActionType>();
   const ModalAccountRef = useRef<any>();
-  const RoleModalRef = useRef<any>();
 
   const updateTableList = async (params: any): Promise<any> => {
-    const { code, data } = await reqAccountList({
+    const { code, data } = await reqDepartmentList({
       currentPage: params.current,
       ...params
     });
@@ -172,24 +102,27 @@ const Maintenance: React.FC = () => {
   })
   const addAccount = () => {
     ModalAccountRef.current!.acceptParams({
-      api: reqSaveAccount,
+      api: reqSaveDepartment,
       reload: actionRef.current?.reload,
       rowData: {
-        username: '',
-        password: '123456'
+        parentId: 0,
+        departmentName: '',
+        departmentId: '',
+        sort: '',
+        description: ''
       }
     })
   }
   const editModal = (rowData: any) => {
     ModalAccountRef.current!.acceptParams({
-      api: reqSaveAccount,
+      api: reqSaveDepartment,
       reload: actionRef.current?.reload,
       rowData
     })
   }
   const delModal = async (rowData: any) => {
-    const { code } = await reqDelAccount({
-      ids: [rowData.id!],
+    const { code } = await reqDelDepartMent({
+      departmentId: rowData.departmentId!,
     });
     if (code === 200) {
       message.success('删除成功');
@@ -197,65 +130,61 @@ const Maintenance: React.FC = () => {
     }
   }
   const batchModal = (rowData: any) => {
-    RoleModalRef.current.acceptParams({
-      api: reqBatchRole,
+    ModalAccountRef.current!.acceptParams({
+      api: reqSaveDepartment,
       reload: actionRef.current?.reload,
-      rowData
+      rowData: {
+        parentId: rowData.departmentId,
+        departmentName: '',
+        departmentId: '',
+        sort: '',
+        description: ''
+      }
     })
   }
 
   return (
-    <div className="maintenance-table">
-      <div className='tree-box'>
-        <Search style={{ marginBottom: 8 }} placeholder="输入关键字" onChange={onChange} />
-        <Tree
-          treeData={treeData}
-          defaultExpandAll={true}
-        />
-      </div>
-      <div className="right-wrap">
-        <ProTable<AccountItem>
-          columns={columns}
-          actionRef={actionRef}
-          cardBordered
-          request={updateTableList}
-          rowKey="id"
-          search={{
-            labelWidth: 'auto',
-          }}
-          options={{
-            setting: {
-              listsHeight: 400,
-            },
-          }}
-          pagination={{
-            showSizeChanger: true,
-            current: pagination.current,
-            pageSize: pagination.pageSize,
-            onChange: (page, size) => {
-              setPagination({
-                current: page,
-                pageSize: size
-              })
-            },
-          }}
-          dateFormatter="string"
-          headerTitle="软件人员"
-          toolBarRender={() => [
-            <Button
-              key="button"
-              icon={<PlusOutlined />}
-              onClick={addAccount}
-              type="primary"
-            >
-              添加账号
-            </Button>,
-          ]}
-        />
-        <ModalAccount ref={ModalAccountRef} />
-        <RoleModal ref={RoleModalRef} />
-      </div>
-    </div>
+    <>
+      <ProTable<AccountItem>
+        columns={columns}
+        actionRef={actionRef}
+        cardBordered
+        request={updateTableList}
+        rowKey="departmentId"
+        search={{
+          labelWidth: 'auto',
+        }}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
+        }}
+        pagination={{
+          showSizeChanger: true,
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          onChange: (page, size) => {
+            setPagination({
+              current: page,
+              pageSize: size
+            })
+          },
+        }}
+        dateFormatter="string"
+        headerTitle="部门管理"
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={addAccount}
+            type="primary"
+          >
+            添加部门
+          </Button>,
+        ]}
+      />
+      <ModalAccount ref={ModalAccountRef} />
+    </>
   )
 }
 

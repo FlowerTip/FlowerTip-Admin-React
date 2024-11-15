@@ -71,3 +71,10 @@ body {
     }
   }
 }
+
+/* 菜单选中状态去掉边框线 */
+.ant-menu-item-selected {
+  &:focus-visible {
+    outline: none !important;
+  }
+}

@@ -1,76 +1,46 @@
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Input, Tree } from 'antd';
 import type { TreeDataNode } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, message, Popconfirm } from 'antd';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
-import { reqBatchRole, reqAccountList, reqSaveAccount, reqDelAccount } from '@/api/account'
+import ApartmentOutlined from '@ant-design/icons/ApartmentOutlined';
+import { reqDepartmentList } from '@/api/department'
+import { reqWorkPostList, reqSaveWorkPost, reqDelWorkPost } from '@/api/workPost'
 import ModalAccount from './components/ModalAccount';
 import RoleModal from './components/RoleModal';
 
 import './index.scss';
 
 const { Search } = Input;
+let originTreeData: DepartMentItem[] = [];
 
-const x = 3;
-const y = 2;
-const z = 1;
-const defaultData: TreeDataNode[] = [];
-
-const generateData = (_level: number, _preKey?: React.Key, _tns?: TreeDataNode[]) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || defaultData;
-
-  const children: React.Key[] = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
-    if (i < y) {
-      children.push(key);
-    }
-  }
-  if (_level < 0) {
-    return tns;
-  }
-  const level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(level, key, tns[index].children);
-  });
-};
-generateData(z);
-
-const dataList: { key: React.Key; title: string }[] = [];
-const generateList = (data: TreeDataNode[]) => {
-  for (let i = 0; i < data.length; i++) {
-    const node = data[i];
-    const { key } = node;
-    dataList.push({ key, title: key as string });
-    if (node.children) {
-      generateList(node.children);
-    }
-  }
-};
-generateList(defaultData);
-
-const getParentKey = (key: React.Key, tree: TreeDataNode[]): React.Key => {
-  let parentKey: React.Key;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    if (node.children) {
-      if (node.children.some((item) => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
-      }
-    }
-  }
-  return parentKey!;
-};
-
-const Software: React.FC = () => {
+const Maintenance: React.FC = () => {
+  const [treeData, setTreeData] = useState<TreeDataNode[]>([])
   const [searchValue, setSearchValue] = useState('');
+  const getTreeData = async () => {
+    const { code, data } = await reqDepartmentList({
+      departmentName: searchValue,
+    });
+    if (code === 200) {
+      originTreeData = data.origin as DepartMentItem[];
+      const treeList = data.list.map((item: any) => {
+        return {
+          ...item,
+          icon: <ApartmentOutlined />,
+          selectable: !item.children
+        }
+      })
+      setTreeData(treeList as unknown as TreeDataNode[])
+      setSelectedKeys([treeList[0].children[0].departmentId] as unknown as string[])
+      setDefaultExpandedKeys(treeList.map(item => item.departmentId) as unknown as string[])
+    }
+  }
+  useEffect(() => {
+    getTreeData()
+  }, [searchValue])
+
 
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,51 +48,52 @@ const Software: React.FC = () => {
     setSearchValue(value);
   };
 
-  const treeData = useMemo(() => {
-    const loop = (data: TreeDataNode[]): TreeDataNode[] =>
-      data.map((item) => {
-        const strTitle = item.title as string;
-        const index = strTitle.indexOf(searchValue);
-        const beforeStr = strTitle.substring(0, index);
-        const afterStr = strTitle.slice(index + searchValue.length);
-        const title =
-          index > -1 ? (
-            <span key={item.key}>
-              {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
-              {afterStr}
-            </span>
-          ) : (
-            <span key={item.key}>{strTitle}</span>
-          );
-        if (item.children) {
-          return { title, key: item.key, children: loop(item.children) };
-        }
-
-        return {
-          title,
-          key: item.key,
-        };
-      });
-
-    return loop(defaultData);
-  }, [searchValue]);
 
 
   const columns: ProColumns<AccountItem>[] = [
     {
-      title: '账号名称',
-      dataIndex: 'username',
+      title: '岗位名称',
+      dataIndex: 'workPostName',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入账号名称'
+        placeholder: '请输入岗位名称'
       }
     },
     {
-      title: '账号密码',
-      dataIndex: 'password',
+      title: '岗位编号',
+      dataIndex: 'workPostNum',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '所属部门',
+      dataIndex: 'departmentName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '岗位描述',
+      dataIndex: 'description',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      align: 'center',
+      hideInSearch: true,
+      sorter: true,
+      valueType: 'dateTime',
+      width: 160,
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updatedAt',
+      align: 'center',
+      hideInSearch: true,
+      sorter: true,
+      valueType: 'dateTime',
+      width: 160,
     },
     {
       title: '操作',
@@ -132,17 +103,16 @@ const Software: React.FC = () => {
       width: 300,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Button size='small' onClick={() => batchModal(record)}>分配角色</Button>
-          <Button size='small' onClick={() => editModal(record)}>编辑账号</Button>
+          <Button size='small' onClick={() => editModal(record)}>编辑岗位</Button>
           <Popconfirm
             title="删除提示"
-            description="确认要删除该账号吗?"
+            description="确认要删除该岗位吗?"
             onConfirm={() => delModal(record)}
             onCancel={() => message.info('取消操作')}
             okText="确定"
             cancelText="取消"
           >
-            <Button danger size='small'>删除账号</Button>
+            <Button danger size='small'>删除岗位</Button>
           </Popconfirm>
         </Space >
         ,
@@ -154,13 +124,19 @@ const Software: React.FC = () => {
   const RoleModalRef = useRef<any>();
 
   const updateTableList = async (params: any): Promise<any> => {
-    const { code, data } = await reqAccountList({
+    const { code, data } = await reqWorkPostList({
       currentPage: params.current,
-      ...params
+      ...params,
+      departmentId: selectedKeys[0],
     });
     if (code === 200) {
       return {
-        data: data.list,
+        data: data.list.map(item => {
+          return {
+            ...item,
+            departmentName: originTreeData.find(record => record.departmentId === item.departmentId)?.departmentName
+          }
+        }),
         success: true,
         total: data.total
       }
@@ -172,45 +148,61 @@ const Software: React.FC = () => {
   })
   const addAccount = () => {
     ModalAccountRef.current!.acceptParams({
-      api: reqSaveAccount,
+      api: reqSaveWorkPost,
       reload: actionRef.current?.reload,
       rowData: {
-        username: '',
-        password: '123456'
+        workPostName: '',
+        workPostNum: '',
+        description: '',
+        departmentId: selectedKeys[0],
       }
     })
   }
   const editModal = (rowData: any) => {
     ModalAccountRef.current!.acceptParams({
-      api: reqSaveAccount,
+      api: reqSaveWorkPost,
       reload: actionRef.current?.reload,
       rowData
     })
   }
   const delModal = async (rowData: any) => {
-    const { code } = await reqDelAccount({
-      ids: [rowData.id!],
+    const { code } = await reqDelWorkPost({
+      ids: [rowData.workPostId!],
     });
     if (code === 200) {
       message.success('删除成功');
       actionRef.current?.reload();
     }
   }
-  const batchModal = (rowData: any) => {
-    RoleModalRef.current.acceptParams({
-      api: reqBatchRole,
-      reload: actionRef.current?.reload,
-      rowData
-    })
-  }
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+  const [defaultExpandedKeys, setDefaultExpandedKeys] = useState<string[]>([])
 
+  const handleOnSelect = (selectedKeys: any, e: {selected: boolean, selectedNodes: any, node: any, event: any}) => {
+    console.log(selectedKeys, e);
+    setSelectedKeys(selectedKeys);
+    actionRef.current?.reload();
+  }
   return (
     <div className="maintenance-table">
       <div className='tree-box'>
         <Search style={{ marginBottom: 8 }} placeholder="输入关键字" onChange={onChange} />
         <Tree
+          showIcon
+          showLine
+          selectable
+          expandedKeys={defaultExpandedKeys}
+          selectedKeys={selectedKeys}
           treeData={treeData}
-          defaultExpandAll={true}
+          fieldNames={
+            {
+              title: 'departmentName',
+              key: 'departmentId',
+            }
+          }
+          style={{
+            padding: '10px 5px'
+          }}
+          onSelect={handleOnSelect}
         />
       </div>
       <div className="right-wrap">
@@ -218,7 +210,10 @@ const Software: React.FC = () => {
           columns={columns}
           actionRef={actionRef}
           cardBordered
-          request={updateTableList}
+          request={() => updateTableList({
+            departmentId: selectedKeys[0],
+            ...pagination
+          })}
           rowKey="id"
           search={{
             labelWidth: 'auto',
@@ -240,7 +235,7 @@ const Software: React.FC = () => {
             },
           }}
           dateFormatter="string"
-          headerTitle="运维人员"
+          headerTitle="岗位管理"
           toolBarRender={() => [
             <Button
               key="button"
@@ -248,7 +243,7 @@ const Software: React.FC = () => {
               onClick={addAccount}
               type="primary"
             >
-              添加账号
+              添加岗位
             </Button>,
           ]}
         />
@@ -259,4 +254,4 @@ const Software: React.FC = () => {
   )
 }
 
-export default Software;
+export default Maintenance;
