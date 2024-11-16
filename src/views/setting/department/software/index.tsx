@@ -35,8 +35,10 @@ const Maintenance: React.FC = () => {
       setTreeData(treeList as unknown as TreeDataNode[])
       setSelectedKeys([treeList[0].children[0].departmentId] as unknown as string[])
       setDefaultExpandedKeys(treeList.map(item => item.departmentId) as unknown as string[])
+      actionRef.current?.reload();
     }
   }
+
   useEffect(() => {
     getTreeData()
   }, [searchValue])
@@ -57,7 +59,8 @@ const Maintenance: React.FC = () => {
       align: 'center',
       fieldProps: {
         placeholder: '请输入岗位名称'
-      }
+      },
+      hideInSearch: false
     },
     {
       title: '岗位编号',
@@ -124,6 +127,9 @@ const Maintenance: React.FC = () => {
   const RoleModalRef = useRef<any>();
 
   const updateTableList = async (params: any): Promise<any> => {
+    console.log(params, '第一次请求参数');
+
+    
     const { code, data } = await reqWorkPostList({
       currentPage: params.current,
       ...params,
@@ -207,12 +213,14 @@ const Maintenance: React.FC = () => {
       </div>
       <div className="right-wrap">
         <ProTable<AccountItem>
+          manualRequest
           columns={columns}
           actionRef={actionRef}
           cardBordered
-          request={() => updateTableList({
+          request={(params) => updateTableList({
             departmentId: selectedKeys[0],
-            ...pagination
+            ...pagination,
+            ...params
           })}
           rowKey="id"
           search={{

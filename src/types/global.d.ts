@@ -150,6 +150,8 @@ declare type AccountItem = {
   id?: number;
   username: string;
   password: string;
+  departmentId?: number;
+  workPostId?: number;
 };
 
 declare type MenuItem = {

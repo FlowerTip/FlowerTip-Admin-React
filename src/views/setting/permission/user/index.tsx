@@ -23,6 +23,12 @@ export default () => {
       align: 'center',
       hideInSearch: true
     },
+    // {
+    //   title: '所属岗位',
+    //   dataIndex: 'workPostId',
+    //   align: 'center',
+    //   hideInSearch: true
+    // },
     {
       title: '操作',
       valueType: 'option',
@@ -75,7 +81,8 @@ export default () => {
       reload: actionRef.current?.reload,
       rowData: {
         username: '',
-        password: '123456'
+        password: '123456',
+        workPostId: null
       }
     })
   }

@@ -1,8 +1,10 @@
 import {
   ModalForm,
+  ProFormSelect,
   ProFormText,
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
+import { reqWorkPostList } from '@/api/workPost'
 import { useState, useImperativeHandle, forwardRef } from 'react';
 
 type ModalProps = {
@@ -19,6 +21,8 @@ const ModalAccount = ({ }, ref: any) => {
   const [rowFormItem, setRowFormItem] = useState<AccountItem>()
   const acceptParams = (params: ModalProps) => {
     const row = params.rowData;
+    console.log(row, 'rtoowakskda');
+    
     setRowFormItem(row);
     setModalProps(params)
     if (row.id) {
@@ -75,6 +79,31 @@ const ModalAccount = ({ }, ref: any) => {
           },
         ]}
         initialValue={rowFormItem?.password}
+      />
+      <ProFormSelect
+        name="workPostId"
+        label="所属岗位"
+        request={async () => {
+          const { code, data } = await reqWorkPostList({
+            currentPage: 1,
+            pageSize: 100,
+          });
+          if (code === 200) {
+            return data.list;
+          } else {
+            return []
+          }
+        }}
+        fieldProps={{
+          fieldNames: {
+            label: 'description',
+            value: 'workPostId',
+          },
+        }}
+        debounceTime={1000}
+        placeholder="请选择所属岗位"
+        rules={[{ required: true, message: '请选择所属岗位' }]}
+        initialValue={rowFormItem?.workPostId}
       />
     </ModalForm>
   );
