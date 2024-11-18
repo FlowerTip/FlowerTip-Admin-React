@@ -10,25 +10,31 @@ import RoleModal from './components/RoleModal';
 export default () => {
   const columns: ProColumns<AccountItem>[] = [
     {
-      title: '账号名称',
+      title: '用户名称',
       dataIndex: 'username',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入账号名称'
+        placeholder: '请输入用户名称'
       }
     },
     {
-      title: '账号密码',
+      title: '用户密码',
       dataIndex: 'password',
       align: 'center',
       hideInSearch: true
     },
-    // {
-    //   title: '所属岗位',
-    //   dataIndex: 'workPostId',
-    //   align: 'center',
-    //   hideInSearch: true
-    // },
+    {
+      title: '所属岗位',
+      dataIndex: 'workPostName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '所属部门',
+      dataIndex: 'departmentName',
+      align: 'center',
+      hideInSearch: true
+    },
     {
       title: '操作',
       valueType: 'option',

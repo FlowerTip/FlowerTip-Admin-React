@@ -39,7 +39,7 @@ const TopHeader = (props: HeaderComponentProps) => {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   }
 
   return (
@@ -51,7 +51,7 @@ const TopHeader = (props: HeaderComponentProps) => {
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={splitMenuList}
-          style={{ minWidth: 0, flex: 1 }}
+          style={{ minWidth: 1000, flex: 1 }}
           onSelect={props.onSelect}
         />)
       }
@@ -61,7 +61,7 @@ const TopHeader = (props: HeaderComponentProps) => {
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={uStore.userInfo.authMenuList as unknown as any}
-          style={{ minWidth: 0, flex: 1 }}
+          style={{ minWidth: 1000, flex: 1 }}
           onSelect={props.onSelect}
         />)
       }
