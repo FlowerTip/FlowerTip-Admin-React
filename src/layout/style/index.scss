@@ -140,33 +140,22 @@
   .wrapper {
     min-height: 120px;
 
+    .user-item {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      .label {
+        width: 80px;
+        color: #656565;
+      }
+      .value {
+        flex: 1;
+      }
+    }
+
     .project-layout {
       margin-bottom: 20px;
       font-size: 14px;
-    }
-
-    .author-layout {
-      font-size: 14px;
-      color: #303133;
-      padding-bottom: 20px;
-
-      h1 {
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 40px;
-        text-align: center;
-      }
-
-      h2 {
-        font-size: 16px;
-        line-height: 40px;
-      }
-
-      h3 {
-        font-size: 14px;
-        line-height: 20px;
-        margin-bottom: 20px;
-      }
     }
 
     .color-layout-wrapper {

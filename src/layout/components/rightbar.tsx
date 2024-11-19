@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
 import type { MenuProps, TabsProps } from 'antd';
-import { Switch, Divider, Popover, Badge, Drawer, Tabs, Button, Dropdown, Space, message, Modal } from 'antd';
+import { Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal } from 'antd';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 
@@ -276,8 +276,8 @@ const Rightbar = () => {
       <div className="right-bar" style={rightbarStyle}>
         {/* 当前时间 */}
         <div className="current-time">
-          <span className="ymd" style={{color: rightbarStyle.color}}>{ymd()}</span>
-          <span className="hms" style={{color: rightbarStyle.color}}>{hms()}</span>
+          <span className="ymd" style={{ color: rightbarStyle.color }}>{ymd()}</span>
+          <span className="hms" style={{ color: rightbarStyle.color }}>{hms()}</span>
         </div>
         {/* 消息通知 */}
         <Popover placement="bottom" content={content}>
@@ -341,33 +341,22 @@ const Rightbar = () => {
         <div className="drawer-box">
           <div className="divider-item">
             <div className="wrapper">
-              <div className="author-layout">
-                <h1>高级前端进阶</h1>
-                <h2>狗尾巴花的尖，专注于前端开发</h2>
-                <h3>
-                  一个前端进阶路上的学习者，有输入就要有输出，愿你前端技术学习的热忱永远不会被辜负
-                </h3>
-              </div>
-              <div className="project-layout">
-                掘金地址：<Button
-                  href="https://juejin.cn/user/2295436009546920/posts"
-                  type="link"
-                  target="_blank"
-                >狗尾巴花的尖</Button>
-              </div>
-              <div className="project-layout">
-                博客地址：<Button
-                  href="https://www.flowertip.site/vitepress-blog"
-                  target="_blank"
-                  type="link"
-                >狗尾巴花的知识库</Button>
-              </div>
-              <div className="project-layout">
-                源码地址：<Button
-                  href="https://gitee.com/CodeTV/flower-tip-admin-react"
-                  type="link"
-                >FlowerTip Admin</Button>
-              </div>
+              <p className='user-item'>
+                <span className='label'>用户昵称：</span>
+                <span className='value'>{uStore.userInfo.username}</span>
+              </p>
+              <p className='user-item'>
+                <span className='label'>权限角色：</span>
+                <span className='value'>{uStore.userInfo.roleName}</span>
+              </p>
+              <p className='user-item'>
+                <span className='label'>所在岗位：</span>
+                <span className='value'>{uStore.userInfo.workPostName}</span>
+              </p>
+              <p className='user-item'>
+                <span className='label'>所属部门：</span>
+                <span className='value'>{uStore.userInfo.departmentName}</span>
+              </p>
             </div>
           </div>
         </div>

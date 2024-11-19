@@ -14,6 +14,9 @@ export const userStore = proxy({
     permissionButtonList: [], // 按钮列表
     authMenuList: [], // 权限菜单
     sidebarMenuList: [], // 侧边栏菜单
+    roleName: '', // 角色名称
+    workPostName: '', // 岗位名称
+    departmentName: '', // 部门名称
   },
   /**
    * 登录存储Token
@@ -39,6 +42,7 @@ export const userStore = proxy({
     const { code, data } = await reqUserInfo();
     if (code === 200) {
       userStore.userInfo.username = data.checkUser.username;
+      userStore.userInfo = {...userStore.userInfo, ...data.checkUser};
       if (data.list.length > 0) {
         let menuList = [];
         if (process.env.NODE_ENV === "production") {
