@@ -347,7 +347,7 @@ const Rightbar = () => {
               </p>
               <p className='user-item'>
                 <span className='label'>权限角色：</span>
-                <span className='value'>{uStore.userInfo.roleName}</span>
+                <span className='value'>{uStore.userInfo.roleNames}</span>
               </p>
               <p className='user-item'>
                 <span className='label'>所在岗位：</span>

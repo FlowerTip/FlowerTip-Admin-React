@@ -24,6 +24,12 @@ export default () => {
       hideInSearch: true
     },
     {
+      title: '权限角色',
+      dataIndex: 'roleNames',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '所属岗位',
       dataIndex: 'workPostName',
       align: 'center',

@@ -14,7 +14,7 @@ export const userStore = proxy({
     permissionButtonList: [], // 按钮列表
     authMenuList: [], // 权限菜单
     sidebarMenuList: [], // 侧边栏菜单
-    roleName: '', // 角色名称
+    roleNames: '', // 角色名称
     workPostName: '', // 岗位名称
     departmentName: '', // 部门名称
   },

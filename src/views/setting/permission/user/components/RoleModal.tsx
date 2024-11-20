@@ -11,7 +11,7 @@ type ModalProps = {
 }
 const CheckboxGroup = Checkbox.Group;
 const defaultCheckedList: any[] = [];
-
+let reloadTable: () => {};
 const RoleModal = ({ }, ref: any) => {
   const [checkboxOptions, setCheckboxOptions] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -27,6 +27,7 @@ const RoleModal = ({ }, ref: any) => {
       setConfirmLoading(false);
       message.success('分配成功')
       setModalVisiable(false);
+      reloadTable();
     }
   };
 
@@ -73,6 +74,7 @@ const RoleModal = ({ }, ref: any) => {
   const acceptParams = (params: ModalProps) => {
     console.log(params, '44params');
     const row = params.rowData;
+    reloadTable = params.reload;
     setModalTitle("分配角色")
     setModalProps(params)
     setModalVisiable(true);
