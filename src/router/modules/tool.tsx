@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSnapshot } from "valtio";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 import Mixbar from "@/layout/mixbar";
 import Simplebar from "@/layout/simplebar";
 import Sidebar from "@/layout/sidebar";
@@ -10,6 +12,14 @@ import { getToken } from '@/utils/auth'
 import { getPageTitle } from '@/utils/tool'
 import { userStore, tagsViewStore, settingStore } from '@/store'
 
+// 进度条配置对象
+NProgress.configure({
+  easing: "ease", // 动画方式
+  speed: 500, // 递增进度条的速度
+  showSpinner: false, // 是否显示加载ico
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3, // 初始化时的最小百分比
+});
 // 全局路由守卫
 const RouterGuard: React.FC = () => {
   const whiteRouteList: string[] = ["/403", "/404", "/500"];
@@ -17,6 +27,7 @@ const RouterGuard: React.FC = () => {
   const { userInfo } = useSnapshot(userStore);
   const token = getToken();
   const { routeMeta } = useRouteMeta(userInfo.backMenuList);
+  NProgress.start();
   document.title = getPageTitle(routeMeta);
   const sStore = useSnapshot(settingStore);
 
@@ -33,6 +44,7 @@ const RouterGuard: React.FC = () => {
           closable: true,
           redirect: routeMeta.redirect
         })
+        NProgress.done(); // 结束进度条
         if (sStore.globalSet.layout === 'simplebar') {
           return <Simplebar />;
         } else if (sStore.globalSet.layout === 'sidebar') {

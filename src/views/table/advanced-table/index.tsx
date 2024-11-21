@@ -62,9 +62,9 @@ export default () => {
       title: '性格色彩',
       dataIndex: 'color',
       align: 'center',
-      render: (_, record) => (<div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: '30px', height: '30px', backgroundColor: record.color }}></div>
-      </div>),
+      render: (_, record) => (
+        <div style={{ display: 'inline-block', width: '30px', height: '30px', backgroundColor: record.color, verticalAlign: 'middle' }}></div>
+      ),
       hideInSearch: true,
       width: 160
     },
@@ -75,6 +75,9 @@ export default () => {
       fieldProps: {
         placeholder: '请输入兴趣爱好'
       },
+      render: (_, record) => (
+        <span style={{ display: 'inline-block', verticalAlign: 'middle' }}>{record.hobby}</span>
+      ),
     },
     {
       title: '性别',
