@@ -2,7 +2,13 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 
-const BarChart = (props: any) => {
+const BarChart = (props: {
+  chartOption: {
+    xAxisData: string[];
+    unit?: string;
+    data: number[];
+  }
+}) => {
   const uuid = generateUUID() + "PieChart";
 
   const xAxisData = props.chartOption.xAxisData;

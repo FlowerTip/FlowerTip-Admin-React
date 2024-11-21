@@ -45,6 +45,12 @@ declare interface DelDefaultData {
   ids: number[];
 }
 
+declare type RouteItem = {
+  name: string;
+  code: string;
+  type: number;
+};
+
 /**
  * 请求参数类型声明
  */

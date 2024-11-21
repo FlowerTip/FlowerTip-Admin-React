@@ -1,12 +1,12 @@
 import UploadOutlined from '@ant-design/icons/UploadOutlined';
-import { Button, Card, message, Upload } from 'antd';
-const props: any = {
+import { Button, Card, message, Upload, UploadProps } from 'antd';
+const props: UploadProps = {
   name: 'file',
   action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
   headers: {
     authorization: 'authorization-text',
   },
-  onChange(info: any) {
+  onChange(info) {
     if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
@@ -22,7 +22,7 @@ const props: any = {
       '100%': '#87d068',
     },
     strokeWidth: 3,
-    format: (percent: number) => percent && `${parseFloat(percent.toFixed(2))}%`,
+    format: (percent?: number) => percent && `${parseFloat(percent.toFixed(2))}%`,
   },
 };
 const FileUpload = () => (

@@ -2,7 +2,18 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 
-const PieChart = (props: any) => {
+const PieChart = (props: {
+  chartOption: {
+    name?: string;
+    text?: string;
+    subtext?: string;
+    orient?: string;
+    icon?: string;
+    data?: {
+      name: string;
+      value: number;
+    }[];
+}}) => {
   const uuid = generateUUID() + "PieChart";
 
   let myChart: echarts.ECharts;

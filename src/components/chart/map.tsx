@@ -3,9 +3,7 @@ import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 import BJGeoJson from "@/mock/geo/beijing";
 
-const MapChart = (props: any) => {
-  console.log(props);
-  
+const MapChart = () => {
   const uuid = generateUUID() + "PieChart";
   let myChart: echarts.ECharts;
 

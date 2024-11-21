@@ -2,7 +2,16 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 
-const MoreLineChart = (props: any) => {
+const MoreLineChart = (props: {
+  chartOption: {
+    icon?: string;
+    orient?: string;
+    xAxisData?: string[];
+    legendData?: string[];
+    unit?: string;
+    seriesData?: unknown[];
+  }
+}) => {
   const uuid = generateUUID() + "PieChart";
 
   const icon = props.chartOption.icon;
@@ -11,7 +20,7 @@ const MoreLineChart = (props: any) => {
   const legendData = props.chartOption.legendData;
   const unit = props.chartOption.unit;
   const seriesData = props.chartOption.seriesData;
-  
+
   let myChart: echarts.ECharts;
 
   let sidebarMenuNode: HTMLDivElement;

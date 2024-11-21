@@ -2,7 +2,16 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 
-const LineChart = (props: any) => {
+const LineChart = (props: {
+  chartOption: {
+    icon?: string;
+    orient?: string;
+    xAxisData?: string[];
+    legendData?: string[];
+    unit?: string;
+    data?: number[];
+  };
+}) => {
   const uuid = generateUUID() + "PieChart";
 
   const icon = props.chartOption.icon;

@@ -3,12 +3,15 @@
  * @param {*} extraHeight 额外的高度(表格底部的内容高度 Number类型,默认为74) 
  * @param {*} id 当前页面中有多个table时需要制定table的id
  */
-export default function getTableScroll({ extraHeight = undefined, id = null }: any) {
+export default function getTableScroll({ extraHeight = undefined, id = undefined }: {
+  extraHeight?: number,
+  id?: string
+}) {
   if (typeof extraHeight == "undefined") {
     //  默认底部分页64 + 边距10
     extraHeight = 74
   }
-  let tHeader = null
+  let tHeader: Element | null = null
   if (id) {
     tHeader = document.getElementById(id) ? document.getElementById(id)!.getElementsByClassName("ant-pro-table-search-query-filter")[0] : null
   } else {
