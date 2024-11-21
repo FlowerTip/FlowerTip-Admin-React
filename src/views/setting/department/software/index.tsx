@@ -19,6 +19,7 @@ let originTreeData: DepartMentItem[] = [];
 const Maintenance: React.FC = () => {
   const [treeData, setTreeData] = useState<TreeDataNode[]>([])
   const [searchValue, setSearchValue] = useState('');
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const getTreeData = async () => {
     const { code, data } = await reqDepartmentList({
       departmentName: searchValue,
@@ -35,10 +36,13 @@ const Maintenance: React.FC = () => {
       setTreeData(treeList as unknown as TreeDataNode[])
       setSelectedKeys([treeList[0].children[0].departmentId] as unknown as string[])
       setDefaultExpandedKeys(treeList.map(item => item.departmentId) as unknown as string[])
-      actionRef.current?.reload();
     }
   }
 
+  useEffect(() => {
+    selectedKeys.length > 0 && actionRef.current?.reload();
+  }, [selectedKeys])
+  
   useEffect(() => {
     getTreeData()
   }, [searchValue])
@@ -180,7 +184,6 @@ const Maintenance: React.FC = () => {
       actionRef.current?.reload();
     }
   }
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const [defaultExpandedKeys, setDefaultExpandedKeys] = useState<string[]>([])
 
   const handleOnSelect = (selectedKeys: any, e: {selected: boolean, selectedNodes: any, node: any, event: any}) => {

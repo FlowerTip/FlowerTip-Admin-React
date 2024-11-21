@@ -26,13 +26,14 @@ const App: React.FC = () => {
         Menu: {
           darkItemBg: '#282E38',
           darkPopupBg: '#282E38',
-          darkItemSelectedBg: sStore.globalSet.color
+          darkItemSelectedBg: sStore.globalSet.color,
+          fontSize: 15
         },
       },
       token: {
         colorPrimary: sStore.globalSet.color,
       },
-      cssVar: true
+      cssVar: true,
     }}>
       <HashRouter>
         <RouterComponent />
