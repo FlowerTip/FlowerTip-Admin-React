@@ -68,7 +68,7 @@ const MibBarLayout: React.FC = () => {
   // 关闭右侧菜单
   const closeRight = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "right");
   };
@@ -76,7 +76,7 @@ const MibBarLayout: React.FC = () => {
   // 关闭其他菜单
   const closeOther = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     current && tStore.closeMultipleTab(current.key);
   };
@@ -165,7 +165,7 @@ const MibBarLayout: React.FC = () => {
       setShowSidebar(true);
     }
     const childList = topRoute.children as unknown as any;
-    let menuList = [];
+    let menuList: any = [];
     if (childList.length > 1 && childList.every((item: any) => item.redirect)) {
       if (routeMeta.children) {
         menuList = reorganizeMenu(routeMeta.children);
@@ -274,7 +274,7 @@ const MibBarLayout: React.FC = () => {
   }
 
   const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
+    const currTab = tagsViewStore.tabsMenuList.find((tab) => tab.key === key);
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');
@@ -282,7 +282,7 @@ const MibBarLayout: React.FC = () => {
       setShowSidebar(false);
     } else {
       setSidebarPath(key);
-      setCurrPath(currTab.redirect);
+      currTab && setCurrPath(currTab.redirect);
     }
   }
 

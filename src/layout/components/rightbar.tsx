@@ -17,6 +17,7 @@ import type { MenuProps, TabsProps } from 'antd';
 import { Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal } from 'antd';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
+import { ItemType } from 'antd/es/menu/interface';
 
 const Rightbar = () => {
   useEffect(() => {
@@ -88,8 +89,12 @@ const Rightbar = () => {
     ], // 热情配色
   };
 
+  type MessageItem = {
+    id: number;
+    message: string;
+  }
   // 用户名dropDown的菜单
-  const personalItems: any[] = [
+  const personalItems: ItemType[] = [
     {
       key: 'person',
       label: '个人中心',
@@ -155,7 +160,7 @@ const Rightbar = () => {
     setSettingOpen(false);
   };
 
-  const noticeList: any = [
+  const noticeList: MessageItem[] = [
     {
       id: 1,
       message: '撒基督教啊时间'

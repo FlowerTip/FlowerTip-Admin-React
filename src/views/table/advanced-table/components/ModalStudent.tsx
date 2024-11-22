@@ -9,16 +9,16 @@ import {
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, Ref } from 'react';
 import { reqUploadAvatar } from '@/api/upload'
 
 type ModalProps = {
-  api: (params: StudentItem) => Promise<any>,
+  api: (params: StudentItem) => Promise<Res.SaveStudentData>,
   reload: () => {},
   rowData: StudentItem
 }
 
-const ModalStudent = ({ }, ref: any) => {
+const ModalStudent = ({ }, ref: Ref<unknown>) => {
   const [form] = Form.useForm<StudentItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -69,7 +69,7 @@ const ModalStudent = ({ }, ref: any) => {
   }))
   type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-  const handleUpload = async (fileParams: any) => {
+  const handleUpload = async (fileParams: {name:string, id: string}) => {
     const formData = new FormData();
     formData.append("filename", fileParams.name);
     formData.append("itemId", fileParams.id as string);

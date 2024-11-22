@@ -1,12 +1,32 @@
 import defaultSetting from '@/setting'
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+
+interface BackMenuItem {
+  path: string;
+  name: string;
+  redirect?: string;
+  meta: {
+    title: string;
+    icon: string;
+  };
+  children?: BackMenuItem[];
+}
+
+interface ReMapMenuItem {
+  key: string;
+  label: string;
+  icon: AntdIconProps;
+  redirect?: string;
+  children?: ReMapMenuItem[];
+}
 
 /**
  * 重构菜单数据的工具方法
  * @param menuList 
  * @returns 
  */
-export const reorganizeMenu = (menuList: any[]): any[] => {
-  return menuList.map(menu => {
+export const reorganizeMenu = (menuList: BackMenuItem[]): ReMapMenuItem[] => {
+  const data = menuList.map(menu => {
     // 子集只有一个菜单的
     if (menu.children && menu.children.length === 1) {
       return {
@@ -35,6 +55,7 @@ export const reorganizeMenu = (menuList: any[]): any[] => {
       }
     }
   })
+  return data as unknown as ReMapMenuItem[];
 }
 
 /**
@@ -43,7 +64,9 @@ export const reorganizeMenu = (menuList: any[]): any[] => {
  * @returns title
  */
 
-export function getPageTitle(meta: any): string {
+export function getPageTitle(meta: {
+  title: string;
+}): string {
   return meta && meta.title
     ? `${meta.title} - ${defaultSetting.title}`
     : defaultSetting.title;
@@ -53,10 +76,11 @@ export function getPageTitle(meta: any): string {
  * 过滤掉属性children为空的
  * @param data 
  * @returns 
- */
-export function delChildren(data: any) {
-  let tempList: any[] = []
-  data.forEach((item: any) => {
+ */ 
+
+export function delChildren(data: AppTypeConfig.MenuOption[]) {
+  let tempList: AppTypeConfig.MenuOption[] = []
+  data.forEach((item) => {
     let obj;
     if (item.children && item.children.length === 0) {
       obj = { ...item }
@@ -81,12 +105,12 @@ export function delChildren(data: any) {
  * @returns
  */
 export function filterAsyncRoutes(
-  dynamicRoutes: any[],
+  dynamicRoutes: BackMenuItem[],
   authRouterList: string[]
 ) {
   return dynamicRoutes.filter((route) => {
     // 1.如果route的name在routeNames中没有, 直接过滤掉
-    if (!authRouterList.includes(route.name as string)) return false;
+    if (!authRouterList.includes(route.name)) return false;
 
     // 2.如果当前route还有子路由(也就是有children), 需要对子路由也进行权限过滤
     if (route.children && route.children.length > 0) {

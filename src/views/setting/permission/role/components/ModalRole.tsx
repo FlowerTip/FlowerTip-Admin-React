@@ -4,15 +4,15 @@ import {
   ProFormTextArea
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, Ref } from 'react';
 
 type ModalProps = {
-  api: (params: RoleItem) => Promise<any>,
+  api: (params: RoleItem) => Promise<Res.BatchRoleRes>,
   reload: () => {},
   rowData: RoleItem
 }
 
-const ModalRole = ({ }, ref: any) => {
+const ModalRole = ({ }, ref: Ref<unknown>) => {
   const [form] = Form.useForm<RoleItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');

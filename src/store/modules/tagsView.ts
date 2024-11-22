@@ -2,14 +2,14 @@ import { proxy } from 'valtio';
 import { devtools } from 'valtio/utils';
 
 export const tagsViewStore = proxy({
-  tabsMenuList: [] as any,
+  tabsMenuList: [] as TagViewItem[],
   /**
    * 添加标签页
    * @param tabItem - 要添加的标签页
    * @description 如果标签页的 key 值不存在于标签页列表中，则将其添加到列表中
    */
-  addTab(tabItem: any) {
-    if (tagsViewStore.tabsMenuList.every((item: any) => item.key !== tabItem.key)) {
+  addTab(tabItem: TagViewItem) {
+    if (tagsViewStore.tabsMenuList.every((item) => item.key !== tabItem.key)) {
       tagsViewStore.tabsMenuList.push(tabItem);
     }
   },
@@ -22,16 +22,16 @@ export const tagsViewStore = proxy({
   removeTab(tabPath: string, isCurrent = true) {
     if (tagsViewStore.tabsMenuList.length === 1) return;
     if (isCurrent) {
-      tagsViewStore.tabsMenuList.forEach((item: any, index: number) => {
+      tagsViewStore.tabsMenuList.forEach((item, index: number) => {
         if (item.key !== tabPath) return;
-        const nextTab: any =
+        const nextTab =
           tagsViewStore.tabsMenuList[index + 1] || tagsViewStore.tabsMenuList[index - 1];
         if (!nextTab) return;
       });
     }
     // 重新设置标签组
     tagsViewStore.tabsMenuList = tagsViewStore.tabsMenuList.filter(
-      (item: any) => item.key !== tabPath
+      (item) => item.key !== tabPath
     );
     // 切换下一个标签
     return tagsViewStore.tabsMenuList[tagsViewStore.tabsMenuList.length - 1];
@@ -43,14 +43,14 @@ export const tagsViewStore = proxy({
    */
   closeTabsOnSide(path: string, type: "left" | "right") {
     const currentIndex = tagsViewStore.tabsMenuList.findIndex(
-      (item: any) => item.key === path
+      (item) => item.key === path
     );
     if (currentIndex !== -1) {
       const range =
         type === "left"
           ? [0, currentIndex]
           : [currentIndex + 1, tagsViewStore.tabsMenuList.length];
-      tagsViewStore.tabsMenuList = tagsViewStore.tabsMenuList.filter((item: any, index: number) => {
+      tagsViewStore.tabsMenuList = tagsViewStore.tabsMenuList.filter((item, index: number) => {
         return index < range[0] || index >= range[1] || !item.closable;
       });
     }
@@ -60,7 +60,7 @@ export const tagsViewStore = proxy({
   * @param tabsMenuValue - 要保留的标签页的 key 值，如果未提供，则不保留任何标签页
   */
   closeMultipleTab(tabsMenuValue?: string) {
-    tagsViewStore.tabsMenuList = tagsViewStore.tabsMenuList.filter((item: any) => {
+    tagsViewStore.tabsMenuList = tagsViewStore.tabsMenuList.filter((item) => {
       return item.key === tabsMenuValue || !item.closable;
     });
   },

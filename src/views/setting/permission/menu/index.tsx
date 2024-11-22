@@ -35,8 +35,6 @@ export default () => {
       pageSize: params.pageSize,
     });
     if (code === 200) {
-      console.log(delChildren(data.list), 'delChildren(data.list)');
-
       return {
         data: delChildren(data.list),
         success: true,

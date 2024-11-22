@@ -16,11 +16,11 @@ declare namespace AppTypeConfig {
     parentName?: string;
   }
   interface MenuOption {
-    path: string;
+    path?: string;
     name: string;
     component?: string | (() => Promise<unknown>);
     redirect?: string;
-    meta: AppTypeConfig.MetaProp;
+    meta?: AppTypeConfig.MetaProp;
     children?: AppTypeConfig.MenuOption[];
     noShowingChildren?: boolean;
     alwaysShow?: boolean;
@@ -50,6 +50,14 @@ declare type RouteItem = {
   code: string;
   type: number;
 };
+
+declare type TagViewItem = {
+  key: string,
+  label: string,
+  closable: boolean,
+  redirect: string
+}
+
 
 /**
  * 请求参数类型声明
@@ -239,12 +247,18 @@ declare namespace Res {
   type DepartMentListData = DefaultData<DepartMentItem>;
 
   type WorkPostListData = DefaultData<WorkPostItem>;
-
+  interface ResponseData {
+    code: number;
+    message?: string;
+  };
   /**
    * 保存学员信息接口返回的数据格式
    */
-  interface SaveStudentData {
-    id?: number;
+  interface SaveStudentData extends ResponseData{
+    data: {
+      message: string;
+      id: string;
+    };
   }
   /**
    * 学员列表接口返回的数据格式

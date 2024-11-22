@@ -17,7 +17,6 @@ import { useSnapshot } from 'valtio'
 import { NavbarComponentProps } from '../types/index'
 import { settingStore } from '@/store'
 import Rightbar from './rightbar';
-
 const NavBar = (props: NavbarComponentProps) => {
   const items: MenuProps['items'] = [
     {
@@ -105,7 +104,7 @@ const NavBar = (props: NavbarComponentProps) => {
         type="line"
         hideAdd
         style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
-        items={tStore.tabsMenuList || []}
+        items={(tStore.tabsMenuList || []) as TagViewItem[]}
         onTabClick={props.onTabClick}
       />
     </div>

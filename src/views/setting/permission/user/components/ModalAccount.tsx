@@ -5,15 +5,15 @@ import {
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
 import { reqWorkPostList } from '@/api/workPost'
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, Ref } from 'react';
 
 type ModalProps = {
-  api: (params: AccountItem) => Promise<any>,
+  api: (params: AccountItem) => Promise<Res.SaveAccountRes>,
   reload: () => {},
   rowData: AccountItem
 }
 
-const ModalAccount = ({ }, ref: any) => {
+const ModalAccount = ({ }, ref: Ref<unknown>) => {
   const [form] = Form.useForm<AccountItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -109,4 +109,4 @@ const ModalAccount = ({ }, ref: any) => {
   );
 };
 
-export default forwardRef(ModalAccount)
+export default forwardRef(ModalAccount);
