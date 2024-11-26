@@ -22,7 +22,7 @@ NProgress.configure({
 });
 // 全局路由守卫
 const RouterGuard: React.FC = () => {
-  const whiteRouteList: string[] = ["/403", "/404", "/500"];
+  const whiteRouteList: string[] = ["/403", "/404", "/500", "/login"];
   const { pathname } = useLocation();
   const { userInfo } = useSnapshot(userStore);
   const token = getToken();
