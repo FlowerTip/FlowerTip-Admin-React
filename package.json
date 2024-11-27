@@ -16,6 +16,7 @@
     "@js-preview/excel": "^1.7.12",
     "@js-preview/pdf": "^2.0.8",
     "ahooks": "^3.8.1",
+    "aieditor": "^1.2.7",
     "antd": "^5.20.5",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",

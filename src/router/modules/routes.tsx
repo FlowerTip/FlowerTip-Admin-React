@@ -27,6 +27,11 @@ import MoreBarChartPage from '@/views/chart/moreBar/index.tsx';
 import DayjsTool from '@/views/tool/dayjs/index.tsx';
 import ThrottleTool from '@/views/tool/throttle/index.tsx';
 import PreviewFile from '@/views/tool/preview/index.tsx';
+import WaterMark from '@/views/tool/watermark/index.tsx';
+import AiEditor from '@/views/tool/aiEditor/index.tsx';
+import Calendar from '@/views/tool/calendar/index.tsx';
+import QRCode from '@/views/tool/qrCode/index.tsx';
+import TourComponent from '@/views/tool/tour/index.tsx';
 
 import ListPage from '@/views/tool/test/list/index.tsx';
 import Detail from '@/views/tool/test/detail/index.tsx';
@@ -78,6 +83,11 @@ import UserSwitchOutlined from '@ant-design/icons/UserSwitchOutlined';
 import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
 import FileAddOutlined from '@ant-design/icons/FileAddOutlined';
 import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
+import TrademarkOutlined from '@ant-design/icons/TrademarkOutlined';
+import OpenAIOutlined from '@ant-design/icons/OpenAIOutlined';
+import ScheduleOutlined from '@ant-design/icons/ScheduleOutlined';
+import QrcodeOutlined from '@ant-design/icons/QrcodeOutlined';
+import SelectOutlined from '@ant-design/icons/SelectOutlined';
 
 /**
  * 路由meta对象参数说明
@@ -326,6 +336,51 @@ export const asyncRoute = [
         meta: {
           title: "文档预览",
           icon: <FileWordOutlined />,
+        },
+      },
+      {
+        name: "watermark",
+        path: "watermark",
+        Component: WaterMark,
+        meta: {
+          title: "水印功能",
+          icon: <TrademarkOutlined />,
+        },
+      },
+      {
+        name: "calendar",
+        path: "calendar",
+        Component: Calendar,
+        meta: {
+          title: "日历待办",
+          icon: <ScheduleOutlined />,
+        },
+      },
+      {
+        name: "qrcode",
+        path: "qrcode",
+        Component: QRCode,
+        meta: {
+          title: "二维码功能",
+          icon: <QrcodeOutlined />,
+        },
+      },
+      {
+        name: "tour",
+        path: "tour",
+        Component: TourComponent,
+        meta: {
+          title: "漫游式导航",
+          icon: <SelectOutlined />,
+        },
+      },
+      {
+        name: "aiEditor",
+        path: "aiEditor",
+        Component: AiEditor,
+        meta: {
+          title: "富文本编辑器",
+          icon: <OpenAIOutlined />,
         },
       },
       {

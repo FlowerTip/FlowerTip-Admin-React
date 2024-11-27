@@ -47,7 +47,7 @@ export const userStore = proxy({
         let menuList = [];
         if (process.env.NODE_ENV === "production") {
           menuList = filterAsyncRoutes(
-            asyncRoute,
+            asyncRoute as unknown as any,
             data.list.map((item) => item.code)
           );
         } else {
@@ -56,7 +56,7 @@ export const userStore = proxy({
         userStore.userInfo.backMenuList = menuList as unknown as any;
         userStore.userInfo.permissionButtonList = data.buttons as unknown as any;
         // 左侧菜单需要数组
-        userStore.userInfo.authMenuList = reorganizeMenu(menuList) as unknown as any;
+        userStore.userInfo.authMenuList = reorganizeMenu(menuList as unknown as any) as unknown as any;
       }
     }
     return Promise.resolve(data.list);
