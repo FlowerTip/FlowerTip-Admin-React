@@ -20,7 +20,10 @@ export const usePreview = () => {
    * @returns 
    */
   const preview = (fileType: FileType, src: string | ArrayBuffer | Blob, idContainer: HTMLElement) => {
-    filePreviewer && filePreviewer.destroy() && (filePreviewer = null);
+    if (filePreviewer) {
+      filePreviewer.destroy();
+      filePreviewer = null;
+    }
     let previewer: InstancePreviewer = null;
     switch (fileType) {
       case 'docx':
@@ -47,7 +50,10 @@ export const usePreview = () => {
    * @returns 
    */
   const save = (idContainer: HTMLElement, fileType: FileType, fileName?: string) => {
-    filePreviewer && filePreviewer.destroy() && (filePreviewer = null);
+    if (filePreviewer) {
+      filePreviewer.destroy();
+      filePreviewer = null;
+    }
     let tempPreviewer: InstancePreviewer = null;
     switch (fileType) {
       case 'docx':

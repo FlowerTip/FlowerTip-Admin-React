@@ -2,9 +2,7 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 
-const MixChart = (props: {
-  option: echarts.EChartsOption;
-}) => {
+const MixChart = (props: echarts.EChartsOption) => {
   console.log(props);
   
   const uuid = generateUUID() + "PieChart";
