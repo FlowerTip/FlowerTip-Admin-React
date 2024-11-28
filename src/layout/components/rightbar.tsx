@@ -25,12 +25,9 @@ const Rightbar = () => {
       if (screenfull.isFullscreen) setIsFullScreen(true);
       else setIsFullScreen(false);
     });
-    return () => {
-      clearTimer();
-    };
   }, [])
   // 当前时间
-  const { currentTime, clearTimer } = useRefreshTime();
+  const { currentTime } = useRefreshTime();
   const ymd = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[0];
@@ -563,8 +560,8 @@ const Rightbar = () => {
               </div>
             </div>
           </div>
-        </div>
-      </Drawer>
+        </div >
+      </Drawer >
       {
         sStore.globalSet.showSetting && (<div
           className="setting-btn"
@@ -572,7 +569,7 @@ const Rightbar = () => {
           onClick={openRightSetting}
         >
           <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
-        </div>)
+        </div >)
       }
       {modalContextHolder}
       {contextHolder}

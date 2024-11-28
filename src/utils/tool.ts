@@ -1,16 +1,5 @@
-import defaultSetting from '@/setting';
+import defaultSetting from '@/setting'
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
-import { RouteObject } from 'react-router-dom'
-declare interface RouteItemConfig extends Pick<RouteObject, 'path' | 'Component' | 'children'> {
-  name: string;
-  redirect?: string;
-  meta: {
-    title: HTMLElement | string;
-    icon: AntdIconProps;
-    parentName: string;
-    hidden?: boolean;
-  }
-}
 
 interface BackMenuItem {
   path: string;
@@ -87,7 +76,7 @@ export function getPageTitle(meta: {
  * 过滤掉属性children为空的
  * @param data 
  * @returns 
- */
+ */ 
 
 export function delChildren(data: AppTypeConfig.MenuOption[]) {
   let tempList: AppTypeConfig.MenuOption[] = []
@@ -115,28 +104,17 @@ export function delChildren(data: AppTypeConfig.MenuOption[]) {
  * @param authRouterList
  * @returns
  */
-
-interface RouteItemConfig extends Pick<RouteObject, 'path' | 'Component' | 'children'> {
-  name: string;
-  redirect?: string;
-  meta: {
-    title: HTMLElement | string;
-    icon: AntdIconProps;
-    parentName: string;
-    hidden?: boolean;
-  }
-}
 export function filterAsyncRoutes(
-  dynamicRoutes: RouteItemConfig[],
+  dynamicRoutes: BackMenuItem[],
   authRouterList: string[]
-): RouteItemConfig[] {
-  return dynamicRoutes.filter((route: RouteItemConfig) => {
+) {
+  return dynamicRoutes.filter((route) => {
     // 1.如果route的name在routeNames中没有, 直接过滤掉
     if (!authRouterList.includes(route.name)) return false;
 
     // 2.如果当前route还有子路由(也就是有children), 需要对子路由也进行权限过滤
     if (route.children && route.children.length > 0) {
-      route.children = filterAsyncRoutes(route.children as RouteItemConfig[], authRouterList);
+      route.children = filterAsyncRoutes(route.children, authRouterList);
     }
     return true;
   });

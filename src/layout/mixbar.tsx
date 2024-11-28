@@ -9,6 +9,7 @@ import useRouteMeta from '@/hooks/useRouteMeta';
 import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
+import { useRefreshTime } from '@/hooks/useRefreshTime';
 import TopHeader from './components/topHeader';
 import Sidebar from './components/sidebar';
 import Navbar from './components/navbar';
@@ -16,6 +17,7 @@ import './style/index.scss';
 const { Content } = Layout;
 
 const MibBarLayout: React.FC = () => {
+  const { clearTimer } = useRefreshTime();
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {
@@ -111,7 +113,7 @@ const MibBarLayout: React.FC = () => {
 
   }
 
-  const [currPath, setCurrPath] = useState('')
+  const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
     title: (topRoute as any).meta?.title,
@@ -132,16 +134,16 @@ const MibBarLayout: React.FC = () => {
     breadcrumbItems.push(parentItem, childItem);
   }
   useEffect(() => {
-    console.log("输出1111");
     if (!routeMeta.redirect) {
+      navigate((uStore.userInfo.backMenuList[0] as any).redirect);
       setCurrPath((uStore.userInfo.backMenuList[0] as any).path);
-      // navigate((uStore.userInfo.backMenuList[0] as any).redirect);
+    }
+    return () => {
+      clearTimer();
     }
   }, [])
 
   useEffect(() => {
-    console.log("输出2222");
-    
     if (!routeMeta.redirect) return;
     const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
     const key = pathList[pathList.length - 1];
@@ -171,7 +173,7 @@ const MibBarLayout: React.FC = () => {
       } else {
         const findChildren = childList.find((child: any) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
         findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children))
-        findChildren && setActiveIndex(findChildren.path);
+        findChildren && setActiveIndex(findChildren.path as any);
       }
     } else {
       menuList = reorganizeMenu(childList);
@@ -180,11 +182,7 @@ const MibBarLayout: React.FC = () => {
     uStore.updateLeftMenus(menuList as unknown as any);
   }, [currPath])
 
-  const handlerSelect = ({ key, keyPath }: {
-    key: string,
-    keyPath: string[],
-    selectedKeys: string[]
-  }) => {
+  const handlerSelect = ({ key, keyPath }: any) => {
     const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
@@ -217,7 +215,7 @@ const MibBarLayout: React.FC = () => {
         console.log(findChild, '测试举手哈');
         if (findChild) {
           redirectUrl = findChild.redirect
-          setCurrPath(findChild.path);
+          setCurrPath(findChild.path as unknown as any);
           setSidebarPath(findChild.children[0].path);
         } else {
           setCurrPath(key)
@@ -239,10 +237,7 @@ const MibBarLayout: React.FC = () => {
     }
   }
 
-  const sidebarSelect = ({ key, keyPath }: {
-    key: string,
-    keyPath: string[]
-  }) => {
+  const sidebarSelect = ({ key, keyPath }: any) => {
     let url = ''
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string) => {
