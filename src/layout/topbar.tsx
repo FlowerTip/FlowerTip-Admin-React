@@ -36,11 +36,11 @@ const LayoutWrapper: React.FC = () => {
   // 关闭当前菜单
   const closeCurrent = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     console.log(current, "ccurrent");
     if (current) {
-      const returnNextTab = tStore.removeTab(current.key as string, true);
+      const returnNextTab: any = tStore.removeTab(current.key as string, true);
       console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
@@ -51,7 +51,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭左侧菜单
   const closeLeft = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "left");
   };
@@ -59,7 +59,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭右侧菜单
   const closeRight = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "right");
   };
@@ -67,7 +67,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭其他菜单
   const closeOther = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     current && tStore.closeMultipleTab(current.key);
   };
@@ -123,7 +123,7 @@ const LayoutWrapper: React.FC = () => {
     breadcrumbItems.push(parentItem, childItem);
   }
 
-  const sidebarSelect = ({ key, keyPath }: MenuConfig.SelectMenuFnParams) => {
+  const sidebarSelect = ({ key, keyPath }: any) => {
     let url = ''
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -164,7 +164,7 @@ const LayoutWrapper: React.FC = () => {
 
 
   const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab) => tab.key === key);
+    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');

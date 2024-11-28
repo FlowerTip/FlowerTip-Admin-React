@@ -26,7 +26,7 @@ const Sidebar = (props: SidebarComponentProps) => {
   // 侧边栏只保持一个展开
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   let parentKey: string[] = []
-  const findParent = (arr: MenuConfig.ReMapMenuItem[], path: string, parent: string[] = []): string[] => {
+  const findParent = (arr: any[], path: string, parent: string[] = []): string[] => {
     let a = parent
     for (const k in arr) {
       if (parentKey.length == 0) {

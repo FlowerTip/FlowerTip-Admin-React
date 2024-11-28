@@ -12,17 +12,17 @@ const { Header } = Layout;
 const TopHeader = (props: HeaderComponentProps) => {
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
-  const topMenuList = uStore.userInfo.authMenuList;
+  const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  const splitMenuList = topMenuList.map((item) => {
+  const splitMenuList = topMenuList.map((item: any) => {
     const obj = {
       key: item.key,
       label: item.label,
       icon: item.icon,
-      children: [] as any[]
+      children: null
     }
     if (item.children && item.children[0].redirect) {
-      obj.children = item.children.map((child) => {
+      obj.children = item.children.map((child: any) => {
         return {
           key: child.key,
           label: child.label,

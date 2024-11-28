@@ -30,7 +30,7 @@ const MibBarLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState('');
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
-  const topMenuList = uStore.userInfo.authMenuList as MenuConfig.ReMapMenuItem[];
+  const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
   // 关闭所有菜单
@@ -42,11 +42,11 @@ const MibBarLayout: React.FC = () => {
   // 关闭当前菜单
   const closeCurrent = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     console.log(current, "ccurrent");
     if (current) {
-      const returnNextTab = tStore.removeTab(current.key as string, true);
+      const returnNextTab: any = tStore.removeTab(current.key as string, true);
       console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
@@ -58,7 +58,7 @@ const MibBarLayout: React.FC = () => {
   // 关闭左侧菜单
   const closeLeft = () => {
     const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
+      (item: any) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "left");
   };
@@ -163,13 +163,13 @@ const MibBarLayout: React.FC = () => {
       setShowSidebar(true);
     }
     const childList = topRoute.children as unknown as any;
-    let menuList: MenuConfig.ReMapMenuItem[] = [];
-    if (childList.length > 1 && childList.every((item: MenuConfig.ReMapMenuItem) => item.redirect)) {
+    let menuList: any = [];
+    if (childList.length > 1 && childList.every((item: any) => item.redirect)) {
       if (routeMeta.children) {
-        menuList = reorganizeMenu(routeMeta.children as MenuConfig.LocalRouteItem[]);
+        menuList = reorganizeMenu(routeMeta.children);
         setActiveIndex(topRoute.path as any);
       } else {
-        const findChildren = childList.find((child: MenuConfig.ReMapMenuItem) => child.redirect?.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
+        const findChildren = childList.find((child: any) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
         findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children))
         findChildren && setActiveIndex(findChildren.path);
       }
@@ -177,7 +177,7 @@ const MibBarLayout: React.FC = () => {
       menuList = reorganizeMenu(childList);
       setActiveIndex(topRoute.path as any);
     }
-    uStore.updateLeftMenus(menuList);
+    uStore.updateLeftMenus(menuList as unknown as any);
   }, [currPath])
 
   const handlerSelect = ({ key, keyPath }: {
@@ -185,7 +185,7 @@ const MibBarLayout: React.FC = () => {
     keyPath: string[],
     selectedKeys: string[]
   }) => {
-    const hasOnlyOne = topMenuList.find((menu) => menu.key == key) as MenuConfig.ReMapMenuItem;
+    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -206,19 +206,19 @@ const MibBarLayout: React.FC = () => {
     }
     if (!isExternalFn(redirectUrl)) {
 
-      const childList = topRoute.children as MenuConfig.LocalRouteItem[];
-      const isMoreLevel = childList.length > 1 && childList.every((item) => item.redirect);
+      const childList = topRoute.children as unknown as any;
+      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
 
       console.log(redirectUrl, isMoreLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
 
       if (isMoreLevel) {
         console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: MenuConfig.LocalRouteItem) => child.redirect?.includes(redirectUrl));
+        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
         console.log(findChild, '测试举手哈');
         if (findChild) {
-          redirectUrl = findChild.redirect as string;
+          redirectUrl = findChild.redirect
           setCurrPath(findChild.path);
-          findChild.children && setSidebarPath(findChild.children[0].path);
+          setSidebarPath(findChild.children[0].path);
         } else {
           setCurrPath(key)
           setSidebarPath(key);
