@@ -4,6 +4,18 @@ import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
 import { asyncRoute } from '@/router/modules/routes';
 import { reorganizeMenu, filterAsyncRoutes } from '@/utils/tool';
 import { devtools } from 'valtio/utils';
+import { RouteObject } from 'react-router-dom';
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+declare interface RouteItemConfig extends Pick<RouteObject, 'path' | 'Component' | 'children'> {
+  name: string;
+  redirect?: string;
+  meta: {
+    title: HTMLElement | string;
+    icon: AntdIconProps;
+    parentName: string;
+    hidden?: boolean;
+  }
+}
 
 export const userStore = proxy({
   // 状态数据
@@ -44,14 +56,14 @@ export const userStore = proxy({
       userStore.userInfo.username = data.checkUser.username;
       userStore.userInfo = {...userStore.userInfo, ...data.checkUser};
       if (data.list.length > 0) {
-        let menuList = [];
+        let menuList:RouteItemConfig[] = [];
         if (process.env.NODE_ENV === "production") {
           menuList = filterAsyncRoutes(
-            asyncRoute as unknown as any,
+            asyncRoute as unknown as RouteItemConfig[],
             data.list.map((item) => item.code)
           );
         } else {
-          menuList = [...asyncRoute];
+          menuList = [...asyncRoute] as unknown as RouteItemConfig[];
         }
         userStore.userInfo.backMenuList = menuList as unknown as any;
         userStore.userInfo.permissionButtonList = data.buttons as unknown as any;
