@@ -10,7 +10,7 @@ export interface SidebarComponentProps {
   onSelect: (params: any) => void;
   collapsed: boolean;
   showSidebar: boolean;
-  menus: any[]
+  menus: MenuConfig.ReMapMenuItem[]
 }
 
 export interface NavbarComponentProps {

@@ -23,20 +23,12 @@ interface BackMenuItem {
   children?: BackMenuItem[];
 }
 
-interface ReMapMenuItem {
-  key: string;
-  label: string;
-  icon: AntdIconProps;
-  redirect?: string;
-  children?: ReMapMenuItem[];
-}
-
 /**
  * 重构菜单数据的工具方法
  * @param menuList 
  * @returns 
  */
-export const reorganizeMenu = (menuList: BackMenuItem[]): ReMapMenuItem[] => {
+export const reorganizeMenu = (menuList: MenuConfig.LocalRouteItem[]): MenuConfig.ReMapMenuItem[] => {
   const data = menuList.map(menu => {
     // 子集只有一个菜单的
     if (menu.children && menu.children.length === 1) {
@@ -66,7 +58,7 @@ export const reorganizeMenu = (menuList: BackMenuItem[]): ReMapMenuItem[] => {
       }
     }
   })
-  return data as unknown as ReMapMenuItem[];
+  return data as MenuConfig.ReMapMenuItem[];
 }
 
 /**
@@ -127,16 +119,16 @@ interface RouteItemConfig extends Pick<RouteObject, 'path' | 'Component' | 'chil
   }
 }
 export function filterAsyncRoutes(
-  dynamicRoutes: RouteItemConfig[],
+  dynamicRoutes: MenuConfig.LocalRouteItem[],
   authRouterList: string[]
-): RouteItemConfig[] {
-  return dynamicRoutes.filter((route: RouteItemConfig) => {
+): MenuConfig.LocalRouteItem[] {
+  return dynamicRoutes.filter((route) => {
     // 1.如果route的name在routeNames中没有, 直接过滤掉
     if (!authRouterList.includes(route.name)) return false;
 
     // 2.如果当前route还有子路由(也就是有children), 需要对子路由也进行权限过滤
     if (route.children && route.children.length > 0) {
-      route.children = filterAsyncRoutes(route.children as RouteItemConfig[], authRouterList);
+      route.children = filterAsyncRoutes(route.children, authRouterList);
     }
     return true;
   });
