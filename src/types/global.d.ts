@@ -337,3 +337,47 @@ declare namespace Res {
 
   type GetPermissionData = DefaultData<MenuItem>;
 }
+
+/**
+ * 路由菜单类型声明
+ */
+
+declare namespace MenuConfig {
+  /**
+   * 后台返回菜单数据类型
+   */
+  interface BackMenuItem {
+    code: string;
+    name: string;
+    type: number;
+  }
+
+  interface LocalRouteItem {
+    path: string;
+    name: string;
+    Component: React.FC<{}>;
+    redirect?: string;
+    meta: {
+      title: string;
+      icon: JSX.Element;
+      parentName?: string;
+      hidden?: boolean;
+    };
+    children?: LocalRouteItem[];
+  }
+
+  interface ReMapMenuItem {
+    key: string;
+    label: string;
+    icon: JSX.Element;
+    redirect?: string;
+    children?: ReMapMenuItem[];
+  }
+
+  interface SelectMenuFnParams {
+    key: string,
+    keyPath: string[],
+    selectedKeys: string[],
+    domEvent: MouseEvent
+  }
+}

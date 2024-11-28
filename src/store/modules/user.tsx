@@ -10,10 +10,10 @@ export const userStore = proxy({
   userInfo: {
     token: getToken(), // Token令牌
     username: "", // 当前登录账号用户名
-    backMenuList: [], // 后台获取的菜单
-    permissionButtonList: [], // 按钮列表
-    authMenuList: [], // 权限菜单
-    sidebarMenuList: [], // 侧边栏菜单
+    backMenuList: [] as MenuConfig.LocalRouteItem[], // 后台获取的菜单
+    permissionButtonList: [] as string[], // 按钮列表
+    authMenuList: [] as MenuConfig.LocalRouteItem[], // 权限菜单
+    sidebarMenuList: [] as MenuConfig.LocalRouteItem[], // 侧边栏菜单
     roleNames: '', // 角色名称
     workPostName: '', // 岗位名称
     departmentName: '', // 部门名称
@@ -44,19 +44,19 @@ export const userStore = proxy({
       userStore.userInfo.username = data.checkUser.username;
       userStore.userInfo = {...userStore.userInfo, ...data.checkUser};
       if (data.list.length > 0) {
-        let menuList = [];
+        let menuList: MenuConfig.LocalRouteItem[] = [];
         if (process.env.NODE_ENV === "production") {
           menuList = filterAsyncRoutes(
-            asyncRoute as unknown as any,
+            asyncRoute as MenuConfig.LocalRouteItem[],
             data.list.map((item) => item.code)
           );
         } else {
-          menuList = [...asyncRoute];
+          menuList = [...asyncRoute] as MenuConfig.LocalRouteItem[];
         }
-        userStore.userInfo.backMenuList = menuList as unknown as any;
-        userStore.userInfo.permissionButtonList = data.buttons as unknown as any;
+        userStore.userInfo.backMenuList = menuList;
+        userStore.userInfo.permissionButtonList = data.buttons;
         // 左侧菜单需要数组
-        userStore.userInfo.authMenuList = reorganizeMenu(menuList as unknown as any) as unknown as any;
+        userStore.userInfo.authMenuList = reorganizeMenu(menuList);
       }
     }
     return Promise.resolve(data.list);
@@ -76,7 +76,7 @@ export const userStore = proxy({
    * 更新侧边栏菜单
    * @param menuList 
    */
-  updateLeftMenus(menuList: any) {
+  updateLeftMenus(menuList: MenuConfig.LocalRouteItem[]) {
     userStore.userInfo.sidebarMenuList = menuList;
   },
 

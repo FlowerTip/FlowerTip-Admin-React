@@ -20,7 +20,10 @@ const AiEditorComponent: React.FC = () => {
               apiKey: "sk-XKL1YHDdy9VHWZeDdiXNbswkHumM2fllSe7JH5ZR3v8oL8El"
             } as OpenaiModelConfig
           }
-        }
+        },
+        fontSize: {
+          defaultValue: 16
+      },
       })
       return () => {
         aiEditor.destroy();
@@ -29,7 +32,13 @@ const AiEditorComponent: React.FC = () => {
   }, [])
   return (
     <div style={{ height: '100%', backgroundColor: '#fff' }}>
-      <div ref={divRef} style={{ height: "100%" }} />
+      <div ref={divRef} style={{ height: "100%", fontSize: '16px' }} >
+      <div className="aie-container">
+        <div className="aie-container-header"></div>
+        <div className="aie-container-main"></div>
+        <div className="aie-container-footer" style={{display: 'none'}}></div>
+    </div>
+      </div>
     </div>
   );
 };

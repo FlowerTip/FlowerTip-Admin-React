@@ -1,31 +1,11 @@
 import defaultSetting from '@/setting'
-import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
-
-interface BackMenuItem {
-  path: string;
-  name: string;
-  redirect?: string;
-  meta: {
-    title: string;
-    icon: string;
-  };
-  children?: BackMenuItem[];
-}
-
-interface ReMapMenuItem {
-  key: string;
-  label: string;
-  icon: AntdIconProps;
-  redirect?: string;
-  children?: ReMapMenuItem[];
-}
 
 /**
  * 重构菜单数据的工具方法
  * @param menuList 
  * @returns 
  */
-export const reorganizeMenu = (menuList: BackMenuItem[]): ReMapMenuItem[] => {
+export const reorganizeMenu = (menuList: MenuConfig.LocalRouteItem[]): MenuConfig.LocalRouteItem[] => {
   const data = menuList.map(menu => {
     // 子集只有一个菜单的
     if (menu.children && menu.children.length === 1) {
@@ -55,7 +35,7 @@ export const reorganizeMenu = (menuList: BackMenuItem[]): ReMapMenuItem[] => {
       }
     }
   })
-  return data as unknown as ReMapMenuItem[];
+  return data as unknown as MenuConfig.LocalRouteItem[];
 }
 
 /**
@@ -105,9 +85,9 @@ export function delChildren(data: AppTypeConfig.MenuOption[]) {
  * @returns
  */
 export function filterAsyncRoutes(
-  dynamicRoutes: BackMenuItem[],
+  dynamicRoutes: MenuConfig.LocalRouteItem[],
   authRouterList: string[]
-) {
+): MenuConfig.LocalRouteItem[] {
   return dynamicRoutes.filter((route) => {
     // 1.如果route的name在routeNames中没有, 直接过滤掉
     if (!authRouterList.includes(route.name)) return false;
