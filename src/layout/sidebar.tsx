@@ -211,7 +211,9 @@ const SidebarLayout: React.FC = () => {
   }
   const HeaderProps: HeaderComponentProps = {
     selectedKeys: '',
-    onSelect: handlerSelect
+    onSelect: handlerSelect,
+    collapsed,
+    toggleCollapsed
   }
   return (
     <Layout className='layout-wrapper'>

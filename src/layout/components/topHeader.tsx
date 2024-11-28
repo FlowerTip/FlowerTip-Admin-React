@@ -1,7 +1,9 @@
 import React from 'react';
 import { HeaderComponentProps } from '../types/index'
 import { useSnapshot } from 'valtio'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
+import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
+import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
 import defaultSetting from '@/setting';
 import { userStore, settingStore } from '@/store'
 import Rightbar from './rightbar';
@@ -44,7 +46,14 @@ const TopHeader = (props: HeaderComponentProps) => {
 
   return (
     <Header className='layout-header' style={headerStyle}>
-      <div className="layout-header-logo">{defaultSetting.title}</div>
+      <div className="layout-header-logo">
+        {defaultSetting.title}
+        {sStore.globalSet.topShowCollapsed && (
+        <Button type="primary" onClick={props.toggleCollapsed} style={{marginLeft: '20px'}}>
+          {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </Button>
+      )}
+      </div>
       {
         sStore.globalSet.layout === 'mixbar' && (<Menu
           theme='dark'
@@ -66,7 +75,7 @@ const TopHeader = (props: HeaderComponentProps) => {
         />)
       }
       {
-        sStore.globalSet.layout !=='simplebar' && (<Rightbar />)
+        sStore.globalSet.layout !== 'simplebar' && (<Rightbar />)
       }
     </Header >
   )

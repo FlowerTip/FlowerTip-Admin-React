@@ -35,6 +35,7 @@ declare namespace AppTypeConfig {
     color?: string;
     themeName?: string;
     topShowCollapsed?: boolean;
+    showSetting?: boolean;
   }
 }
 

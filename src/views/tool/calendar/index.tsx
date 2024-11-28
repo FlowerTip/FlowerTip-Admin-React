@@ -71,9 +71,7 @@ const CalendarComponent: React.FC = () => {
   };
 
   return (
-    <div style={{ height: '100%', marginBottom: '36px'}}> 
-      <Calendar cellRender={cellRender} style={{padding: '10px'}}/>
-    </div>
+    <Calendar cellRender={cellRender} style={{boxSizing: 'border-box', padding: '0 10px',}}/>
   );
 };
 

@@ -288,7 +288,9 @@ const MibBarLayout: React.FC = () => {
 
   const HeaderProps: HeaderComponentProps = {
     selectedKeys: activeIndex,
-    onSelect: handlerSelect
+    onSelect: handlerSelect,
+    collapsed,
+    toggleCollapsed
   }
 
   const sidebarProps: SidebarComponentProps = {

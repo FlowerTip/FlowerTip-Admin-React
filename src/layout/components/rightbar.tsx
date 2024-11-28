@@ -562,13 +562,15 @@ const Rightbar = () => {
           </div>
         </div >
       </Drawer >
-      <div
-        className="setting-btn"
-        style={{ backgroundColor: sStore.globalSet.color }}
-        onClick={openRightSetting}
-      >
-        <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
-      </div >
+      {
+        sStore.globalSet.showSetting && (<div
+          className="setting-btn"
+          style={{ backgroundColor: sStore.globalSet.color }}
+          onClick={openRightSetting}
+        >
+          <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
+        </div >)
+      }
       {modalContextHolder}
       {contextHolder}
     </>

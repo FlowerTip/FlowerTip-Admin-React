@@ -1,6 +1,8 @@
 export interface HeaderComponentProps {
   selectedKeys: string;
   onSelect: (params: any) => void;
+  collapsed?: boolean;
+  toggleCollapsed?: (params: any) => void;
 }
 
 export interface SidebarComponentProps {

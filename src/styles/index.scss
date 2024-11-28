@@ -31,7 +31,7 @@ body {
   .layout-header {
     background-color: #282E38;
     .layout-header-logo {
-      width: 200px;
+      max-width: 260px;
       height: 32px;
       border-radius: 6px;
       margin-right: 10px;
@@ -42,6 +42,8 @@ body {
       font-weight: 700;
       font-size: 22px;
       color: #fff;
+      display: flex;
+      align-items: center;
     }
   }
 
