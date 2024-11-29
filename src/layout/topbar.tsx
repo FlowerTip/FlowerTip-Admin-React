@@ -36,11 +36,11 @@ const LayoutWrapper: React.FC = () => {
   // 关闭当前菜单
   const closeCurrent = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     console.log(current, "ccurrent");
     if (current) {
-      const returnNextTab: any = tStore.removeTab(current.key as string, true);
+      const returnNextTab = tStore.removeTab(current.key as string, true);
       console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
@@ -51,7 +51,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭左侧菜单
   const closeLeft = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "left");
   };
@@ -59,7 +59,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭右侧菜单
   const closeRight = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     current && tStore.closeTabsOnSide(current.key as string, "right");
   };
@@ -67,7 +67,7 @@ const LayoutWrapper: React.FC = () => {
   // 关闭其他菜单
   const closeOther = () => {
     const current = tStore.tabsMenuList.find(
-      (item: any) => item.key === routeMeta.path
+      (item) => item.key === routeMeta.path
     );
     current && tStore.closeMultipleTab(current.key);
   };

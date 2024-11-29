@@ -380,4 +380,11 @@ declare namespace MenuConfig {
     selectedKeys: string[],
     domEvent: MouseEvent
   }
+  /**
+   * 面包屑配置项
+   */
+  interface BreadcrumbItem {
+    title: string;
+    onClick?: () => void;
+  }
 }
