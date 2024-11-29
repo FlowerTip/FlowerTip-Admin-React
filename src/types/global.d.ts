@@ -195,7 +195,7 @@ declare type WorkPostItem = {
 };
 
 declare type StudentItem = {
-  id?: number;
+  id?: number | string;
   username: string;
   age: number | string;
   address: string;

@@ -1,17 +1,16 @@
-import { ReactElement } from "react";
 import type { MenuProps } from 'antd';
 import { ItemType } from "antd/es/menu/interface";
 
 export interface HeaderComponentProps {
   selectedKeys: string;
-  onSelect: (params: { key: String, item: ReactElement, domEvent: Event, selectedKeys: String[] }) => void;
+  onSelect: (params: any) => void;
   collapsed?: boolean;
   toggleCollapsed?: () => void;
 }
 
 export interface SidebarComponentProps {
   selectedKeys: string;
-  onSelect: () => void;
+  onSelect: (params: any) => void;
   collapsed: boolean;
   showSidebar: boolean;
   menus: ItemType[]

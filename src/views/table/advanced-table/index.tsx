@@ -159,7 +159,7 @@ export default () => {
   }
   const delModal = async (rowData: StudentItem) => {
     const { code } = await reqDelStudent({
-      ids: [rowData.id!],
+      ids: [(rowData.id as number)!],
     });
     if (code === 200) {
       message.success('删除成功');
