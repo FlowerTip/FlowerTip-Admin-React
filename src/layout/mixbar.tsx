@@ -9,7 +9,6 @@ import useRouteMeta from '@/hooks/useRouteMeta';
 import { userStore, tagsViewStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { reorganizeMenu } from '@/utils/tool';
-import { useRefreshTime } from '@/hooks/useRefreshTime';
 import TopHeader from './components/topHeader';
 import Sidebar from './components/sidebar';
 import Navbar from './components/navbar';
@@ -17,7 +16,6 @@ import './style/index.scss';
 const { Content } = Layout;
 
 const MibBarLayout: React.FC = () => {
-  const { clearTimer } = useRefreshTime();
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {
@@ -137,9 +135,6 @@ const MibBarLayout: React.FC = () => {
     if (!routeMeta.redirect) {
       navigate((uStore.userInfo.backMenuList[0] as any).redirect);
       setCurrPath((uStore.userInfo.backMenuList[0] as any).path);
-    }
-    return () => {
-      clearTimer();
     }
   }, [])
 

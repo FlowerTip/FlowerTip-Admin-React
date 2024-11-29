@@ -20,14 +20,8 @@ import { useRefreshTime } from '@/hooks/useRefreshTime';
 import { ItemType } from 'antd/es/menu/interface';
 
 const Rightbar = () => {
-  useEffect(() => {
-    screenfull.on("change", () => {
-      if (screenfull.isFullscreen) setIsFullScreen(true);
-      else setIsFullScreen(false);
-    });
-  }, [])
   // 当前时间
-  const { currentTime } = useRefreshTime();
+  const { currentTime, clearTimer } = useRefreshTime();
   const ymd = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[0];
@@ -37,6 +31,16 @@ const Rightbar = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[1];
   };
+
+  useEffect(() => {
+    screenfull.on("change", () => {
+      if (screenfull.isFullscreen) setIsFullScreen(true);
+      else setIsFullScreen(false);
+    });
+    return () => {
+      clearTimer();
+    };
+  }, [])
 
   interface ThemeColors {
     [key: string]: string[];
