@@ -11,7 +11,7 @@ export interface HeaderComponentProps {
 
 export interface SidebarComponentProps {
   selectedKeys: string;
-  onSelect: (params: { key: String, item: ReactElement, domEvent: Event, selectedKeys: String[] }) => void;
+  onSelect: () => void;
   collapsed: boolean;
   showSidebar: boolean;
   menus: ItemType[]

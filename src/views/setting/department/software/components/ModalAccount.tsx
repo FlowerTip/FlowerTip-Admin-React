@@ -4,7 +4,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, ForwardedRef } from 'react';
 
 type ModalProps = {
   api: (params: WorkPostItem) => Promise<any>,
@@ -12,7 +12,7 @@ type ModalProps = {
   rowData: WorkPostItem
 }
 
-const ModalAccount = ({ }, ref: any) => {
+const ModalAccount = ({ }, ref: ForwardedRef<any>) => {
   const [form] = Form.useForm<WorkPostItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');

@@ -86,6 +86,7 @@ declare namespace Req {
     avatarUrl: string;
   }
   interface MenuListParam {
+    [x: string]: number | undefined;
     pageSize?: number;
     currentPage?: number;
     username?: string;
@@ -136,6 +137,7 @@ declare namespace Req {
   }
 
   interface AccountListParam {
+    current?: number;
     currentPage?: number;
     pageSize?: number;
     username?: string;
@@ -193,7 +195,7 @@ declare type WorkPostItem = {
 };
 
 declare type StudentItem = {
-  id?: number | string;
+  id?: number;
   username: string;
   age: number | string;
   address: string;
@@ -387,4 +389,13 @@ declare namespace MenuConfig {
     title: string;
     onClick?: () => void;
   }
+}
+
+interface Result {
+  code: number;
+  message: string;
+}
+
+declare interface ResultData<T> extends Result {
+  data: T;
 }

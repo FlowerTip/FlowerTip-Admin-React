@@ -1,4 +1,4 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, ForwardedRef } from 'react';
 import { message, Modal, Checkbox } from 'antd';
 import type { CheckboxProps } from 'antd';
 import { reqRoleList } from "@/api/role";
@@ -10,9 +10,9 @@ type ModalProps = {
   rowData: any
 }
 const CheckboxGroup = Checkbox.Group;
-const defaultCheckedList: any[] = [];
+const defaultCheckedList: string[] = [];
 
-const RoleModal = ({ }, ref: any) => {
+const RoleModal = ({ }, ref: ForwardedRef<any>) => {
   const [checkboxOptions, setCheckboxOptions] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -33,7 +33,7 @@ const RoleModal = ({ }, ref: any) => {
   const handleCancel = () => {
     setModalVisiable(false);
   };
-  const getSelectPerssion = async (id: any) => {
+  const getSelectPerssion = async (id: number) => {
     const { code, data } = await reqGetRole({
       userId: id as number,
     });

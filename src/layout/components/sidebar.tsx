@@ -26,7 +26,7 @@ const Sidebar = (props: SidebarComponentProps) => {
   // 侧边栏只保持一个展开
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   let parentKey: string[] = []
-  const findParent = (arr: any[], path: string, parent: string[] = []): string[] => {
+  const findParent = (arr: MenuConfig.ReMapMenuItem[], path: string, parent: string[] = []): string[] => {
     let a = parent
     for (const k in arr) {
       if (parentKey.length == 0) {
@@ -51,7 +51,7 @@ const Sidebar = (props: SidebarComponentProps) => {
     const openKey = keys.find((key) => openKeys.indexOf(key) === -1);
     // const closeKey = openKeys.find((key) => keys.indexOf(key) === -1);
     if (openKey) {
-      findParent(props.menus, openKey, []) || []
+      findParent(props.menus as MenuConfig.ReMapMenuItem[], openKey, []) || []
       setOpenKeys([openKey, ...parentKey])
       parentKey = []
     } else {
@@ -68,7 +68,7 @@ const Sidebar = (props: SidebarComponentProps) => {
         style={{
           height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
         }}
-        items={props.menus as any[]}
+        items={props.menus}
         onSelect={props.onSelect}
         selectedKeys={[props.selectedKeys]}
         mode="inline"

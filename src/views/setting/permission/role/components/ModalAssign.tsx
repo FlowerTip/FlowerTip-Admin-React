@@ -30,7 +30,7 @@ const ModalAssign = ({ }, ref: any) => {
   const handleCancel = () => {
     setModalVisiable(false);
   };
-  const getSelectPerssion = async (id: any) => {
+  const getSelectPerssion = async (id: number) => {
     const { code, data } = await reqGetPermission({
       roleId: id as number,
     });

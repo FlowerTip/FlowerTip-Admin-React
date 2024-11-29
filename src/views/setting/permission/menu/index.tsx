@@ -29,7 +29,7 @@ export default () => {
   ];
   const actionRef = useRef<ActionType>();
 
-  const updateTableList = async (params: any): Promise<any> => {
+  const updateTableList = async (params: Req.MenuListParam): Promise<any> => {
     const { code, data } = await reqMenuList({
       currentPage: params.current,
       pageSize: params.pageSize,

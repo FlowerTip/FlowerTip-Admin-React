@@ -6,7 +6,7 @@ import {
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, ForwardedRef } from 'react';
 import { reqDepartmentList } from '@/api/department'
 type ModalProps = {
   api: (params: DepartMentItem) => Promise<any>,
@@ -14,7 +14,7 @@ type ModalProps = {
   rowData: DepartMentItem
 }
 
-const ModalAccount = ({ }, ref: any) => {
+const ModalAccount = ({ }, ref: ForwardedRef<any>) => {
   const [form] = Form.useForm<DepartMentItem>();
   const [modalVisiable, setModalVisiable] = useState(false);
   const [modalTitle, setModalTitle] = useState('');

@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { reqStudentList, reqSaveStudent, reqDelStudent } from '@/api/student'
 import dayjs from 'dayjs';
 import ModalStudent from './components/ModalStudent';
-
+type TableResData = { data: StudentItem[], success: boolean; total: number; }
 export default () => {
   const columns: ProColumns<StudentItem>[] = [
     {
@@ -150,14 +150,14 @@ export default () => {
       rowData: {}
     })
   }
-  const editModal = (rowData: any) => {
+  const editModal = (rowData: StudentItem) => {
     ModalStudentRef.current!.acceptParams({
       api: reqSaveStudent,
       reload: actionRef.current?.reload,
       rowData: { ...rowData, time: dayjs(rowData.time).format('YYYY-MM-DD HH:mm:ss') }
     })
   }
-  const delModal = async (rowData: any) => {
+  const delModal = async (rowData: StudentItem) => {
     const { code } = await reqDelStudent({
       ids: [rowData.id!],
     });
@@ -177,7 +177,7 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         cardBordered
-        request={async (params): Promise<any> => {
+        request={async (params): Promise<TableResData> => {
           const { code, data } = await reqStudentList({
             currentPage: params.current,
             ...params
@@ -194,6 +194,12 @@ export default () => {
               }),
               success: true,
               total: data.total
+            }
+          } else {
+            return {
+              data: [],
+              success: false,
+              total: 0
             }
           }
         }}

@@ -70,7 +70,7 @@ export default () => {
   const ModalAccountRef = useRef<any>();
   const RoleModalRef = useRef<any>();
 
-  const updateTableList = async (params: any): Promise<any> => {
+  const updateTableList = async (params: Req.AccountListParam): Promise<any> => {
     const { code, data } = await reqAccountList({
       currentPage: params.current,
       ...params
@@ -98,14 +98,14 @@ export default () => {
       }
     })
   }
-  const editModal = (rowData: any) => {
+  const editModal = (rowData: AccountItem) => {
     ModalAccountRef.current!.acceptParams({
       api: reqSaveAccount,
       reload: actionRef.current?.reload,
       rowData
     })
   }
-  const delModal = async (rowData: any) => {
+  const delModal = async (rowData: AccountItem) => {
     const { code } = await reqDelAccount({
       ids: [rowData.id!],
     });
@@ -114,7 +114,7 @@ export default () => {
       actionRef.current?.reload();
     }
   }
-  const batchModal = (rowData: any) => {
+  const batchModal = (rowData: AccountItem) => {
     RoleModalRef.current.acceptParams({
       api: reqBatchRole,
       reload: actionRef.current?.reload,

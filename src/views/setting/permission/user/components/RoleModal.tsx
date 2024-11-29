@@ -1,18 +1,24 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef, ForwardedRef } from 'react';
 import { message, Modal, Checkbox } from 'antd';
 import type { CheckboxProps } from 'antd';
 import { reqRoleList } from "@/api/role";
 import { reqGetRole } from "@/api/user";
 
 type ModalProps = {
-  api: (params: any) => Promise<any>,
+  api: (req: {userId: number | undefined; rolesId: string[]}) => Promise<any>,
   reload: () => {},
-  rowData: any
+  rowData: AccountItem
+}
+interface Option {
+  id: string;
+  label: string;
+  value: string;
+  disabled?: boolean;
 }
 const CheckboxGroup = Checkbox.Group;
-const defaultCheckedList: any[] = [];
+const defaultCheckedList: string[] = [];
 let reloadTable: () => {};
-const RoleModal = ({ }, ref: any) => {
+const RoleModal = ({ }, ref: ForwardedRef<any>) => {
   const [checkboxOptions, setCheckboxOptions] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -34,7 +40,7 @@ const RoleModal = ({ }, ref: any) => {
   const handleCancel = () => {
     setModalVisiable(false);
   };
-  const getSelectPerssion = async (id: any) => {
+  const getSelectPerssion = async (id: number) => {
     const { code, data } = await reqGetRole({
       userId: id as number,
     });
@@ -43,7 +49,7 @@ const RoleModal = ({ }, ref: any) => {
       setCheckedList(selectTreeIds as any)
     }
   };
-  const getPermission = async (params: any) => {
+  const getPermission = async (params: AccountItem) => {
     const { code, data } = await reqRoleList({});
     if (code === 200 && data.list.length > 0) {
       const menus = data.list.map((item) => ({
@@ -52,7 +58,7 @@ const RoleModal = ({ }, ref: any) => {
         value: item.id
       }));
       setCheckboxOptions(menus as any)
-      getSelectPerssion(params.id);
+      getSelectPerssion(params.id as number);
     }
   };
   const [modalProps, setModalProps] = useState<ModalProps>()
@@ -66,7 +72,7 @@ const RoleModal = ({ }, ref: any) => {
   };
 
   const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
-    setCheckedList(e.target.checked ? checkboxOptions.map((item: any) => item.id) : []);
+    setCheckedList(e.target.checked ? checkboxOptions.map((item: Option) => item.id) : []);
   };
 
   const [modalTitle, setModalTitle] = useState("");
