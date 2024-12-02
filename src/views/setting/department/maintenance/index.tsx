@@ -28,7 +28,8 @@ const Maintenance: React.FC = () => {
       title: '部门描述',
       dataIndex: 'description',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      minWidth: 180,
     },
     {
       title: '上级部门',
@@ -44,7 +45,7 @@ const Maintenance: React.FC = () => {
       hideInSearch: true,
       sorter: true,
       valueType: 'dateTime',
-      width: 160,
+      width: 190,
     },
     {
       title: '更新时间',
@@ -53,7 +54,7 @@ const Maintenance: React.FC = () => {
       hideInSearch: true,
       sorter: true,
       valueType: 'dateTime',
-      width: 160,
+      width: 190,
     },
     {
       title: '操作',

@@ -68,7 +68,10 @@ const ModalAccount = ({ }, ref: Ref<unknown>) => {
         {
           required: true,
         },
-      ]} initialValue={rowFormItem?.username} />
+      ]} initialValue={rowFormItem?.username} fieldProps={{
+        maxLength: 7,
+        showCount: true
+      }}/>
       <ProFormText.Password
         name="password"
         label="账号密码"

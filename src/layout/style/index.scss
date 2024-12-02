@@ -344,12 +344,7 @@
 @media screen and (max-width: 1919px) {
   .layout-header {
     .layout-header-logo {
-      display: none;
+      display: none !important;
     }
-    // .right-bar {
-    //   .current-time {
-    //     display: none;
-    //   }
-    // }
   }
 }

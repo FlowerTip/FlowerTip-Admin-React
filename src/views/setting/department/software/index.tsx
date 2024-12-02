@@ -64,25 +64,29 @@ const Maintenance: React.FC = () => {
       fieldProps: {
         placeholder: '请输入岗位名称'
       },
-      hideInSearch: false
+      hideInSearch: false,
+      width: 120,
     },
     {
       title: '岗位编号',
       dataIndex: 'workPostNum',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: 130,
     },
     {
       title: '所属部门',
       dataIndex: 'departmentName',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: 160,
     },
     {
       title: '岗位描述',
       dataIndex: 'description',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: 160,
     },
     {
       title: '创建时间',
@@ -91,7 +95,7 @@ const Maintenance: React.FC = () => {
       hideInSearch: true,
       sorter: true,
       valueType: 'dateTime',
-      width: 160,
+      width: 170,
     },
     {
       title: '更新时间',
@@ -100,14 +104,14 @@ const Maintenance: React.FC = () => {
       hideInSearch: true,
       sorter: true,
       valueType: 'dateTime',
-      width: 160,
+      width: 170,
     },
     {
       title: '操作',
       valueType: 'option',
       key: 'option',
       align: 'center',
-      width: 300,
+      width: 220,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <Button size='small' onClick={() => editModal(record)}>编辑岗位</Button>

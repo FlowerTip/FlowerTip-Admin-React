@@ -29,6 +29,12 @@ const App: React.FC = () => {
           darkItemSelectedBg: sStore.globalSet.color,
           fontSize: 15
         },
+        Tree: {
+          nodeSelectedBg: sStore.globalSet.color,
+          nodeHoverBg: sStore.globalSet.color,
+          nodeHoverColor: '#fff',
+          nodeSelectedColor: '#fff',
+        }
       },
       token: {
         colorPrimary: sStore.globalSet.color,

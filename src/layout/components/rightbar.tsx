@@ -338,7 +338,7 @@ const Rightbar = () => {
         </div>
         {/* 个人信息 */}
         <Dropdown menu={{ items: personalItems, onClick: personalItemClick }}>
-          <div style={{ color: rightbarStyle.color, cursor: 'pointer' }}>
+          <div style={{ color: rightbarStyle.color, cursor: 'pointer', fontSize: '14px' }}>
             <Space>
               {uStore.userInfo.username}
               <DownOutlined />
