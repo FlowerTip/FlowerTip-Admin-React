@@ -31,7 +31,7 @@ const SidebarLayout: React.FC = () => {
   const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as any);
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
 
   // 关闭所有菜单
   const closeAllTab = () => {

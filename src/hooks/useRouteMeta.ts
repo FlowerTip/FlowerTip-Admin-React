@@ -1,26 +1,5 @@
 import { useLocation, matchRoutes } from 'react-router-dom';
 
-type RouteType = {
-  path: string;
-  name: string;
-  redirect: string;
-  meta: {
-    title: string;
-    icon: JSX.Element
-  };
-  Component: JSX.Element;
-  children: RouteType[];
-}
-
-type MetaType = {
-  title: string;
-  icon: JSX.Element;
-  redirect: string;
-  path: string;
-  parentName: string;
-  children: RouteType[];
-}
-
 const useRouteMeta = (routes: RouteType[]) => {
   const location = useLocation();
   const matchedRoutes = matchRoutes(routes, location);

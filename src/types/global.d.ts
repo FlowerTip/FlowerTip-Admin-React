@@ -64,6 +64,27 @@ declare type RequestListApi = {
   pageSize?: number;
 }
 
+declare type RouteType = {
+  path: string;
+  name: string;
+  redirect: string;
+  meta: {
+    title: string;
+    icon: JSX.Element
+  };
+  Component: JSX.Element;
+  children: RouteType[];
+}
+
+declare type MetaType = {
+  title: string;
+  icon: JSX.Element;
+  redirect: string;
+  path: string;
+  parentName: string;
+  children: RouteType[];
+}
+
 /**
  * 请求参数类型声明
  */

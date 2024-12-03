@@ -24,7 +24,7 @@ const LayoutWrapper: React.FC = () => {
   const sStore = useSnapshot(settingStore);
 
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as any);
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
 
   console.log(routeMeta, topRoute, '你是是多喝会更好湖广会馆哈哈');
   const currentLocation = useLocation();

@@ -26,7 +26,7 @@ const RouterGuard: React.FC = () => {
   const { pathname } = useLocation();
   const { userInfo } = useSnapshot(userStore);
   const token = getToken();
-  const { routeMeta } = useRouteMeta(userInfo.backMenuList);
+  const { routeMeta } = useRouteMeta(userInfo.backMenuList as unknown as RouteType[]);
   NProgress.start();
   document.title = getPageTitle(routeMeta);
   const sStore = useSnapshot(settingStore);
