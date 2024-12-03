@@ -49,18 +49,20 @@ export default () => {
       width: 300,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Button size='small' onClick={() => batchModal(record)}>分配角色</Button>
-          <Button size='small' onClick={() => editModal(record)}>编辑账号</Button>
-          <Popconfirm
-            title="删除提示"
-            description="确认要删除该账号吗?"
-            onConfirm={() => delModal(record)}
-            onCancel={() => message.info('取消操作')}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button danger size='small'>删除账号</Button>
-          </Popconfirm>
+          {
+            record.id !== 8 ? (
+              <><Button size='small' onClick={() => batchModal(record)}>分配角色</Button><Button size='small' onClick={() => editModal(record)}>编辑账号</Button><Popconfirm
+                title="删除提示"
+                description="确认要删除该账号吗?"
+                onConfirm={() => delModal(record)}
+                onCancel={() => message.info('取消操作')}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Button danger size='small'>删除账号</Button>
+              </Popconfirm></>
+            ) : <span style={{color: 'rgba(0, 0, 0, 0.45)'}}>——</span>
+          }
         </Space >
         ,
       ],

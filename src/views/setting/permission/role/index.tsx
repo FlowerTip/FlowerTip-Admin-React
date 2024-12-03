@@ -41,18 +41,20 @@ export default () => {
       width: 300,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Button size='small' onClick={() => assignModal(record)}>分配权限</Button>
-          <Button size='small' onClick={() => editModal(record)}>编辑角色</Button>
-          <Popconfirm
-            title="删除提示"
-            description="确认要删除该角色吗?"
-            onConfirm={() => delModal(record)}
-            onCancel={() => message.info('取消操作')}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button danger size='small'>删除角色</Button>
-          </Popconfirm>
+          {
+            record.id !== 1 ? (
+              <><Button size='small' onClick={() => assignModal(record)}>分配权限</Button><Button size='small' onClick={() => editModal(record)}>编辑角色</Button><Popconfirm
+                title="删除提示"
+                description="确认要删除该角色吗?"
+                onConfirm={() => delModal(record)}
+                onCancel={() => message.info('取消操作')}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Button danger size='small'>删除角色</Button>
+              </Popconfirm></>
+            ) : <span style={{color: 'rgba(0, 0, 0, 0.45)'}}>——</span>
+          }
         </Space >
         ,
       ],
