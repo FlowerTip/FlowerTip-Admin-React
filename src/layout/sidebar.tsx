@@ -31,7 +31,7 @@ const SidebarLayout: React.FC = () => {
   const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as any);
 
   // 关闭所有菜单
   const closeAllTab = () => {
@@ -136,8 +136,8 @@ const SidebarLayout: React.FC = () => {
   }, [])
 
 
-  const handlerSelect = ({ key, keyPath }: any) => {
-    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
+  const handlerSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
+    const hasOnlyOne = topMenuList.find((menu: MenuConfig.LocalRouteItem) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -156,13 +156,13 @@ const SidebarLayout: React.FC = () => {
     }
     if (!isExternalFn(redirectUrl)) {
 
-      const childList = topRoute.children as unknown as any;
-      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
+      const childList = topRoute.children;
+      const isMoreLevel = childList.length > 1 && childList.every((item) => item.redirect);
 
 
       if (isMoreLevel) {
         console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
+        const findChild = childList.find((child) => child.redirect.includes(redirectUrl));
         console.log(findChild, '测试举手哈');
         if (findChild) {
           redirectUrl = findChild.redirect
@@ -185,7 +185,7 @@ const SidebarLayout: React.FC = () => {
   }
 
   const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
+    const currTab = tagsViewStore.tabsMenuList.find((tab) => tab.key === key);
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');

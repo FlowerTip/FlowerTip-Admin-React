@@ -14,15 +14,15 @@ const TopHeader = (props: HeaderComponentProps) => {
   const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  const splitMenuList = topMenuList.map((item: any) => {
+  const splitMenuList = topMenuList.map((item: MenuConfig.ReMapMenuItem) => {
     const obj = {
       key: item.key,
       label: item.label,
       icon: item.icon,
-      children: null
+      children: null as unknown as MenuConfig.ReMapMenuItem[]
     }
     if (item.children && item.children[0].redirect) {
-      obj.children = item.children.map((child: any) => {
+      obj.children = item.children.map((child) => {
         return {
           key: child.key,
           label: child.label,

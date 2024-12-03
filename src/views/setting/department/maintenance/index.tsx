@@ -7,7 +7,7 @@ import { reqDepartmentList, reqSaveDepartment, reqDelDepartMent } from '@/api/de
 import ModalAccount from './components/ModalAccount';
 
 const Maintenance: React.FC = () => {
-  const columns: ProColumns<AccountItem>[] = [
+  const columns: ProColumns<DepartMentItem>[] = [
     {
       title: '部门名称',
       dataIndex: 'departmentName',
@@ -84,7 +84,7 @@ const Maintenance: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const ModalAccountRef = useRef<any>();
 
-  const updateTableList = async (params: any): Promise<any> => {
+  const updateTableList = async (params: RequestListApi): Promise<any> => {
     const { code, data } = await reqDepartmentList({
       currentPage: params.current,
       ...params
@@ -114,14 +114,14 @@ const Maintenance: React.FC = () => {
       }
     })
   }
-  const editModal = (rowData: any) => {
+  const editModal = (rowData: DepartMentItem) => {
     ModalAccountRef.current!.acceptParams({
       api: reqSaveDepartment,
       reload: actionRef.current?.reload,
       rowData
     })
   }
-  const delModal = async (rowData: any) => {
+  const delModal = async (rowData: DepartMentItem) => {
     const { code } = await reqDelDepartMent({
       departmentId: rowData.departmentId!,
     });
@@ -130,7 +130,7 @@ const Maintenance: React.FC = () => {
       actionRef.current?.reload();
     }
   }
-  const batchModal = (rowData: any) => {
+  const batchModal = (rowData: DepartMentItem) => {
     ModalAccountRef.current!.acceptParams({
       api: reqSaveDepartment,
       reload: actionRef.current?.reload,
@@ -146,7 +146,7 @@ const Maintenance: React.FC = () => {
 
   return (
     <>
-      <ProTable<AccountItem>
+      <ProTable<DepartMentItem>
         columns={columns}
         actionRef={actionRef}
         cardBordered

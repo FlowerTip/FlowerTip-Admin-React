@@ -34,7 +34,7 @@ const MibBarLayout: React.FC = () => {
   const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as any);
   // 关闭所有菜单
   const closeAllTab = () => {
     tagsViewStore.closeMultipleTab();
@@ -154,33 +154,35 @@ const MibBarLayout: React.FC = () => {
     });
     const keyPath = keys.reverse();
     const selectedKeys = [key];
-
-    handlerSelect({ key, keyPath, selectedKeys })
+    const defaultSelectParam = {
+      key, keyPath, selectedKeys, item: null as unknown as React.ReactInstance, domEvent: null as unknown as React.MouseEvent<HTMLElement>
+    }
+    handlerSelect && handlerSelect(defaultSelectParam)
     if (routeMeta.children && routeMeta.children.length === 1) {
       setShowSidebar(false);
     } else {
       setShowSidebar(true);
     }
-    const childList = topRoute.children as unknown as any;
-    let menuList: any = [];
-    if (childList.length > 1 && childList.every((item: any) => item.redirect)) {
+    const childList = topRoute.children;
+    let menuList = [] as MenuConfig.LocalRouteItem[];
+    if (childList.length > 1 && childList.every((item) => item.redirect)) {
       if (routeMeta.children) {
-        menuList = reorganizeMenu(routeMeta.children);
+        menuList = reorganizeMenu(routeMeta.children as any);
         setActiveIndex(topRoute.path as any);
       } else {
-        const findChildren = childList.find((child: any) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
-        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children))
+        const findChildren = childList.find((child) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
+        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children as unknown as MenuConfig.LocalRouteItem[]))
         findChildren && setActiveIndex(findChildren.path as any);
       }
     } else {
-      menuList = reorganizeMenu(childList);
+      menuList = reorganizeMenu(childList as unknown as MenuConfig.LocalRouteItem[]);
       setActiveIndex(topRoute.path as any);
     }
-    uStore.updateLeftMenus(menuList as unknown as any);
+    uStore.updateLeftMenus(menuList as unknown as MenuConfig.LocalRouteItem[]);
   }, [currPath])
 
-  const handlerSelect = ({ key, keyPath }: any) => {
-    const hasOnlyOne = topMenuList.find((menu: any) => menu.key == key);
+  const handlerSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
+    const hasOnlyOne = topMenuList.find((menu: MenuConfig.LocalRouteItem) => menu.key == key);
     let redirectUrl = '';
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -201,14 +203,14 @@ const MibBarLayout: React.FC = () => {
     }
     if (!isExternalFn(redirectUrl)) {
 
-      const childList = topRoute.children as unknown as any;
-      const isMoreLevel = childList.length > 1 && childList.every((item: any) => item.redirect);
+      const childList = topRoute.children;
+      const isMoreLevel = childList.length > 1 && childList.every((item) => item.redirect);
 
       console.log(redirectUrl, isMoreLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
 
       if (isMoreLevel) {
         console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child: any) => child.redirect.includes(redirectUrl));
+        const findChild = childList.find((child) => child.redirect.includes(redirectUrl));
         console.log(findChild, '测试举手哈');
         if (findChild) {
           redirectUrl = findChild.redirect
@@ -234,7 +236,7 @@ const MibBarLayout: React.FC = () => {
     }
   }
 
-  const sidebarSelect = ({ key, keyPath }: any) => {
+  const sidebarSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
     let url = ''
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string) => {

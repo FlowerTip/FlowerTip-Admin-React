@@ -59,6 +59,10 @@ declare type TagViewItem = {
   redirect: string
 }
 
+declare type RequestListApi = {
+  current?: number;
+  pageSize?: number;
+}
 
 /**
  * 请求参数类型声明
@@ -103,10 +107,11 @@ declare namespace Req {
   }
 
   interface WorkPostListParam {
+    current?: number;
     pageSize?: number;
     currentPage?: number;
     workPostName?: string;
-    departmentId?: number;
+    departmentId?: string | number;
   }
 
   interface GetRoleParam {
@@ -184,6 +189,7 @@ declare type DepartMentItem = {
   parentId: number;
   sort: number;
   description?: string;
+  children?: DepartMentItem[];
 };
 
 declare type WorkPostItem = {
@@ -355,6 +361,7 @@ declare namespace MenuConfig {
   }
 
   interface LocalRouteItem {
+    key: string;
     path: string;
     name: string;
     Component: React.FC<{}>;

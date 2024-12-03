@@ -3,17 +3,17 @@ import { ItemType } from "antd/es/menu/interface";
 
 export interface HeaderComponentProps {
   selectedKeys: string;
-  onSelect: (params: any) => void;
+  onSelect: MenuProps['onSelect'];
   collapsed?: boolean;
   toggleCollapsed?: () => void;
 }
 
 export interface SidebarComponentProps {
   selectedKeys: string;
-  onSelect: (params: any) => void;
+  onSelect: MenuProps['onSelect'];
   collapsed: boolean;
   showSidebar: boolean;
-  menus: ItemType[]
+  menus: ItemType[];
 }
 
 export interface NavbarComponentProps {

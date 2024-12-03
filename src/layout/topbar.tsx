@@ -24,7 +24,7 @@ const LayoutWrapper: React.FC = () => {
   const sStore = useSnapshot(settingStore);
 
 
-  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
+  let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as any);
 
   console.log(routeMeta, topRoute, '你是是多喝会更好湖广会馆哈哈');
   const currentLocation = useLocation();
@@ -125,7 +125,7 @@ const LayoutWrapper: React.FC = () => {
     breadcrumbItems.push(parentItem, childItem);
   }
 
-  const sidebarSelect = ({ key, keyPath }: any) => {
+  const sidebarSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
     let url = ''
     if (keyPath.length > 1) {
       keyPath.reverse().forEach((path: string, index: number) => {
@@ -166,7 +166,7 @@ const LayoutWrapper: React.FC = () => {
 
 
   const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab: any) => tab.key === key);
+    const currTab = tagsViewStore.tabsMenuList.find((tab) => tab.key === key);
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');

@@ -64,7 +64,7 @@ export default () => {
   const ModalRoleRef = useRef<any>();
   const ModalAssignRef = useRef<any>();
 
-  const updateTableList = async (params: any): Promise<any> => {
+  const updateTableList = async (params: RequestListApi): Promise<any> => {
     const { code, data } = await reqRoleList({
       currentPage: params.current,
       ...params
@@ -99,9 +99,9 @@ export default () => {
       rowData: { ...rowData, updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss') }
     })
   }
-  const delModal = async (rowData: any) => {
+  const delModal = async (rowData: RoleItem) => {
     const { code } = await reqDelRole({
-      ids: [rowData.id!],
+      ids: [(rowData.id as number)!],
     });
     if (code === 200) {
       message.success('删除成功');

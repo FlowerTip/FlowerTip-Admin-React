@@ -1,23 +1,23 @@
-import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import React, { useState, useImperativeHandle, forwardRef, ForwardedRef } from 'react';
 import { message, Modal, Tree } from 'antd';
 import type { TreeDataNode, TreeProps } from 'antd';
 import { reqMenuList } from "@/api/menu";
 import { reqGetPermission } from "@/api/role";
 
 type ModalProps = {
-  api: (params: any) => Promise<any>,
+  api: (params: Req.BatchPermissionData) => Promise<any>,
   reload: () => {},
-  rowData: any
+  rowData: RoleItem
 }
-const ModalAssign = ({ }, ref: any) => {
+const ModalAssign = ({ }, ref: ForwardedRef<any>) => {
   const [treeData, setTreeData] = useState<TreeDataNode[]>();
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const handleOk = async () => {
     setConfirmLoading(true);
     const req = {
-      roleId: modalProps?.rowData.id,
-      menusId: checkedKeys,
+      roleId: modalProps?.rowData.id as number,
+      menusId: checkedKeys as number[],
     };
     const { code } = await modalProps?.api(req);
     if (code === 200) {
@@ -39,14 +39,14 @@ const ModalAssign = ({ }, ref: any) => {
       setCheckedKeys(selectTreeIds as any)
     }
   };
-  const getPermission = async (params: any) => {
+  const getPermission = async (params: RoleItem) => {
     const { code, data } = await reqMenuList({});
     if (code === 200 && data.list.length > 0) {
       const menus = data.list.map((item) => ({
         ...item
       }));
       setTreeData(menus as any)
-      getSelectPerssion(params.id);
+      getSelectPerssion(params.id as number);
     }
   };
   const [modalProps, setModalProps] = useState<ModalProps>()
