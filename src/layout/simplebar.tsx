@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
 import type { MenuProps } from 'antd';
 import { Layout } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
-import { userStore, tagsViewStore } from '@/store'
+import { userStore, tagsViewStore, settingStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { SidebarComponentProps, NavbarComponentProps } from './types/index'
 import Sidebar from './components/sidebar';
 import Navbar from './components/navbar';
+import Footip from './components/footip';
 import './style/index.scss';
 const { Content } = Layout;
 
@@ -26,6 +27,7 @@ const SidebarLayout: React.FC = () => {
   const navigate = useNavigate();
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
+  const sStore = useSnapshot(settingStore);
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList);
@@ -208,6 +210,14 @@ const SidebarLayout: React.FC = () => {
     toggleCollapsed,
     breadcrumbItems
   }
+  const location = useLocation();
+  const [pathName, setPathName] = useState(location.pathname);
+  useEffect(() => {
+    setPathName(location.pathname)
+  }, [location])
+  const getShowFootip = () => {
+    return pathName.includes('home') ? false : sStore.globalSet.showFooterBar;
+  }
   return (
     <Layout className='layout-wrapper'>
       <Layout className='layout-content' style={contentStyle}>
@@ -219,6 +229,11 @@ const SidebarLayout: React.FC = () => {
           >
             <Outlet />
           </Content>
+          {
+            getShowFootip() && (
+              <Footip />
+            )
+          }
         </Layout>
       </Layout>
     </Layout >

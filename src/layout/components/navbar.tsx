@@ -80,33 +80,41 @@ const NavBar = (props: NavbarComponentProps) => {
   }
   return (
     <div className='navbar' style={navbarstyle}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={toggleBtnStyle} onClick={props.toggleCollapsed}>{props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
-          <Breadcrumb separator=">" items={props.breadcrumbItems} style={{
-            padding: '5px 12px',
-            cursor: 'pointer'
-          }}>
-          </Breadcrumb>
-        </div>
-        {
-          sStore.globalSet.layout === 'simplebar' && (<Rightbar />)
-        }
-      </div>
-      <Tabs
-        tabBarExtraContent={<Dropdown menu={{ items, onClick: props.moreTabClick }}>
-          <Space>
-            <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
-          </Space>
-        </Dropdown>}
-        size='small'
-        activeKey={props.activeKey}
-        type="line"
-        hideAdd
-        style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
-        items={(tStore.tabsMenuList || []) as TagViewItem[]}
-        onTabClick={props.onTabClick}
-      />
+      {
+        sStore.globalSet.showBreadcrumb && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={toggleBtnStyle} onClick={props.toggleCollapsed}>{props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
+              <Breadcrumb separator=">" items={props.breadcrumbItems} style={{
+                padding: '5px 12px',
+                cursor: 'pointer'
+              }}>
+              </Breadcrumb>
+            </div>
+            {
+              sStore.globalSet.layout === 'simplebar' && (<Rightbar />)
+            }
+          </div>
+        )
+      }
+      {
+        sStore.globalSet.showTagsView && (
+          <Tabs
+            tabBarExtraContent={<Dropdown menu={{ items, onClick: props.moreTabClick }}>
+              <Space>
+                <Button size='small' type="dashed">更多操作<DownOutlined /></Button>
+              </Space>
+            </Dropdown>}
+            size='small'
+            activeKey={props.activeKey}
+            type="line"
+            hideAdd
+            style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
+            items={(tStore.tabsMenuList || []) as TagViewItem[]}
+            onTabClick={props.onTabClick}
+          />
+        )
+      }
     </div>
   )
 }

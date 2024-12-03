@@ -39,7 +39,7 @@ const TopHeader = (props: HeaderComponentProps) => {
     top: 0,
     zIndex: 1,
     width: '100%',
-    display: 'flex',
+    display: sStore.globalSet.showHeaderBar ? 'flex' : 'none',
     alignItems: 'center',
     justifyContent: 'space-between',
   }
@@ -47,7 +47,7 @@ const TopHeader = (props: HeaderComponentProps) => {
   return (
     <Header className='layout-header' style={headerStyle}>
       <div className="layout-header-logo">
-        {defaultSetting.title}
+        {sStore.globalSet.showHeaderLogo && defaultSetting.title}
         {sStore.globalSet.topShowCollapsed && (
         <Button type="primary" onClick={props.toggleCollapsed} style={{marginLeft: '20px'}}>
           {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}

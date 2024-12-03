@@ -280,6 +280,49 @@ const Rightbar = () => {
     paddingRight: sStore.globalSet.layout === 'simplebar' ? '10px' : '0',
     color: sStore.globalSet.layout === 'simplebar' ? '#555' : '#fff',
   }
+
+
+  const systemTitleChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      showHeaderLogo: isShow
+    })
+  }
+
+  const topHeaderChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      showHeaderBar: isShow
+    })
+  }
+  const toggleMenuChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      topShowCollapsed: isShow
+    })
+  }
+
+  const breamnChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      showBreadcrumb: isShow
+    })
+  }
+
+  const tabviewsChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      showTagsView: isShow
+    })
+  }
+
+  const footipChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      showFooterBar: isShow
+    })
+  }
+  
   return (
     <>
       <div className="right-bar" style={rightbarStyle}>
@@ -540,27 +583,27 @@ const Rightbar = () => {
             <div className="wrapper">
               <div className="item">
                 <span className="right-txt">顶部区域</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={topHeaderChange} />
               </div>
               <div className="item">
                 <span className="right-txt">系统名称</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={systemTitleChange} />
               </div>
               <div className="item">
                 <span className="right-txt">顶部收缩菜单</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏"  onChange={toggleMenuChange} />
               </div>
               <div className="item">
                 <span className="right-txt">面包屑</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={breamnChange} />
               </div>
               <div className="item">
                 <span className="right-txt">标签栏</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={tabviewsChange} />
               </div>
               <div className="item">
                 <span className="right-txt">页脚</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked disabled />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={footipChange}/>
               </div>
             </div>
           </div>
