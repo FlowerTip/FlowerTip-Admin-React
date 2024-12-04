@@ -4,9 +4,9 @@
 
 ## 项目预览
 
-项目预览地址：https://flowertip.site/pro/#/login
-默认填充的有超级管理员的账号密码，直接登录
-可以自行添加测试账号，分配权限
+- 在线地址：https://flowertip.site/pro/#/login
+- 默认填充的有超级管理员的账号密码，直接登录
+- 可以自行添加测试账号，分配权限
 
 ## 项目模块
 
@@ -50,6 +50,9 @@
          - 菜单3-1
          - 菜单3-2
    - 错误页面
+      - 403页面
+      - 404页面
+      - 500页面
 
 7. 在线文档
 
@@ -82,6 +85,7 @@
 
 ## 目录结构
 ![目录结构](docs/image-dir.png)
+
 - docs 目录存放项目文档
 - public 目录存放静态资源
 - src 目录存放项目源代码
@@ -109,30 +113,35 @@
   - .gitignore git忽略文件
   - .eslintrc.cjs eslint配置文件
   - .prettierrc.js prettier配置文件
-  
-
 
 ## 项目静态展示
 
 1. 登录页
+
    ![登录页面](docs/image.png)
 
 2. 驾驶舱
+
    ![驾驶舱页面](docs/image-1.png)
 
 3. 表格组件-高级表格
-![高级表格](docs/image-table.png)
+
+   ![高级表格](docs/image-table.png)
 
 4. 系统管理-用户管理
-![用户管理](docs/image-2.png)
+
+   ![用户管理](docs/image-2.png)
 
 5. 系统管理-角色管理
-![角色管理](docs/image-3.png)
+
+   ![角色管理](docs/image-3.png)
 
 6. 系统管理-菜单管理
-![菜单管理](docs/image-4.png)
+
+   ![菜单管理](docs/image-4.png)
 
 7. 主题设置
+
    ![主题设置](docs/image-5.png)
 
 ## 支持打赏
