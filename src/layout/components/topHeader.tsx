@@ -26,7 +26,7 @@ const TopHeader = (props: HeaderComponentProps) => {
         return {
           key: child.key,
           label: child.label,
-          icon: item.icon,
+          icon: child.icon,
         }
       })
     }
