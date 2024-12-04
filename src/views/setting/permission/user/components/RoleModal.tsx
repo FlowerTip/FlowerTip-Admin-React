@@ -19,7 +19,7 @@ const CheckboxGroup = Checkbox.Group;
 const defaultCheckedList: string[] = [];
 let reloadTable: () => {};
 const RoleModal = ({ }, ref: ForwardedRef<any>) => {
-  const [checkboxOptions, setCheckboxOptions] = useState([]);
+  const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const handleOk = async () => {
@@ -46,7 +46,7 @@ const RoleModal = ({ }, ref: ForwardedRef<any>) => {
     });
     if (code === 200) {
       const selectTreeIds = data.list;
-      setCheckedList(selectTreeIds as any)
+      setCheckedList(selectTreeIds as unknown as string[])
     }
   };
   const getPermission = async (params: AccountItem) => {
@@ -57,7 +57,7 @@ const RoleModal = ({ }, ref: ForwardedRef<any>) => {
         label: item.roleName,
         value: item.id
       }));
-      setCheckboxOptions(menus as any)
+      setCheckboxOptions(menus as Option[])
       getSelectPerssion(params.id as number);
     }
   };
@@ -72,7 +72,7 @@ const RoleModal = ({ }, ref: ForwardedRef<any>) => {
   };
 
   const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
-    setCheckedList(e.target.checked ? checkboxOptions.map((item: Option) => item.id) : []);
+    setCheckedList(e.target.checked ? checkboxOptions.map((item: Option) => item.id) as string[] : []);
   };
 
   const [modalTitle, setModalTitle] = useState("");

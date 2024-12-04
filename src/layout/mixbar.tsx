@@ -116,9 +116,9 @@ const MibBarLayout: React.FC = () => {
   const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
-    title: (topRoute as any).meta?.title,
+    title: topRoute.meta?.title,
     onClick: () => {
-      navigate((topRoute as any).redirect);
+      navigate(topRoute.redirect);
       setCurrPath(routeMeta.redirect)
     }
   }
@@ -168,15 +168,15 @@ const MibBarLayout: React.FC = () => {
     if (childList.length > 1 && childList.every((item) => item.redirect)) {
       if (routeMeta.children) {
         menuList = reorganizeMenu(routeMeta.children as any);
-        setActiveIndex(topRoute.path as any);
+        setActiveIndex(topRoute.path);
       } else {
         const findChildren = childList.find((child) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
         findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children as unknown as MenuConfig.LocalRouteItem[]))
-        findChildren && setActiveIndex(findChildren.path as any);
+        findChildren && setActiveIndex(findChildren.path);
       }
     } else {
       menuList = reorganizeMenu(childList as unknown as MenuConfig.LocalRouteItem[]);
-      setActiveIndex(topRoute.path as any);
+      setActiveIndex(topRoute.path);
     }
     uStore.updateLeftMenus(menuList as unknown as MenuConfig.LocalRouteItem[]);
   }, [currPath])
@@ -214,7 +214,7 @@ const MibBarLayout: React.FC = () => {
         console.log(findChild, '测试举手哈');
         if (findChild) {
           redirectUrl = findChild.redirect
-          setCurrPath(findChild.path as unknown as any);
+          setCurrPath(findChild.path);
           setSidebarPath(findChild.children[0].path);
         } else {
           setCurrPath(key)

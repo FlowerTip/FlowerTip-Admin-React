@@ -108,9 +108,9 @@ const LayoutWrapper: React.FC = () => {
 
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
   const parentItem = {
-    title: (topRoute as any).meta?.title,
+    title: topRoute.meta?.title,
     onClick: () => {
-      navigate((topRoute as any).redirect);
+      navigate(topRoute.redirect);
     }
   }
   const childItem = {

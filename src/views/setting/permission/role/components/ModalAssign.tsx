@@ -36,7 +36,7 @@ const ModalAssign = ({ }, ref: ForwardedRef<any>) => {
     });
     if (code === 200) {
       const selectTreeIds = data.list;
-      setCheckedKeys(selectTreeIds as any)
+      setCheckedKeys(selectTreeIds as unknown as string[])
     }
   };
   const getPermission = async (params: RoleItem) => {
