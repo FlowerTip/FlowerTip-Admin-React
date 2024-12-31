@@ -143,7 +143,11 @@ const Rightbar = () => {
         };
         const confirmed = await modal.confirm(logoutConfirm);
         if (confirmed) {
-          await userStore.logout(true)
+          settingStore.updateSetting({
+            ...settingStore.globalSet,
+            modelAlgorithm: 'light'
+          });
+          await userStore.logout(true);
           navigate('/login', {
             replace: true
           });
@@ -159,6 +163,9 @@ const Rightbar = () => {
   };
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
+
+  const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
+
   const onClose = () => {
     setOpen(false);
     setSettingOpen(false);
@@ -278,7 +285,7 @@ const Rightbar = () => {
   }
   const rightbarStyle = {
     paddingRight: sStore.globalSet.layout === 'simplebar' ? '10px' : '0',
-    color: sStore.globalSet.layout === 'simplebar' ? '#555' : '#fff',
+    color: isLightTheme ? '#555' : '#fff',
   }
 
 
@@ -289,6 +296,13 @@ const Rightbar = () => {
     })
   }
 
+  const darkModelChange = (isShow: boolean) => {
+    sStore.updateSetting({
+      ...sStore.globalSet,
+      modelAlgorithm: isShow ? 'dark' : 'light'
+    })
+  }
+  
   const topHeaderChange = (isShow: boolean) => {
     sStore.updateSetting({
       ...sStore.globalSet,
@@ -322,19 +336,19 @@ const Rightbar = () => {
       showFooterBar: isShow
     })
   }
-  
+
   return (
     <>
       <div className="right-bar" style={rightbarStyle}>
         {/* 当前时间 */}
         <div className="current-time">
-          <span className="ymd" style={{ color: rightbarStyle.color }}>{ymd()}</span>
-          <span className="hms" style={{ color: rightbarStyle.color }}>{hms()}</span>
+          <span className="ymd">{ymd()}</span>
+          <span className="hms">{hms()}</span>
         </div>
         {/* 消息通知 */}
         <Popover placement="bottom" content={content}>
           <Badge size="small" count={5}>
-            <BellOutlined style={{ fontSize: '22px', color: rightbarStyle.color, cursor: 'pointer' }} />
+            <BellOutlined style={{ fontSize: '22px', cursor: 'pointer' }} />
           </Badge>
         </Popover>
         {/* 全屏功能 */}
@@ -353,8 +367,8 @@ const Rightbar = () => {
               >
                 <path
                   d="M354.133333 682.666667H256v-42.666667h170.666667v170.666667H384v-98.133334L243.2 853.333333l-29.866667-29.866666L354.133333 682.666667z m358.4 0l140.8 140.8-29.866666 29.866666-140.8-140.8V810.666667h-42.666667v-170.666667h170.666667v42.666667h-98.133334zM354.133333 384L213.333333 243.2l29.866667-29.866667L384 354.133333V256h42.666667v170.666667H256V384h98.133333z m358.4 0H810.666667v42.666667h-170.666667V256h42.666667v98.133333L823.466667 213.333333l29.866666 29.866667L712.533333 384z"
-                  fill={rightbarStyle.color}
                   p-id="9806"
+                  fill={isLightTheme ? '#555555' : '#ffffff'}
                 ></path>
               </svg>
             )
@@ -373,15 +387,15 @@ const Rightbar = () => {
             >
               <path
                 d="M285.866667 810.666667H384v42.666666H213.333333v-170.666666h42.666667v98.133333l128-128 29.866667 29.866667-128 128z m494.933333 0l-128-128 29.866667-29.866667 128 128V682.666667h42.666666v170.666666h-170.666666v-42.666666h98.133333zM285.866667 256l128 128-29.866667 29.866667-128-128V384H213.333333V213.333333h170.666667v42.666667H285.866667z m494.933333 0H682.666667V213.333333h170.666666v170.666667h-42.666666V285.866667l-128 128-29.866667-29.866667 128-128z"
-                fill={rightbarStyle.color}
                 p-id="9339"
+                fill={isLightTheme ? '#555555' : '#ffffff'}
               ></path>
             </svg>)
           }
         </div>
         {/* 个人信息 */}
         <Dropdown menu={{ items: personalItems, onClick: personalItemClick }}>
-          <div style={{ color: rightbarStyle.color, cursor: 'pointer', fontSize: '14px' }}>
+          <div style={{ cursor: 'pointer', fontSize: '14px' }}>
             <Space>
               {uStore.userInfo.username}
               <DownOutlined />
@@ -582,6 +596,10 @@ const Rightbar = () => {
             </Divider>
             <div className="wrapper">
               <div className="item">
+                <span className="right-txt">黑夜模式</span>
+                <Switch checkedChildren="开启" unCheckedChildren="关闭"  onChange={darkModelChange} />
+              </div>
+              <div className="item">
                 <span className="right-txt">顶部区域</span>
                 <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={topHeaderChange} />
               </div>
@@ -591,7 +609,7 @@ const Rightbar = () => {
               </div>
               <div className="item">
                 <span className="right-txt">顶部收缩菜单</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏"  onChange={toggleMenuChange} />
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" onChange={toggleMenuChange} />
               </div>
               <div className="item">
                 <span className="right-txt">面包屑</span>
@@ -603,7 +621,7 @@ const Rightbar = () => {
               </div>
               <div className="item">
                 <span className="right-txt">页脚</span>
-                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={footipChange}/>
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" defaultChecked onChange={footipChange} />
               </div>
             </div>
           </div>

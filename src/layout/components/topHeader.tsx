@@ -21,7 +21,7 @@ const TopHeader = (props: HeaderComponentProps) => {
       icon: item.icon,
       children: null as unknown as MenuConfig.ReMapMenuItem[]
     }
-    if (item.children && item.children[0].redirect) {
+    if (item.children && item.children[0] && item.children[0].redirect) {
       obj.children = item.children.map((child) => {
         return {
           key: child.key,
@@ -56,7 +56,6 @@ const TopHeader = (props: HeaderComponentProps) => {
       </div>
       {
         sStore.globalSet.layout === 'mixbar' && (<Menu
-          theme='dark'
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={splitMenuList}
@@ -66,7 +65,6 @@ const TopHeader = (props: HeaderComponentProps) => {
       }
       {
         sStore.globalSet.layout === 'topbar' && (<Menu
-          theme='dark'
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={uStore.userInfo.authMenuList as unknown as any}

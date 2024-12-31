@@ -58,7 +58,7 @@
     span {
       width: 80px;
       font-size: 14px;
-      color: #eaf0ff;
+      // color: #eaf0ff;
       line-height: 18px;
       text-align: center;
     }
@@ -66,7 +66,7 @@
 
   .screen-box {
     width: 42px;
-    color: #fff;
+    // color: #fff;
     height: 100%;
     display: flex;
     align-items: center;
@@ -74,7 +74,7 @@
 
     svg {
       cursor: pointer;
-      color: #fff;
+      // color: #fff;
     }
   }
 }
@@ -232,7 +232,7 @@
 
     .layout-title {
       font-size: 14px;
-      color: #303133;
+      color: var(--ant-color-text-base);
       padding-top: 20px;
       text-align: center;
     }
@@ -258,7 +258,7 @@
       width: 45%;
       height: 36px;
       overflow: hidden;
-      background-color: #f0f2f5;
+      background-color: var(--ant-color-bg-container);
       border-radius: 4px;
       box-shadow: 0 0px 2.5px 0 rgba(0, 0, 0, 0.18);
       cursor: pointer;

@@ -45,7 +45,7 @@ export const userStore = proxy({
       userStore.userInfo = {...userStore.userInfo, ...data.checkUser};
       if (data.list.length > 0) {
         let menuList: MenuConfig.LocalRouteItem[] = [];
-        if (process.env.NODE_ENV === "production") {
+        if (process.env.NODE_ENV === "development") {
           menuList = filterAsyncRoutes(
             asyncRoute as MenuConfig.LocalRouteItem[],
             data.list.map((item) => item.code)

@@ -2,7 +2,7 @@ import React from 'react';
 import { Watermark } from 'antd';
 
 const App: React.FC = () => (
-  <div style={{ height: '100%', backgroundColor: '#fff' }}>
+  <div style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)' }}>
     <Watermark content="FlowerTip Admin" style={{
         height: '100%',
       }}>

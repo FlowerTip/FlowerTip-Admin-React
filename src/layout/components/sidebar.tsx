@@ -21,7 +21,14 @@ const Sidebar = (props: SidebarComponentProps) => {
   };
 
   const headLogoStyle: React.CSSProperties = {
-    display: props.collapsed || sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'none' : 'block', color: '#fff', fontSize: '20px', fontWeight: 'bold', textAlign: 'center', height: '50px', lineHeight: '50px'
+    display: props.collapsed || sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'none' : 'block',
+    fontSize: '20px',
+    fontWeight: 'bold', 
+    textAlign: 'center',
+    height: '50px',
+    lineHeight: '50px',
+    backgroundColor: 'var(--ant-color-bg-container)',
+    color: 'var(--ant-color-text-base)',
   }
   // 侧边栏只保持一个展开
   const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -64,7 +71,6 @@ const Sidebar = (props: SidebarComponentProps) => {
     <Sider width={200} collapsedWidth={50} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={props.collapsed}>
       <div className="layout-header-logo" style={headLogoStyle}>{defaultSetting.title}</div>
       <Menu
-        theme='dark'
         style={{
           height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
         }}

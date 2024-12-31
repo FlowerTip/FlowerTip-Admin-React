@@ -28,9 +28,9 @@ const AiEditorComponent: React.FC = () => {
     }
   }, [])
   return (
-    <div style={{ height: '100%', backgroundColor: '#fff' }}>
-      <div ref={divRef} style={{ height: "100%" }} >
-        <div className="aie-container">
+    <div style={{ height: '100%'}}>
+      <div ref={divRef} style={{ height: "100%"}} >
+        <div className="aie-container" style={{ backgroundColor: 'var(--ant-color-bg-container)' }}>
           <div className="aie-container-header"></div>
           <div className="aie-container-main"></div>
           <div className="aie-container-footer" style={{ display: 'none' }}></div>

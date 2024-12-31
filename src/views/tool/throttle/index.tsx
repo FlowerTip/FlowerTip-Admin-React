@@ -21,7 +21,7 @@ const ThrottleTool: React.FC = () => {
   })
 
   return (
-    <div style={{ height: '100%', backgroundColor: '#fff', padding: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <div style={{marginRight: '120px'}}>
         <Button type="primary" onClick={handleDebounce}>点击事件防抖</Button>
         <h3 style={{ height: '100px', lineHeight: '100px',  textAlign: 'center' }}>当前的数值为：{count1}</h3>

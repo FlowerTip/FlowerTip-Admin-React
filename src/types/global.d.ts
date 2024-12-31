@@ -36,6 +36,7 @@ declare namespace AppTypeConfig {
     themeName?: string;
     topShowCollapsed?: boolean;
     showSetting?: boolean;
+    modelAlgorithm?: string;
   }
 }
 

@@ -13,7 +13,8 @@ export const settingStore = proxy({
     color: defaultSetting.color,
     themeName: defaultSetting.themeName,
     topShowCollapsed: defaultSetting.topShowCollapsed,
-    showSetting: defaultSetting.showSetting
+    showSetting: defaultSetting.showSetting,
+    modelAlgorithm: defaultSetting.modelAlgorithm,
   } as AppTypeConfig.SettingConfig,
   // 更新全局配置
   updateSetting(settingConfig: AppTypeConfig.SettingConfig) {

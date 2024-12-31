@@ -64,19 +64,31 @@ const NavBar = (props: NavbarComponentProps) => {
   const tStore = useSnapshot(tagsViewStore);
   const sStore = useSnapshot(settingStore);
 
+  const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
+
   const toggleBtnStyle = {
     display: sStore.globalSet.layout === 'topbar' ? 'none' : 'block',
     marginLeft: '12px',
     cursor: 'pointer',
-    fontSize: '16px'
+    fontSize: '16px',
+    color:  isLightTheme ? '#555555' : '#ffffff'
   }
+
+  const tagsViewStyle = {
+    borderTop: isLightTheme ? '1px solid #D9D9D9' : '1px solid #555555', 
+    padding: '0 12px', 
+    height: '39px',
+    flex: 1
+  }
+
   const location = useLocation();
   const [pathName, setPathName] = useState(location.pathname);
   useEffect(() => {
     setPathName(location.pathname)
   }, [location])
   const navbarstyle = {
-    display: !pathName.includes('home') ? 'block' : sStore.globalSet.layout === 'topbar' && pathName.includes('home') ? 'none' : props.showSidebar ? 'block' : 'none'
+    display: !pathName.includes('home') ? 'block' : sStore.globalSet.layout === 'topbar' && pathName.includes('home') ? 'none' : props.showSidebar ? 'block' : 'none',
+    backgroundColor: isLightTheme ? '#fff' : '#141414',
   }
   return (
     <div className='navbar' style={navbarstyle}>
@@ -109,7 +121,7 @@ const NavBar = (props: NavbarComponentProps) => {
             activeKey={props.activeKey}
             type="line"
             hideAdd
-            style={{ borderTop: '1px solid #D9D9D9', padding: '0 12px', height: '39px', flex: 1 }}
+            style={tagsViewStyle}
             items={(tStore.tabsMenuList || []) as TagViewItem[]}
             onTabClick={props.onTabClick}
           />

@@ -30,7 +30,7 @@ const PreviewFile: React.FC = () => {
     }, 100)
   }
   return (
-    <div style={{ height: '100%', backgroundColor: '#fff', padding: 20 }}>
+    <div style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20 }}>
       <Button type="primary" onClick={previewDoc} style={{ marginRight: 20 }}>docx预览</Button>
       <Button type="primary" onClick={previewPdf} style={{ marginRight: 20 }}>pdf预览</Button>
       <Button type="primary" onClick={previewExcel}>excel预览</Button>

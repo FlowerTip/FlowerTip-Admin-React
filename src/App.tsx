@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import RouterComponent from '@/router/modules/routes';
 import { settingStore } from '@/store';
@@ -8,13 +8,16 @@ import { useSnapshot } from 'valtio'
 
 const App: React.FC = () => {
   const sStore = useSnapshot(settingStore);
+  const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
   return (
     <ConfigProvider locale={zhCN} theme={{
       components: {
         Layout: {
           headerHeight: 50,
           headerPadding: 16,
-          bodyBg: '#f0f0f0'
+          bodyBg: isLightTheme ? '#f0f0f0' : '#000',
+          headerBg: isLightTheme ? '#fff' : '#141414',
+          headerColor: isLightTheme ? 'rgba(0, 0, 0, 0.88)' : '#fff',
         },
         Table: {
           headerBg: sStore.globalSet.color,
@@ -24,8 +27,8 @@ const App: React.FC = () => {
           headerSortHoverBg: sStore.globalSet.color,
         },
         Menu: {
-          darkItemBg: '#282E38',
-          darkPopupBg: '#282E38',
+          // darkItemBg: '#282E38',
+          // darkPopupBg: '#282E38',
           darkItemSelectedBg: sStore.globalSet.color,
           fontSize: 15
         },
@@ -40,6 +43,7 @@ const App: React.FC = () => {
         colorPrimary: sStore.globalSet.color,
       },
       cssVar: true,
+      algorithm: isLightTheme ?  theme.defaultAlgorithm : theme.darkAlgorithm
     }}>
       <HashRouter>
         <RouterComponent />

@@ -135,8 +135,9 @@ const MibBarLayout: React.FC = () => {
   }
   useEffect(() => {
     if (!routeMeta.redirect) {
-      navigate((uStore.userInfo.backMenuList[0] as any).redirect);
-      setCurrPath((uStore.userInfo.backMenuList[0] as any).path);
+      const backMenuList = uStore.userInfo.backMenuList;
+      navigate((backMenuList[0] as any).redirect);
+      setCurrPath((backMenuList[0] as any).path);
     }
   }, [])
 

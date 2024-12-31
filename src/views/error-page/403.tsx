@@ -10,7 +10,7 @@ const NotPermissionPage: React.FC = () => {
   }
 
   return (
-    <div style={{ height: '100%', backgroundColor: '#fff' }}>
+    <div style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)' }}>
       <Result
         status="403"
         title="403"

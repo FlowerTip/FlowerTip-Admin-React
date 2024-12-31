@@ -33,7 +33,7 @@ body {
   overflow: hidden;
 
   .layout-header {
-    background-color: #282E38;
+    // background-color: #282E38;
     .layout-header-logo {
       max-width: 260px;
       height: 32px;
@@ -45,9 +45,10 @@ body {
         Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       font-weight: 700;
       font-size: 22px;
-      color: #fff;
+      // color: #fff;
       display: flex;
       align-items: center;
+      // background-color: var(--ant-color-bg-container);
     }
   }
 
@@ -64,7 +65,7 @@ body {
       display: flex;
       flex-direction: column;
       .navbar {
-        background-color: #fff;
+        // background-color: #fff;
       }
 
       .view-layout {
@@ -77,7 +78,8 @@ body {
     }
   }
   .footip-bar {
-    background-color: #fff;
+    // background-color: #fff;
+    background-color: var(--ant-color-bg-container);
     text-align: center;
     height: 30px;
     line-height: 30px;

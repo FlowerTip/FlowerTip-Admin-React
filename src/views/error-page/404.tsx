@@ -9,7 +9,7 @@ const NotFoundPage: React.FC = () => {
     navigate('/')
   }
   return (
-    <div style={{ height: '100%', backgroundColor: '#fff' }}>
+    <div style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)' }}>
       <Result
         status="404"
         title="404"

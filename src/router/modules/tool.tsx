@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { message } from 'antd';
 import { useSnapshot } from "valtio";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -38,21 +39,26 @@ const RouterGuard: React.FC = () => {
       return <Navigate to={'/'} />
     } else {
       if (userInfo.username) {
-        !routeMeta.children && routeMeta.redirect && tagsViewStore.addTab({
-          key: routeMeta.path,
-          label: routeMeta.title,
-          closable: true,
-          redirect: routeMeta.redirect
-        })
-        NProgress.done(); // 结束进度条
-        if (sStore.globalSet.layout === 'simplebar') {
-          return <Simplebar />;
-        } else if (sStore.globalSet.layout === 'sidebar') {
-          return <Sidebar />;
-        } else if (sStore.globalSet.layout === 'topbar') {
-          return <Topbar />;
+        if (userInfo.backMenuList.length > 0) {
+          !routeMeta.children && routeMeta.redirect && tagsViewStore.addTab({
+            key: routeMeta.path,
+            label: routeMeta.title,
+            closable: true,
+            redirect: routeMeta.redirect
+          })
+          NProgress.done(); // 结束进度条
+          if (sStore.globalSet.layout === 'simplebar') {
+            return <Simplebar />;
+          } else if (sStore.globalSet.layout === 'sidebar') {
+            return <Sidebar />;
+          } else if (sStore.globalSet.layout === 'topbar') {
+            return <Topbar />;
+          } else {
+            return <Mixbar />;
+          }
         } else {
-          return <Mixbar />;
+          message.warning('未分配权限，请登录系统管理员分配权限');
+          return <Navigate to={'/login'} />
         }
       } else {
         userStore.getUserInfo()

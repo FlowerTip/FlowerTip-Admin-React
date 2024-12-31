@@ -67,7 +67,6 @@ const getParentKey = (key: React.Key, tree: TreeDataNode[]): React.Key => {
 const DialogTable: React.FC = () => {
   const [searchValue, setSearchValue] = useState('');
 
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearchValue(value);
