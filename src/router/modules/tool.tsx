@@ -9,7 +9,7 @@ import Simplebar from "@/layout/simplebar";
 import Sidebar from "@/layout/sidebar";
 import Topbar from "@/layout/topbar";
 import useRouteMeta from "@/hooks/useRouteMeta";
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import { getPageTitle } from '@/utils/tool'
 import { userStore, tagsViewStore, settingStore } from '@/store'
 
@@ -58,7 +58,7 @@ const RouterGuard: React.FC = () => {
           }
         } else {
           message.warning('未分配权限，请登录系统管理员分配权限');
-          userStore.logout(true);
+          removeToken();
           return <Navigate to={'/login'} />
         }
       } else {
