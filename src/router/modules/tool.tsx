@@ -58,6 +58,7 @@ const RouterGuard: React.FC = () => {
           }
         } else {
           message.warning('未分配权限，请登录系统管理员分配权限');
+          userStore.logout(true);
           return <Navigate to={'/login'} />
         }
       } else {
