@@ -79,7 +79,22 @@ export const userStore = proxy({
   updateLeftMenus(menuList: MenuConfig.LocalRouteItem[]) {
     userStore.userInfo.sidebarMenuList = menuList;
   },
-
+  /**
+   * 清除用户信息
+   */
+  clearUserInfo() {
+    userStore.userInfo = {
+      token: getToken(), // Token令牌
+      username: "", // 当前登录账号用户名
+      backMenuList: [] as MenuConfig.LocalRouteItem[], // 后台获取的菜单
+      permissionButtonList: [] as string[], // 按钮列表
+      authMenuList: [] as MenuConfig.LocalRouteItem[], // 权限菜单
+      sidebarMenuList: [] as MenuConfig.LocalRouteItem[], // 侧边栏菜单
+      roleNames: '', // 角色名称
+      workPostName: '', // 岗位名称
+      departmentName: '', // 部门名称
+    }
+  }
 })
 
 

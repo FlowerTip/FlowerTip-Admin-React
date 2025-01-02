@@ -8,6 +8,7 @@ import { Layout, Menu } from 'antd';
 const Sidebar = (props: SidebarComponentProps) => {
   const { Sider } = Layout;
   const sStore = useSnapshot(settingStore);
+  const isMenuDark = sStore.globalSet.modelAlgorithm == 'menu-dark';
   const siderStyle: React.CSSProperties = {
     overflow: 'auto',
     height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'calc(100vh - 50px)' : '100vh',
@@ -27,8 +28,8 @@ const Sidebar = (props: SidebarComponentProps) => {
     textAlign: 'center',
     height: '50px',
     lineHeight: '50px',
-    backgroundColor: 'var(--ant-color-bg-container)',
-    color: 'var(--ant-color-text-base)',
+    backgroundColor: isMenuDark ? '#282E38' : 'var(--ant-color-bg-container)',
+    color: isMenuDark ? '#fff' : 'var(--ant-color-text-base)',
   }
   // 侧边栏只保持一个展开
   const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -71,6 +72,7 @@ const Sidebar = (props: SidebarComponentProps) => {
     <Sider width={200} collapsedWidth={50} style={siderStyle} className='sidebar' trigger={null} collapsible collapsed={props.collapsed}>
       <div className="layout-header-logo" style={headLogoStyle}>{defaultSetting.title}</div>
       <Menu
+        theme={sStore.globalSet.modelAlgorithm == 'menu-dark' ? 'dark' : 'light'}
         style={{
           height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
         }}

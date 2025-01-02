@@ -9,15 +9,17 @@ import { useSnapshot } from 'valtio'
 const App: React.FC = () => {
   const sStore = useSnapshot(settingStore);
   const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
+  const isMenuDark = sStore.globalSet.modelAlgorithm == 'menu-dark';
+
   return (
     <ConfigProvider locale={zhCN} theme={{
       components: {
         Layout: {
           headerHeight: 50,
           headerPadding: 16,
-          bodyBg: isLightTheme ? '#f0f0f0' : '#000',
-          headerBg: isLightTheme ? '#fff' : '#141414',
-          headerColor: isLightTheme ? 'rgba(0, 0, 0, 0.88)' : '#fff',
+          headerColor: isMenuDark ? '#fff' : isLightTheme ? '#555' : '#fff',
+          bodyBg: isMenuDark || isLightTheme ? '#f0f0f0' : '#141414',
+          headerBg: isMenuDark ? '#282E38' : isLightTheme ? '#fff' : '#141414',
         },
         Table: {
           headerBg: sStore.globalSet.color,
@@ -27,10 +29,10 @@ const App: React.FC = () => {
           headerSortHoverBg: sStore.globalSet.color,
         },
         Menu: {
-          // darkItemBg: '#282E38',
-          // darkPopupBg: '#282E38',
+          darkItemBg: '#282E38',
+          darkPopupBg: '#282E38',
           darkItemSelectedBg: sStore.globalSet.color,
-          fontSize: 15
+          fontSize: 15,
         },
         Tree: {
           nodeSelectedBg: sStore.globalSet.color,
@@ -43,7 +45,7 @@ const App: React.FC = () => {
         colorPrimary: sStore.globalSet.color,
       },
       cssVar: true,
-      algorithm: isLightTheme ?  theme.defaultAlgorithm : theme.darkAlgorithm
+      algorithm: isMenuDark || isLightTheme ? theme.defaultAlgorithm : theme.darkAlgorithm
     }}>
       <HashRouter>
         <RouterComponent />

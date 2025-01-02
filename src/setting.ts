@@ -10,5 +10,5 @@ export default {
   themeName: "fashionThemeColors", // 主题名称：classicThemeColors || fashionThemeColors || freshThemeColors || coolThemeColors
   topShowCollapsed: false, // 收缩菜单按钮是在顶部区域显示还是面包屑区域显示
   showSetting: true, // 全局是否显示偏好设置入口
-  modelAlgorithm: 'light' // 模型算法：light || dark
+  modelAlgorithm: 'menu-dark' // 模型算法：light || dark || menu-dark
 }

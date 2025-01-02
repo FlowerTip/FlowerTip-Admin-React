@@ -59,6 +59,7 @@ const RouterGuard: React.FC = () => {
         } else {
           message.warning('未分配权限，请登录系统管理员分配权限');
           removeToken();
+          userStore.clearUserInfo();
           return <Navigate to={'/login'} />
         }
       } else {

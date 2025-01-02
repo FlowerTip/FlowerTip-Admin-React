@@ -56,6 +56,7 @@ const TopHeader = (props: HeaderComponentProps) => {
       </div>
       {
         sStore.globalSet.layout === 'mixbar' && (<Menu
+          theme={sStore.globalSet.modelAlgorithm == 'menu-dark' ? 'dark' : 'light'}
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={splitMenuList}
@@ -65,6 +66,7 @@ const TopHeader = (props: HeaderComponentProps) => {
       }
       {
         sStore.globalSet.layout === 'topbar' && (<Menu
+          theme={sStore.globalSet.modelAlgorithm == 'menu-dark' ? 'dark' : 'light'}
           mode="horizontal"
           selectedKeys={[props.selectedKeys as unknown as any]}
           items={uStore.userInfo.authMenuList as unknown as any}
