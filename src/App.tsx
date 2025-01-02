@@ -39,6 +39,9 @@ const App: React.FC = () => {
           nodeHoverBg: sStore.globalSet.color,
           nodeHoverColor: '#fff',
           nodeSelectedColor: '#fff',
+        },
+        Card: {
+          headerHeight: 36,
         }
       },
       token: {

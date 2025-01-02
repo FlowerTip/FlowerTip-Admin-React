@@ -42,7 +42,6 @@ const PieChart = (props: {
       formatter: "{b}：{c}人",
     },
     legend: {
-      top: "5%",
       left: orient === "vertical" ? 0 : "center",
       icon: icon || "circle",
       orient: orient || "horizontal", // vertical || horizontal

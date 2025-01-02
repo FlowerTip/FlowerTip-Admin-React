@@ -235,14 +235,14 @@ const Cockpit: React.FC = () => {
         </Col>
         <Col span={7}>
           <Card title="维度分析 " bordered={false} style={{ height: '330px', marginBottom: '10px' }}>
-          <div className="chart-children-wrapper">
-            <div className="child-item">
-              <PieChart chartOption={dimenAnalysisOption1} />
+            <div className="chart-children-wrapper">
+              <div className="child-item">
+                <PieChart chartOption={dimenAnalysisOption1} />
+              </div>
+              <div className="child-item">
+                <PieChart chartOption={dimenAnalysisOption2} />
+              </div>
             </div>
-            <div className="child-item">
-              <PieChart chartOption={dimenAnalysisOption2} />
-            </div>
-          </div>
           </Card>
           <Card title="年度人口" bordered={false} style={{ height: '330px' }}>
             <MoreBarChart chartOption={yearPopulationOption} />
