@@ -18,7 +18,7 @@ const App: React.FC = () => {
           headerHeight: 50,
           headerPadding: 16,
           headerColor: isMenuDark ? '#fff' : isLightTheme ? '#555' : '#fff',
-          bodyBg: isMenuDark || isLightTheme ? '#f0f0f0' : '#141414',
+          bodyBg: isMenuDark || isLightTheme ? '#f0f0f0' : '#000000',
           headerBg: isMenuDark ? '#282E38' : isLightTheme ? '#fff' : '#141414',
         },
         Table: {

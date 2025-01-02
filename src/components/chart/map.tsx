@@ -2,6 +2,8 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
 import BJGeoJson from "@/mock/geo/beijing";
+import { settingStore } from '@/store/index';
+import { useSnapshot } from 'valtio'
 
 const MapChart = () => {
   const uuid = generateUUID() + "PieChart";
@@ -10,6 +12,7 @@ const MapChart = () => {
   let sidebarMenuNode: HTMLDivElement;
 
   const option = {
+    backgroundColor: 'transparent',
     tooltip: {
       trigger: "item",
       // formatter: "{b}<br/>监管单位总数：{c} (家)",
@@ -121,9 +124,15 @@ const MapChart = () => {
   };
 
   echarts.registerMap("BeiJing", BJGeoJson as unknown as string);
-  
+
+  const sStore = useSnapshot(settingStore);
+  const theme = sStore.globalSet.modelAlgorithm == 'dark' ? 'dark' : 'default';
   useEffect(() => {
-    myChart = echarts.init(document.getElementById(uuid));
+    // 销毁当前图表实例
+    if (myChart != null && myChart.dispose) {
+      myChart.dispose();
+    }
+    myChart = echarts.init(document.getElementById(uuid), theme);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
       myChart.resize()
@@ -135,7 +144,7 @@ const MapChart = () => {
       sidebarMenuNode.addEventListener("transitionend", () => {
         myChart.resize()
       });
-  }, [])
+  }, [theme])
 
   return (
     <div id={uuid} style={{ width: '100%', height: '100%' }}></div>

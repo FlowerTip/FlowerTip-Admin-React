@@ -1,16 +1,19 @@
 import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
+import { settingStore } from '@/store/index';
+import { useSnapshot } from 'valtio'
 
 const MixChart = (props: echarts.EChartsOption) => {
   console.log(props);
-  
+
   const uuid = generateUUID() + "PieChart";
   let myChart: echarts.ECharts;
 
   let sidebarMenuNode: HTMLDivElement;
 
   const option = {
+    backgroundColor: 'transparent',
     title: {
       text: "混合图标实例",
       subtext: "图表数据",
@@ -90,9 +93,15 @@ const MixChart = (props: echarts.EChartsOption) => {
       },
     ],
   };
+  const sStore = useSnapshot(settingStore);
+  const theme = sStore.globalSet.modelAlgorithm == 'dark' ? 'dark' : 'default';
 
   useEffect(() => {
-    myChart = echarts.init(document.getElementById(uuid));
+    // 销毁当前图表实例
+    if (myChart != null && myChart.dispose) {
+      myChart.dispose();
+    }
+    myChart = echarts.init(document.getElementById(uuid), theme);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
       myChart.resize()
@@ -104,7 +113,7 @@ const MixChart = (props: echarts.EChartsOption) => {
       sidebarMenuNode.addEventListener("transitionend", () => {
         myChart.resize()
       });
-  }, [])
+  }, [theme])
 
   return (
     <div id={uuid} style={{ width: '100%', height: '100%' }}></div>
