@@ -18,7 +18,7 @@ const Sidebar = (props: SidebarComponentProps) => {
     bottom: 0,
     scrollbarWidth: 'thin',
     scrollbarColor: 'unset',
-    display: props.showSidebar ? 'block' : 'none'
+    display: props.showSidebar ? 'block' : 'none',
   };
 
   const headLogoStyle: React.CSSProperties = {

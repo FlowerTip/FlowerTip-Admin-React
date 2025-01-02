@@ -196,10 +196,10 @@ const MibBarLayout: React.FC = () => {
     } else {
       if (hasOnlyOne && hasOnlyOne.redirect) {
         redirectUrl = hasOnlyOne.redirect
-        setShowSidebar(false)
+        // setShowSidebar(false)
       } else {
         redirectUrl = key;
-        setShowSidebar(true)
+        // setShowSidebar(true)
       }
     }
     if (!isExternalFn(redirectUrl)) {
@@ -233,7 +233,7 @@ const MibBarLayout: React.FC = () => {
       navigate(redirectUrl);
     } else {
       setActiveIndex(hasOnlyOne.key);
-      setShowSidebar(showSidebar);
+      // setShowSidebar(showSidebar);
     }
   }
 
