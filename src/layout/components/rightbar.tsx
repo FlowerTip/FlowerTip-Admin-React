@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
 import type { MenuProps, TabsProps } from 'antd';
-import { Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal } from 'antd';
+import { Select, Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal } from 'antd';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 import { ItemType } from 'antd/es/menu/interface';
@@ -298,13 +298,14 @@ const Rightbar = () => {
     })
   }
 
-  const darkModelChange = (isShow: boolean) => {
+  const modelChange = (model: string) => {
     sStore.updateSetting({
       ...sStore.globalSet,
-      modelAlgorithm: isShow ? 'dark' : 'light'
+      modelAlgorithm: model
     })
+    navigate('/')
   }
-  
+
   const topHeaderChange = (isShow: boolean) => {
     sStore.updateSetting({
       ...sStore.globalSet,
@@ -598,8 +599,17 @@ const Rightbar = () => {
             </Divider>
             <div className="wrapper">
               <div className="item">
-                <span className="right-txt">黑夜模式</span>
-                <Switch checkedChildren="开启" unCheckedChildren="关闭"  onChange={darkModelChange} />
+                <span className="right-txt">导航主题</span>
+                <Select
+                  defaultValue={sStore.globalSet.modelAlgorithm}
+                  size="small"
+                  onChange={modelChange}
+                  options={[
+                    { value: 'menu-dark', label: '反色菜单' },
+                    { value: 'light', label: '浅色主题' },
+                    { value: 'dark', label: '深色主题' },
+                  ]}
+                />
               </div>
               <div className="item">
                 <span className="right-txt">顶部区域</span>
