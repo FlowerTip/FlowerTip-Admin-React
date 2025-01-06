@@ -12,7 +12,7 @@ const px2rem = px2remTransformer({
 createRoot(document.getElementById('root')!).render(
   <StyleProvider transformers={[px2rem]}>
     <Watermark content="FlowerTip Admin" style={{
-      height: '100%',
+      height: '100%'
     }}>
       <App />
     </Watermark>

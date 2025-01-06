@@ -34,6 +34,7 @@ body {
 
   .layout-header {
     // background-color: #282E38;
+    border-bottom: var(--ant-line-width) var(--ant-line-type) var(--ant-color-split);
     .layout-header-logo {
       max-width: 260px;
       height: 32px;

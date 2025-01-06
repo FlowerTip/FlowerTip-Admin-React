@@ -6,7 +6,7 @@ import NotFoundPage from '@/views/error-page/404.tsx';
 import NotNetWorkPage from '@/views/error-page/500.tsx';
 import NotPermissionPage from '@/views/error-page/403.tsx';
 import Login from '@/views/login/index.tsx';
-import Cockpit from '@/views/cockpit/index';
+import Cockpit from '@/views/cockpit/index.tsx';
 import AdvancedTable from '@/views/table/advanced-table/index.tsx';
 import DialogTable from '@/views/table/dialog-table/index.tsx';
 import AvatarUpload from '@/views/upload/avatar-upload/index';
@@ -60,7 +60,7 @@ import VerifiedOutlined from '@ant-design/icons/VerifiedOutlined';
 import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ToolOutlined from '@ant-design/icons/ToolOutlined';
 import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
-import FieldTimeOutlined from '@ant-design/icons/FieldTimeOutlined';
+import RadiusUprightOutlined from '@ant-design/icons/RadiusUprightOutlined';
 import FileWordOutlined from '@ant-design/icons/FileWordOutlined';
 import ProductOutlined from '@ant-design/icons/ProductOutlined';
 import DotChartOutlined from '@ant-design/icons/DotChartOutlined';
@@ -326,7 +326,7 @@ export const asyncRoute = [
         Component: ThrottleTool,
         meta: {
           title: "防抖节流",
-          icon: <FieldTimeOutlined />,
+          icon: <RadiusUprightOutlined />,
         },
       },
       {
