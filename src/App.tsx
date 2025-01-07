@@ -17,7 +17,7 @@ const App: React.FC = () => {
         Layout: {
           headerHeight: 50,
           headerPadding: 16,
-          headerColor: isMenuDark ? '#fff' : isLightTheme ? '#555' : '#fff',
+          headerColor: isMenuDark ? '#fff' : isLightTheme ? '#141414' : '#fff',
           bodyBg: isMenuDark || isLightTheme ? '#f0f0f0' : '#000000',
           headerBg: isMenuDark ? '#282E38' : isLightTheme ? '#fff' : '#141414',
         },

@@ -113,6 +113,36 @@ const MixChart = (props: echarts.EChartsOption) => {
       sidebarMenuNode.addEventListener("transitionend", () => {
         myChart.resize()
       });
+
+    // 监听侧边栏显示隐藏
+    let flag = true;
+    let targetNode = sidebarMenuNode; //content监听的元素
+    // options：监听的属性
+    const options = {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeOldValue: true,
+      attributeFilter: ['style']
+    };
+    // 回调事件
+    function callback(mutationsList: MutationRecord[]) {
+      const display = (mutationsList[0].target as HTMLElement).style.display;
+      display === 'none' ? myChart.resize() : null
+      if (flag) {
+        flag = false
+      }
+    }
+    const mutationObserver = new MutationObserver(callback);
+    mutationObserver.observe(targetNode, options);
+    return () => {
+      window.removeEventListener("resize", () => {
+        myChart.resize()
+      });
+      sidebarMenuNode.removeEventListener("transitionend", () => {
+        myChart.resize()
+      });
+    }
   }, [theme])
 
   return (
