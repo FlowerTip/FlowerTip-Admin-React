@@ -172,7 +172,7 @@ export default () => {
     pageSize: 10
   })
   return (
-    <div>
+    <>
       <ProTable<StudentItem>
         columns={columns}
         actionRef={actionRef}
@@ -237,6 +237,6 @@ export default () => {
         ]}
       />
       <ModalStudent ref={ModalStudentRef} />
-    </div>
+    </>
   );
 };
