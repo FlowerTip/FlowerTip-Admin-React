@@ -49,10 +49,10 @@ const TopHeader = (props: HeaderComponentProps) => {
       <div className="layout-header-logo">
         {sStore.globalSet.showHeaderLogo && defaultSetting.title}
         {sStore.globalSet.topShowCollapsed && (
-        <Button type="primary" onClick={props.toggleCollapsed} style={{marginLeft: '20px'}}>
-          {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </Button>
-      )}
+          <Button type="primary" onClick={props.toggleCollapsed} style={{ marginLeft: '20px' }}>
+            {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </Button>
+        )}
       </div>
       {
         sStore.globalSet.layout === 'mixbar' && (<Menu

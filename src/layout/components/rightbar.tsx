@@ -1,3 +1,7 @@
+import {
+  Bubble,
+  Sender,
+} from '@ant-design/x';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
@@ -8,16 +12,19 @@ import BellOutlined from '@ant-design/icons/BellOutlined';
 import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
+import OpenAIOutlined from '@ant-design/icons/OpenAIOutlined';
+import CustomerServiceOutlined from '@ant-design/icons/CustomerServiceOutlined';
 import Icon from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
 import type { MenuProps, TabsProps } from 'antd';
-import { Select, Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal } from 'antd';
+import { Select, Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal, FloatButton } from 'antd';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 import { ItemType } from 'antd/es/menu/interface';
+import ChatAi from './chat';
 
 const Rightbar = () => {
   // 当前时间
@@ -122,6 +129,7 @@ const Rightbar = () => {
   // 抽屉组件
   const [open, setOpen] = useState(false);
   const [settingOpen, setSettingOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   // 确认框组件
   const [modal, modalContextHolder] = Modal.useModal();
   const [messageApi, contextHolder] = message.useMessage();
@@ -170,6 +178,7 @@ const Rightbar = () => {
   const onClose = () => {
     setOpen(false);
     setSettingOpen(false);
+    setAiOpen(false);
   };
 
   const noticeList: MessageItem[] = [
@@ -339,6 +348,13 @@ const Rightbar = () => {
       showFooterBar: isShow
     })
   }
+
+  const messages = [
+    {
+      content: 'Hello, Ant Design X!',
+      role: 'user',
+    },
+  ];
 
   return (
     <>
@@ -639,17 +655,31 @@ const Rightbar = () => {
           </div>
         </div >
       </Drawer >
-      {
-        sStore.globalSet.showSetting && (<div
-          className="setting-btn"
-          style={{ backgroundColor: sStore.globalSet.color }}
-          onClick={openRightSetting}
-        >
-          <Icon className="setting-icon" component={SettingOutlined as React.ForwardRefExoticComponent<any>} />
-        </div >)
-      }
+      <Drawer title="FlowerTip Admin AI 智能对话交互助手" closeIcon={false} onClose={onClose} open={aiOpen} width={880}>
+        <div>
+          <ChatAi />
+        </div>
+      </Drawer>
+      <FloatButton.Group
+        trigger="hover"
+        type="primary"
+        style={{ marginBottom: 300, insetInlineEnd: 0 }}
+        icon={<CustomerServiceOutlined />}
+      >
+        {
+          sStore.globalSet.showSetting && (<FloatButton
+            icon={<SettingOutlined />}
+            onClick={openRightSetting}
+          />)
+        }
+        <FloatButton
+          icon={<OpenAIOutlined />}
+          onClick={() => setAiOpen(true)}
+        />
+      </FloatButton.Group>
       {modalContextHolder}
       {contextHolder}
+
     </>
   )
 }
