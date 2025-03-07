@@ -1,7 +1,7 @@
-import {
-  Bubble,
-  Sender,
-} from '@ant-design/x';
+// import {
+//   Bubble,
+//   Sender,
+// } from '@ant-design/x';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
@@ -349,12 +349,12 @@ const Rightbar = () => {
     })
   }
 
-  const messages = [
-    {
-      content: 'Hello, Ant Design X!',
-      role: 'user',
-    },
-  ];
+  // const messages = [
+  //   {
+  //     content: 'Hello, Ant Design X!',
+  //     role: 'user',
+  //   },
+  // ];
 
   return (
     <>
