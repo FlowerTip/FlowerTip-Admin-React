@@ -21,7 +21,9 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import SmileOutlined from '@ant-design/icons/SmileOutlined';
-import { Badge, Button, type GetProp, Space } from 'antd';
+import AliwangwangOutlined from '@ant-design/icons/AliwangwangOutlined';
+import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
+import { Badge, Button, Spin, type GetProp, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 
 // https://api.siliconflow.cn/v1/chat/completions
@@ -42,6 +44,7 @@ const exampleRequest = XRequest({
   /** 🔥🔥 Its dangerously! */
   dangerouslyApiKey: aiConfig.API_KEY
 });
+
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
   <Space align="start">
@@ -74,7 +77,7 @@ const useStyle = createStyles(({ token, css }) => {
     `,
     menu: css`
       background: ${token.colorBgLayout}80;
-      width: 280px;
+      width: 310px;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -195,16 +198,33 @@ const senderPromptsItems: GetProp<typeof Prompts, 'items'> = [
 const roles: GetProp<typeof Bubble.List, 'roles'> = {
   ai: {
     placement: 'start',
+    avatar: {
+      icon: <img
+        src="./favicon.svg"
+        draggable={false}
+        alt="logo"
+      />, style: { background: '#fff' }
+    },
     typing: { step: 5, interval: 20 },
+    style: {
+      maxWidth: 600,
+      marginInlineEnd: 44,
+    },
     styles: {
-      content: {
-        borderRadius: 16,
+      footer: {
+        width: '100%',
       },
     },
+    loadingRender: () => (
+      <Space>
+        <Spin size="small" />
+        我正在整理思路，请稍等...
+      </Space>
+    ),
   },
   local: {
     placement: 'end',
-    variant: 'shadow',
+    avatar: { icon: <AliwangwangOutlined />, style: { background: '#4096ff' } }
   },
 };
 
@@ -227,15 +247,25 @@ const Independent: React.FC = () => {
 
   // ==================== Runtime ====================
   const [agent] = useXAgent({
-    request: async ({ message }, { onSuccess }) => {
+    request: async ({ message }, { onSuccess, onUpdate }) => {
       await exampleRequest.create(
         {
           messages: [{ role: 'user', content: message }],
         },
         {
           onSuccess: function (chunks: any): void {
-            console.log(chunks);
-            onSuccess(chunks[0].choices[0].message.content);
+            const fullContent = chunks[0].choices[0].message.content;
+            let currentContent = '';
+
+            const id = setInterval(() => {
+              currentContent = fullContent.slice(0, currentContent.length + 10);
+              onUpdate(currentContent);
+
+              if (currentContent === fullContent) {
+                clearInterval(id);
+                onSuccess(fullContent);
+              }
+            }, 100);
           },
           onError: function (error: Error): void {
             console.log(error);
@@ -274,7 +304,7 @@ const Independent: React.FC = () => {
       ...conversationsItems,
       {
         key: `${conversationsItems.length}`,
-        label: `新建对话${conversationsItems.length}`,
+        label: `当前对话${conversationsItems.length + 1}`,
       },
     ]);
     setActiveKey(`${conversationsItems.length}`);
@@ -292,9 +322,9 @@ const Independent: React.FC = () => {
     <Space direction="vertical" size={16} className={styles.placeholder}>
       <Welcome
         variant="borderless"
-        icon="https://www.flowertip.site/vitepress-blog/images/avatar.jpg"
+        icon="https://www.flowertip.site/pro/favicon.svg"
         title="你好, 我是AI智能交互助手"
-        description="狗尾巴花的尖，FlowerTip Admin AI 智能对话交互助手"
+        description="我是狗尾巴花的尖，FlowerTip Admin AI 智能对话交互助手"
       />
       <Prompts
         title="你想要做什么?"
@@ -312,12 +342,16 @@ const Independent: React.FC = () => {
     </Space>
   );
 
-  const items: GetProp<typeof Bubble.List, 'items'> = messages.map(({ id, message, status }) => ({
-    key: id,
-    loading: status === 'loading',
-    role: status === 'local' ? 'local' : 'ai',
-    content: (<Markdown>{message}</Markdown>),
-  }));
+  const items: GetProp<typeof Bubble.List, 'items'> = messages.map((item) => {
+    console.log(item, 'can')
+    const { id, message, status } = item;
+    return {
+      key: id,
+      loading: status === 'loading',
+      role: status === 'local' ? 'local' : 'ai',
+      content: (<Markdown>{message}</Markdown>),
+    }
+  });
 
   const attachmentsNode = (
     <Badge dot={attachedFiles.length > 0 && !headerOpen}>
@@ -360,7 +394,7 @@ const Independent: React.FC = () => {
         draggable={false}
         alt="logo"
       />
-      <span>智能交互助手</span>
+      <span>狗尾巴花的尖</span>
     </div>
   );
 
@@ -381,6 +415,24 @@ const Independent: React.FC = () => {
         </Button>
         {/* 🌟 会话管理 */}
         <Conversations
+          menu={(conversation) => (
+            {
+              items: [
+                {
+                  label: '删除会话',
+                  key: 'deleteKey',
+                  icon: <DeleteOutlined />,
+                },
+              ],
+              onClick: (menuInfo) => {
+                console.log(`Click ${conversation.key} - ${menuInfo.key}`);
+                const filterItems = conversationsItems.filter(item => conversation.key !== item.key);
+                setConversationsItems(filterItems);
+                const defaultItem = filterItems[filterItems.length - 1]
+                setActiveKey(defaultItem ? defaultItem.key : '');
+              },
+            }
+          )}
           items={conversationsItems}
           className={styles.conversations}
           activeKey={activeKey}
@@ -390,6 +442,7 @@ const Independent: React.FC = () => {
       <div className={styles.chat} style={{ whiteSpace: 'pre-line', height: '800px', overflowY: 'auto' }}>
         {/* 🌟 消息列表 */}
         <Bubble.List
+          // 🌟 消息列表
           items={items.length > 0 ? items : [{ content: placeholderNode, variant: 'borderless' }]}
           roles={roles}
           className={styles.messages}
