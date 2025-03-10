@@ -21,8 +21,8 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import SmileOutlined from '@ant-design/icons/SmileOutlined';
-import AliwangwangOutlined from '@ant-design/icons/AliwangwangOutlined';
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
+import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Badge, Button, Spin, type GetProp, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 
@@ -56,7 +56,7 @@ const renderTitle = (icon: React.ReactElement, title: string) => (
 const defaultConversationsItems = [
   {
     key: '0',
-    label: '什么是 AI 智能交互助手?',
+    label: '临时会话',
   },
 ];
 
@@ -224,7 +224,7 @@ const roles: GetProp<typeof Bubble.List, 'roles'> = {
   },
   local: {
     placement: 'end',
-    avatar: { icon: <AliwangwangOutlined />, style: { background: '#4096ff' } }
+    avatar: { icon: <UserAddOutlined />, style: { background: '#3170FF' } }
   },
 };
 

@@ -13,18 +13,19 @@ import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import OpenAIOutlined from '@ant-design/icons/OpenAIOutlined';
-import CustomerServiceOutlined from '@ant-design/icons/CustomerServiceOutlined';
+// import CustomerServiceOutlined from '@ant-design/icons/CustomerServiceOutlined';
 import Icon from '@ant-design/icons';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
-import type { MenuProps, TabsProps } from 'antd';
-import { Select, Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal, FloatButton } from 'antd';
+import type { MenuProps, TabsProps, TourProps } from 'antd';
+import { Tour, Select, Switch, Divider, Popover, Badge, Drawer, Tabs, Dropdown, Space, message, Modal, FloatButton } from 'antd';
 import { userStore, settingStore } from '@/store'
 import { useRefreshTime } from '@/hooks/useRefreshTime';
 import { ItemType } from 'antd/es/menu/interface';
 import ChatAi from './chat';
+import aiPng from '@/assets/images/ai.png'
 
 const Rightbar = () => {
   // 当前时间
@@ -44,6 +45,7 @@ const Rightbar = () => {
       if (screenfull.isFullscreen) setIsFullScreen(true);
       else setIsFullScreen(false);
     });
+    setTourOpen(true);
     return () => {
       clearTimer();
     };
@@ -274,9 +276,30 @@ const Rightbar = () => {
   };
 
   // 偏好设置的弹窗
-  const openRightSetting = () => {
-    setSettingOpen(true);
-  }
+  // const openRightSetting = () => {
+  //   setSettingOpen(true);
+  // }
+  const aiBtnRef = useRef(null);
+  const steps: TourProps['steps'] = [
+    {
+      title: '如何使用您的AI专属助手',
+      description: '我们可以使用AI助手进行对话',
+      cover: (
+        <img
+          alt="tour.png"
+          src={aiPng}
+        />
+      ),
+      target: null,
+    },
+    {
+      title: '使用AI助手',
+      description: '点击右侧AI按钮，即可开启AI助手',
+      placement: 'right',
+      target: () => aiBtnRef.current,
+    },
+  ];
+  const [tourOpen, setTourOpen] = useState(false);
 
   const toggleLayout = (layoutName: string) => {
     sStore.updateSetting({
@@ -660,23 +683,15 @@ const Rightbar = () => {
           <ChatAi />
         </div>
       </Drawer>
-      <FloatButton.Group
-        trigger="hover"
+      <FloatButton
+        ref={aiBtnRef}
+        shape="square"
         type="primary"
-        style={{ marginBottom: 300, insetInlineEnd: 0 }}
-        icon={<CustomerServiceOutlined />}
-      >
-        {
-          sStore.globalSet.showSetting && (<FloatButton
-            icon={<SettingOutlined />}
-            onClick={openRightSetting}
-          />)
-        }
-        <FloatButton
-          icon={<OpenAIOutlined />}
-          onClick={() => setAiOpen(true)}
-        />
-      </FloatButton.Group>
+        style={{ insetInlineEnd: 0, marginBottom: 350 }}
+        icon={<OpenAIOutlined />}
+        onClick={() => setAiOpen(true)}
+      />
+      <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} />
       {modalContextHolder}
       {contextHolder}
 
