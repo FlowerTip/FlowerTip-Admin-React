@@ -23,6 +23,7 @@ import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
+import { isIndexOfFiles } from '@/utils/tool';
 
 const md = markdownit({ html: true, breaks: true });
 
@@ -218,29 +219,34 @@ const Independent: React.FC = () => {
   // ==================== Runtime ====================
   const [agent] = useXAgent({
     request: async ({ message }, { onSuccess, onUpdate }) => {
-      const jsContentObj = JSON.parse(message as string);
-      console.log(jsContentObj, '参数附件')
-      const { content, files } = jsContentObj;
       const params: any = {
         role: 'user',
         content: []
       }
-      const textParam = [{ type: 'text', text: content }]
-      if (files.length > 0) {
-        const paramFiles = files.map((item: { name: string; url: string; }) => {
-          return {
-            type: "image_url",
-            image_url: {
-              url: item.url,
+      console.log(isIndexOfFiles(message as string), message, 'ceshi')
+      if (isIndexOfFiles(message as string)) {
+        const jsContentObj = JSON.parse(message as string);
+        console.log(jsContentObj, '参数附件')
+        const { content, files } = jsContentObj;
+        const textParam = [{ type: 'text', text: content }]
+        if (files.length > 0) {
+          const paramFiles = files.map((item: { name: string; url: string; }) => {
+            return {
+              type: "image_url",
+              image_url: {
+                url: item.url,
+              }
             }
-          }
-        })
-        params.content = [
-          ...paramFiles,
-          ...textParam
-        ]
+          })
+          params.content = [
+            ...paramFiles,
+            ...textParam
+          ]
+        } else {
+          params.content = textParam;
+        }
       } else {
-        params.content = textParam;
+        params.content = [{ type: 'text', text: message }]
       }
       await exampleRequest.create(
         {
@@ -342,7 +348,7 @@ const Independent: React.FC = () => {
   const items: GetProp<typeof Bubble.List, 'items'> = messages.map((item) => {
     const { id, message, status } = item;
     let msgContent = '';
-    if (status === 'local') {
+    if (status === 'local' && isIndexOfFiles(message as string)) {
       const jsContentObj = JSON.parse(message as string);
       msgContent = jsContentObj;
     } else {
@@ -355,10 +361,10 @@ const Independent: React.FC = () => {
       content: msgContent,
       messageRender: (content: any) => {
         let renderContent = '';
-        if (status == 'local') {
+        if (status == 'local' && content.files &&  content.files.length > 0) {
           let str = '';
           content.files.map((item: any) => {
-            str += `<div><img src='${item.url}' style='width: 300px; height: auto;' alt='${item.name}' /></div>`
+            str += `<img src='${item.url}' style='width: 100px; height: auto;' alt='${item.name}' />`
           })
           renderContent = `${str}<p>${content.content}</p>`;
         } else {

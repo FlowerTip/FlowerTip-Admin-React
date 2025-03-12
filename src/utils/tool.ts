@@ -56,7 +56,7 @@ export function getPageTitle(meta: {
  * 过滤掉属性children为空的
  * @param data 
  * @returns 
- */ 
+ */
 
 export function delChildren(data: AppTypeConfig.MenuOption[]) {
   let tempList: AppTypeConfig.MenuOption[] = []
@@ -112,4 +112,14 @@ export function generateUUID(): string {
     uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16);
   }
   return uuid;
+}
+
+
+/**
+ * 判断一个字符串是否为有效的 JSON 字符串
+ * @param {string} str - 待判断的字符串
+ * @returns {boolean} - 如果是有效的 JSON 字符串返回 true，否则返回 false
+ */
+export function isIndexOfFiles(str: string): boolean {
+  return str.includes('files')
 }
