@@ -23,9 +23,6 @@ import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
-import { RcFile } from 'antd/es/upload';
-import { UploadFileStatus } from 'antd/es/upload/interface';
-
 
 const md = markdownit({ html: true, breaks: true });
 
