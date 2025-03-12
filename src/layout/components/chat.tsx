@@ -23,6 +23,8 @@ import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
+import { RcFile } from 'antd/es/upload';
+import { UploadFileStatus } from 'antd/es/upload/interface';
 
 
 const md = markdownit({ html: true, breaks: true });
@@ -294,8 +296,23 @@ const Independent: React.FC = () => {
     onRequest(info.data.description as string);
   };
 
-  const handleFileChange: GetProp<typeof Attachments, 'onChange'> = (info) =>
-    setAttachedFiles(info.fileList);
+  const handleFileChange: GetProp<typeof Attachments, 'onChange'> = (info) => {
+    console.log(info, 'info附件')
+    if (info.file.size) {
+      const currentFile = {
+        ...info.file,
+        name: info.file.name,
+        url: ''
+      }
+      getBase64(info.file as FileType, (url) => {
+        currentFile.url = url
+      });
+      return setAttachedFiles([...attachedFiles, currentFile]);
+    } else {
+      return setAttachedFiles(info.fileList);
+    }
+  }
+
 
   // ==================== Nodes ====================
   const placeholderNode = (
@@ -378,6 +395,7 @@ const Independent: React.FC = () => {
       <Attachments
         ref={attachmentsRef}
         items={attachedFiles}
+        beforeUpload={() => false}
         onChange={handleFileChange}
         placeholder={(type) =>
           type === 'drop'
@@ -430,13 +448,12 @@ const Independent: React.FC = () => {
           onSubmit={onSubmit}
           onChange={setContent}
           onPasteFile={(file) => {
-            attachmentsRef.current?.upload(file);
             getBase64(file as FileType, (url) => {
               const fileObj = {
                 name: file.name,
                 url
               }
-              setAttachedFiles([fileObj as Attachment]);
+              setAttachedFiles([...attachedFiles, fileObj] as Attachment[]);
               setHeaderOpen(true);
             });
           }}
