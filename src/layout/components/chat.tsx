@@ -13,12 +13,11 @@ import markdownit from 'markdown-it';
 import { createStyles } from 'antd-style';
 import React from 'react';
 import CloudUploadOutlined from '@ant-design/icons/CloudUploadOutlined';
-import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import FireOutlined from '@ant-design/icons/FireOutlined';
-import HeartOutlined from '@ant-design/icons/HeartOutlined';
+import NotificationOutlined from '@ant-design/icons/NotificationOutlined';
 import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
-import SmileOutlined from '@ant-design/icons/SmileOutlined';
+import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
 import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
@@ -127,44 +126,44 @@ const placeholderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   {
     key: '1',
     label: renderTitle(<FireOutlined style={{ color: '#FF4D4F' }} />, '热门话题'),
-    description: '你想了解些什么?',
+    description: '你关注哪些热点新闻?',
     children: [
       {
         key: '1-1',
-        icon: <HeartOutlined />,
-        description: `AI的特性`,
+        icon: <NotificationOutlined />,
+        description: `北京第三代社保卡更换指南`,
       },
       {
         key: '1-2',
-        icon: <SmileOutlined />,
-        description: `AGI产品`,
+        icon: <NotificationOutlined />,
+        description: `不会被AI替代的职业有哪些`,
       },
       {
         key: '1-3',
-        icon: <CommentOutlined />,
-        description: `文档说明`,
+        icon: <NotificationOutlined />,
+        description: `普通人存款多少可以躺平`,
       },
     ],
   },
   {
     key: '2',
-    label: renderTitle(<ReadOutlined style={{ color: '#1890FF' }} />, '设计指南'),
-    description: '如何设计好的产品?',
+    label: renderTitle(<ReadOutlined style={{ color: '#1890FF' }} />, '文档指南'),
+    description: '你想了解哪门技术框架?',
     children: [
       {
         key: '2-1',
-        icon: <HeartOutlined />,
-        description: `产品需求`,
+        icon: <ProfileOutlined />,
+        description: `Vue技术框架开发文档`,
       },
       {
         key: '2-2',
-        icon: <SmileOutlined />,
-        description: `设计原则`,
+        icon: <ProfileOutlined />,
+        description: `React技术框架开发文档`,
       },
       {
         key: '2-3',
-        icon: <CommentOutlined />,
-        description: `设计规范`,
+        icon: <ProfileOutlined />,
+        description: `Node技术框架开发文档`,
       },
     ],
   },
@@ -219,7 +218,10 @@ const Independent: React.FC = () => {
   // ==================== Runtime ====================
   const [agent] = useXAgent({
     request: async ({ message }, { onSuccess, onUpdate }) => {
-      const params: any = {
+      const params: {
+        role: string;
+        content: Attachment[] | { type: string; text: string | undefined }[];
+      } = {
         role: 'user',
         content: []
       }
@@ -361,7 +363,7 @@ const Independent: React.FC = () => {
       content: msgContent,
       messageRender: (content: any) => {
         let renderContent = '';
-        if (status == 'local' && content.files &&  content.files.length > 0) {
+        if (status == 'local' && content.files && content.files.length > 0) {
           let str = '';
           content.files.map((item: any) => {
             str += `<img src='${item.url}' style='width: 100px; height: auto;' alt='${item.name}' />`
@@ -386,7 +388,7 @@ const Independent: React.FC = () => {
 
   const senderHeader = (
     <Sender.Header
-      title="附件上传"
+      title="图片上传"
       open={headerOpen}
       onOpenChange={setHeaderOpen}
       styles={{
@@ -402,11 +404,11 @@ const Independent: React.FC = () => {
         onChange={handleFileChange}
         placeholder={(type) =>
           type === 'drop'
-            ? { title: '选取文件' }
+            ? { title: '选取图片' }
             : {
               icon: <CloudUploadOutlined />,
-              title: '上传文件',
-              description: '选择或者拖动文件上传',
+              title: '上传图片',
+              description: '点击上传图片或者拖动图片上传',
             }
         }
         getDropContainer={() => senderRef.current?.nativeElement}
