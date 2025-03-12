@@ -6,12 +6,12 @@ import {
   Welcome,
   useXAgent,
   useXChat,
-  XRequest
+  XRequest,
+  type BubbleProps
 } from '@ant-design/x';
-import Markdown from 'react-markdown';
+import markdownit from 'markdown-it';
 import { createStyles } from 'antd-style';
 import React from 'react';
-
 import CloudUploadOutlined from '@ant-design/icons/CloudUploadOutlined';
 import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import FireOutlined from '@ant-design/icons/FireOutlined';
@@ -20,20 +20,28 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import SmileOutlined from '@ant-design/icons/SmileOutlined';
 import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
-import { Flex, Badge, Button, Spin, type GetProp, Space } from 'antd';
+import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
+import { Attachment } from '@ant-design/x/es/attachments';
+
+
+const md = markdownit({ html: true, breaks: true });
+
+const renderMarkdown: BubbleProps['messageRender'] = (content) => (
+  <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
+);
 
 // https://api.siliconflow.cn/v1/chat/completions
 // https://api.chatanywhere.tech/v1/chat/completions
 const aiConfig = {
-  BASE_URL: 'https://api.chatanywhere.tech',
+  BASE_URL: ' https://api.siliconflow.cn',
   PATH: '/v1/chat/completions',
-  MODEL: 'gpt-3.5-turbo',
+  MODEL: 'Qwen/QVQ-72B-Preview',
+  // MODEL: 'gpt-3.5-turbo',
   // MODEL: 'Qwen/QwQ-32B',
-  // API_KEY: "Bearer sk-egddhgwyygueidskftjyqltrcezjhwdjpfzbdndojvrmitaa"
-  API_KEY: "sk-XKL1YHDdy9VHWZeDdiXNbswkHumM2fllSe7JH5ZR3v8oL8El"
+  API_KEY: "Bearer sk-egddhgwyygueidskftjyqltrcezjhwdjpfzbdndojvrmitaa"
+  // API_KEY: "sk-XKL1YHDdy9VHWZeDdiXNbswkHumM2fllSe7JH5ZR3v8oL8El"
 }
-
 const exampleRequest = XRequest({
   baseURL: aiConfig.BASE_URL + aiConfig.PATH,
   model: aiConfig.MODEL,
@@ -42,14 +50,19 @@ const exampleRequest = XRequest({
   dangerouslyApiKey: aiConfig.API_KEY
 });
 
-
 const renderTitle = (icon: React.ReactElement, title: string) => (
   <Space align="start">
     {icon}
     <span>{title}</span>
   </Space>
 );
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
+const getBase64 = (img: FileType, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+};
 
 const useStyle = createStyles(({ token, css }) => {
   return {
@@ -73,7 +86,7 @@ const useStyle = createStyles(({ token, css }) => {
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      padding: ${token.paddingLG}px;
+      padding: ${token.paddingXS}px;
       gap: 16px;
     `,
     messages: css`
@@ -118,14 +131,17 @@ const placeholderPromptsItems: GetProp<typeof Prompts, 'items'> = [
     children: [
       {
         key: '1-1',
+        icon: <HeartOutlined />,
         description: `AI的特性`,
       },
       {
         key: '1-2',
+        icon: <SmileOutlined />,
         description: `AGI产品`,
       },
       {
         key: '1-3',
+        icon: <CommentOutlined />,
         description: `文档说明`,
       },
     ],
@@ -203,9 +219,33 @@ const Independent: React.FC = () => {
   // ==================== Runtime ====================
   const [agent] = useXAgent({
     request: async ({ message }, { onSuccess, onUpdate }) => {
+      const jsContentObj = JSON.parse(message as string);
+      console.log(jsContentObj, '参数附件')
+      const { content, files } = jsContentObj;
+      const params: any = {
+        role: 'user',
+        content: []
+      }
+      const textParam = [{ type: 'text', text: content }]
+      if (files.length > 0) {
+        const paramFiles = files.map((item: { name: string; url: string; }) => {
+          return {
+            type: "image_url",
+            image_url: {
+              url: item.url,
+            }
+          }
+        })
+        params.content = [
+          ...paramFiles,
+          ...textParam
+        ]
+      } else {
+        params.content = textParam;
+      }
       await exampleRequest.create(
         {
-          messages: [{ role: 'user', content: message }],
+          messages: [params],
         },
         {
           onSuccess: function (chunks: any): void {
@@ -240,8 +280,14 @@ const Independent: React.FC = () => {
   // ==================== Event ====================
   const onSubmit = async (nextContent: string) => {
     if (!nextContent) return;
-    onRequest(nextContent);
+    const jsonStrContent = JSON.stringify({
+      content: nextContent,
+      files: attachedFiles
+    });
+    onRequest(jsonStrContent);
     setContent('');
+    setAttachedFiles([]);
+    setHeaderOpen(false);
   };
 
   const onPromptsItemClick: GetProp<typeof Prompts, 'onItemClick'> = (info) => {
@@ -260,7 +306,7 @@ const Independent: React.FC = () => {
         title="你好, 我是AI智能交互助手"
         description="我是狗尾巴花的尖，FlowerTip Admin AI 智能对话交互助手"
         style={{
-          width: '500px'
+          width: '530px'
         }}
       />
       <Prompts
@@ -268,7 +314,7 @@ const Independent: React.FC = () => {
         items={placeholderPromptsItems}
         styles={{
           list: {
-            width: '500px',
+            width: '530px',
           },
           item: {
             flex: 1,
@@ -280,13 +326,32 @@ const Independent: React.FC = () => {
   );
 
   const items: GetProp<typeof Bubble.List, 'items'> = messages.map((item) => {
-    console.log(item, 'can')
     const { id, message, status } = item;
+    let msgContent = '';
+    if (status === 'local') {
+      const jsContentObj = JSON.parse(message as string);
+      msgContent = jsContentObj;
+    } else {
+      msgContent = message;
+    }
     return {
       key: id,
       loading: status === 'loading',
       role: status === 'local' ? 'local' : 'ai',
-      content: (<Markdown>{message}</Markdown>),
+      content: msgContent,
+      messageRender: (content: any) => {
+        let renderContent = '';
+        if (status == 'local') {
+          let str = '';
+          content.files.map((item: any) => {
+            str += `<div><img src='${item.url}' style='width: 300px; height: auto;' alt='${item.name}' /></div>`
+          })
+          renderContent = `${str}<p>${content.content}</p>`;
+        } else {
+          renderContent = content;
+        }
+        return renderMarkdown(renderContent);
+      }
     }
   });
 
@@ -295,6 +360,9 @@ const Independent: React.FC = () => {
       <Button type="text" icon={<PaperClipOutlined />} onClick={() => setHeaderOpen(!headerOpen)} />
     </Badge>
   );
+
+  const attachmentsRef = React.useRef<GetRef<typeof Attachments>>(null)
+  const senderRef = React.useRef<GetRef<typeof Sender>>(null);
 
   const senderHeader = (
     <Sender.Header
@@ -308,7 +376,7 @@ const Independent: React.FC = () => {
       }}
     >
       <Attachments
-        beforeUpload={() => false}
+        ref={attachmentsRef}
         items={attachedFiles}
         onChange={handleFileChange}
         placeholder={(type) =>
@@ -320,6 +388,7 @@ const Independent: React.FC = () => {
               description: '选择或者拖动文件上传',
             }
         }
+        getDropContainer={() => senderRef.current?.nativeElement}
       />
     </Sender.Header>
   );
@@ -339,6 +408,8 @@ const Independent: React.FC = () => {
         <Flex gap={12} align="start" vertical={false} style={{ width: '100%' }}>
           <Button
             onClick={() => {
+              setAttachedFiles([]);
+              setHeaderOpen(false);
               setContent('');
             }}
           >
@@ -358,6 +429,17 @@ const Independent: React.FC = () => {
           header={senderHeader}
           onSubmit={onSubmit}
           onChange={setContent}
+          onPasteFile={(file) => {
+            attachmentsRef.current?.upload(file);
+            getBase64(file as FileType, (url) => {
+              const fileObj = {
+                name: file.name,
+                url
+              }
+              setAttachedFiles([fileObj as Attachment]);
+              setHeaderOpen(true);
+            });
+          }}
           prefix={attachmentsNode}
           loading={agent.isRequesting()}
           className={styles.sender}
