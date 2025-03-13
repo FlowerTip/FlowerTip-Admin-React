@@ -9,7 +9,7 @@ import {
   XRequest,
   type BubbleProps
 } from '@ant-design/x';
-import markdownit from 'markdown-it';
+// import markdownit from 'markdown-it';
 import { createStyles } from 'antd-style';
 import React from 'react';
 import CloudUploadOutlined from '@ant-design/icons/CloudUploadOutlined';
@@ -24,7 +24,7 @@ import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
 import { isIndexOfFiles } from '@/utils/tool';
 
-const md = markdownit({ html: true, breaks: true });
+// const md = markdownit({ html: true, breaks: true });
 
 const renderMarkdown: BubbleProps['messageRender'] = (content: string | JSX.Element) => (
   // <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
