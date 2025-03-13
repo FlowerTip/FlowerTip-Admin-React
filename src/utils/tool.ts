@@ -124,6 +124,7 @@ export function isIndexOfFiles(str: string): boolean {
   return str.includes('files')
 }
 
-export function isOldMsgList(str: string): boolean {
-  return str.includes('oldMsgList')
+export function isMdelement(element: JSX.Element): boolean {
+  console.log(element, 'e@@@@')
+  return !element.type && typeof element == 'string';
 }

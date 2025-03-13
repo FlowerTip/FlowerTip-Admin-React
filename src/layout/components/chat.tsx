@@ -9,7 +9,7 @@ import {
   XRequest,
   type BubbleProps
 } from '@ant-design/x';
-// import markdownit from 'markdown-it';
+import markdownit from 'markdown-it';
 import { createStyles } from 'antd-style';
 import React from 'react';
 import CloudUploadOutlined from '@ant-design/icons/CloudUploadOutlined';
@@ -19,17 +19,19 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
 import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
-import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
+import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space, message } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
-import { isIndexOfFiles } from '@/utils/tool';
+import { isIndexOfFiles, isMdelement } from '@/utils/tool';
+import { userStore } from '@/store';
 import { BubbleContentType } from '@ant-design/x/es/bubble/interface';
+import { useSnapshot } from 'valtio';
+import { ClearOutlined, CopyOutlined, SyncOutlined } from '@ant-design/icons';
 
-// const md = markdownit({ html: true, breaks: true });
+const md = markdownit({ html: true, breaks: true });
 
 const renderMarkdown: BubbleProps<JSX.Element>['messageRender'] = (content: JSX.Element) => (
-  // <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
-  content
+  isMdelement(content) ? <p dangerouslySetInnerHTML={{ __html: md.renderInline(content) }}></p> : content
 );
 
 // https://api.siliconflow.cn/v1/chat/completions
@@ -70,7 +72,7 @@ const useStyle = createStyles(({ token, css }) => {
     layout: css`
       width: 100%;
       height: auto;
-      min-width: 540px;
+      min-width: 530px;
       border-radius: ${token.borderRadius}px;
       display: flex;
       background: ${token.colorBgContainer};
@@ -127,84 +129,53 @@ const useStyle = createStyles(({ token, css }) => {
 const placeholderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   {
     key: '1',
-    label: renderTitle(<FireOutlined style={{ color: '#FF4D4F' }} />, '热门话题'),
-    description: '你关注哪些热点新闻?',
-    children: [
-      {
-        key: '1-1',
-        icon: <NotificationOutlined />,
-        description: `北京第三代社保卡更换指南`,
-      },
-      {
-        key: '1-2',
-        icon: <NotificationOutlined />,
-        description: `不会被AI替代的职业有哪些`,
-      },
-      {
-        key: '1-3',
-        icon: <NotificationOutlined />,
-        description: `普通人存款多少可以躺平`,
-      },
-    ],
-  },
-  {
-    key: '2',
     label: renderTitle(<ReadOutlined style={{ color: '#1890FF' }} />, '文档指南'),
     description: '你想了解哪门技术框架?',
     children: [
       {
-        key: '2-1',
+        key: '1-1',
         icon: <ProfileOutlined />,
         description: `Vue技术框架开发文档`,
       },
       {
-        key: '2-2',
+        key: '1-2',
         icon: <ProfileOutlined />,
         description: `React技术框架开发文档`,
       },
       {
-        key: '2-3',
+        key: '1-3',
         icon: <ProfileOutlined />,
         description: `Node技术框架开发文档`,
       },
     ],
   },
+  {
+    key: '2',
+    label: renderTitle(<FireOutlined style={{ color: '#FF4D4F' }} />, '热门话题'),
+    description: '你关注哪些热点新闻?',
+    children: [
+      {
+        key: '2-1',
+        icon: <NotificationOutlined />,
+        description: `普通人存款多少可以躺平`,
+      },
+      {
+        key: '2-2',
+        icon: <NotificationOutlined />,
+        description: `不会被AI替代的职业有哪些`,
+      },
+      {
+        key: '2-3',
+        icon: <NotificationOutlined />,
+        description: `北京第三代社保卡更换指南`,
+      },
+    ],
+  },
 ];
 
-const roles: GetProp<typeof Bubble.List, 'roles'> = {
-  ai: {
-    placement: 'start',
-    avatar: {
-      icon: <img
-        src="./favicon.svg"
-        draggable={false}
-        alt="logo"
-      />, style: { background: '#fff' }
-    },
-    typing: { step: 5, interval: 20 },
-    style: {
-      maxWidth: 600,
-      marginInlineEnd: 44,
-    },
-    styles: {
-      footer: {
-        width: '100%',
-      },
-    },
-    loadingRender: () => (
-      <Space>
-        <Spin size="small" />
-        我正在整理思路，请稍等...
-      </Space>
-    ),
-  },
-  local: {
-    placement: 'end',
-    avatar: { icon: <UserAddOutlined />, style: { background: '#3170FF' } }
-  },
-};
 
 const Independent: React.FC = () => {
+  const uStore = useSnapshot(userStore);
   // ==================== Style ====================
   const { styles } = useStyle();
 
@@ -232,7 +203,7 @@ const Independent: React.FC = () => {
         const jsContentObj = JSON.parse(message as string);
         console.log(jsContentObj, '参数附件')
         const { content, files, oldMsgList } = jsContentObj;
-        const questionList = oldMsgList.filter((item: any) => typeof item.content == 'string')
+        const questionList = oldMsgList.filter((item: any) => item && typeof item.content == 'string')
         const textParam = [{ type: 'text', text: content }]
         if (files.length > 0) {
           const paramFiles = files.map((item: { name: string; url: string; }) => {
@@ -301,24 +272,58 @@ const Independent: React.FC = () => {
     }
   });
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const { onRequest, messages, setMessages } = useXChat({
     agent,
   });
 
   // ==================== Event ====================
-  const onSubmit = async (nextContent: string) => {
-    if (!nextContent) return;
-    const jsonStrContent = JSON.stringify({
-      content: nextContent,
-      files: attachedFiles,
-      oldMsgList: items
-    });
-    onRequest(jsonStrContent);
-    setContent('');
-    setAttachedFiles([]);
-    setHeaderOpen(false);
+  const onCopyResult = (content: any) => {
+    console.log(content, '###messages')
+    const text = content;
+    navigator.clipboard.writeText(text);
+    messageApi.success('复制成功');
   };
 
+  const roles: GetProp<typeof Bubble.List, 'roles'> = {
+    ai: {
+      placement: 'start',
+      header: "狗尾巴花的尖",
+      avatar: {
+        icon: <img
+          src="./favicon.svg"
+          draggable={false}
+          alt="logo"
+        />, style: { background: '#fff' }
+      },
+      typing: { step: 5, interval: 20 },
+      style: {
+        maxWidth: 530,
+        marginInlineEnd: 16
+      },
+      styles: {
+        footer: {
+          width: '100%',
+        },
+      },
+      loadingRender: () => (
+        <Space>
+          <Spin size="small" />
+          我正在整理思路，请稍等...
+        </Space>
+      ),
+    },
+    local: {
+      placement: 'end',
+      header: uStore.userInfo.username,
+      avatar: { icon: <UserAddOutlined />, style: { background: '#3170FF' } },
+      style: {
+        maxWidth: 530,
+        marginInlineStart: 16
+      },
+    },
+  };
   const onPromptsItemClick: GetProp<typeof Prompts, 'onItemClick'> = (info) => {
     onRequest(info.data.description as string);
   };
@@ -384,6 +389,9 @@ const Independent: React.FC = () => {
       loading: message == 'loading',
       role: status === 'local' ? 'local' : 'ai',
       content: msgContent,
+      footer: (status == 'local' || message == 'loading') ? null : (<Space size="small">
+        <Button color="primary" variant="outlined" size="small" icon={<CopyOutlined />} onClick={() => onCopyResult(msgContent)}>复制内容</Button>
+      </Space>),
       messageRender: (content: any) => {
         if (status == 'local') {
           if (content.files && content.files.length > 0) {
@@ -399,19 +407,13 @@ const Independent: React.FC = () => {
             )
             return renderMarkdown(diyComponent);
           } else {
-            const diyComponent = (
-              <p>{typeof content == 'string' ? content : content.content}</p>
-            )
-            return renderMarkdown(diyComponent);
+            const msg = typeof content == 'string' ? content : content.content;
+            return renderMarkdown(msg);
           }
         } else {
-          console.log(content, '内容@@')
-          const diyComponent = (
-            <p>{content}</p>
-          )
-          return renderMarkdown(diyComponent);
+          return renderMarkdown(content);
         }
-      }
+      },
     }
   });
 
@@ -454,6 +456,24 @@ const Independent: React.FC = () => {
     </Sender.Header>
   );
 
+  const onSubmit = async (nextContent: string) => {
+    if (!nextContent) return;
+    const from = {
+      content: nextContent,
+      files: attachedFiles,
+      oldMsgList: items.map((item: any) => {
+        return {
+          content: item.content
+        }
+      })
+    }
+    const jsonStrContent = JSON.stringify(from);
+    onRequest(jsonStrContent);
+    setContent('');
+    setAttachedFiles([]);
+    setHeaderOpen(false);
+  };
+
   // ==================== Render =================
   return (
     <div className={styles.layout}>
@@ -468,20 +488,26 @@ const Independent: React.FC = () => {
         {/* 清空对话按钮 */}
         <Flex gap={12} align="start" vertical={false} style={{ width: '100%' }}>
           <Button
+            color="primary"
+            variant="outlined"
+            icon={<SyncOutlined />}
             onClick={() => {
               setAttachedFiles([]);
               setHeaderOpen(false);
               setContent('');
             }}
           >
-            清空输入框
+            清空输入
           </Button>
           <Button
+            color="danger"
+            variant="outlined"
+            icon={<ClearOutlined />}
             onClick={() => {
               setMessages([]);
             }}
           >
-            清空对话框
+            清空对话
           </Button>
         </Flex>
         {/* 🌟 输入框 */}
@@ -505,6 +531,7 @@ const Independent: React.FC = () => {
           className={styles.sender}
         />
       </div>
+      {contextHolder}
     </div>
   );
 };
