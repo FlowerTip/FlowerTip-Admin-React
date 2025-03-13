@@ -123,3 +123,7 @@ export function generateUUID(): string {
 export function isIndexOfFiles(str: string): boolean {
   return str.includes('files')
 }
+
+export function isOldMsgList(str: string): boolean {
+  return str.includes('oldMsgList')
+}

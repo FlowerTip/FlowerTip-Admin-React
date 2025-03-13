@@ -22,7 +22,8 @@ import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
 import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
-import { isIndexOfFiles } from '@/utils/tool';
+import { isIndexOfFiles, isOldMsgList } from '@/utils/tool';
+import { BubbleContentType } from '@ant-design/x/es/bubble/interface';
 
 // const md = markdownit({ html: true, breaks: true });
 
@@ -47,7 +48,7 @@ const exampleRequest = XRequest({
   model: aiConfig.MODEL,
 
   /** 🔥🔥 Its dangerously! */
-  dangerouslyApiKey: aiConfig.API_KEY
+  dangerouslyApiKey: aiConfig.API_KEY,
 });
 
 const renderTitle = (icon: React.ReactElement, title: string) => (
@@ -221,16 +222,17 @@ const Independent: React.FC = () => {
     request: async ({ message }, { onSuccess, onUpdate }) => {
       const params: {
         role: string;
-        content: Attachment[] | { type: string; text: string | undefined }[];
+        content: Attachment[] | { type: string; text: string | undefined | BubbleContentType }[];
       } = {
         role: 'user',
         content: []
       }
-      console.log(isIndexOfFiles(message as string), message, 'ceshi')
+      console.log(isIndexOfFiles(message as string), message, messages, items, 'ceshi')
       if (isIndexOfFiles(message as string)) {
         const jsContentObj = JSON.parse(message as string);
         console.log(jsContentObj, '参数附件')
-        const { content, files } = jsContentObj;
+        const { content, files, oldMsgList } = jsContentObj;
+        const questionList = oldMsgList.filter((item: any) => typeof item.content == 'string')
         const textParam = [{ type: 'text', text: content }]
         if (files.length > 0) {
           const paramFiles = files.map((item: { name: string; url: string; }) => {
@@ -242,33 +244,51 @@ const Independent: React.FC = () => {
             }
           })
           params.content = [
+            ...questionList.map((item: { content: any; }) => {
+              return {
+                type: 'text',
+                text: item.content
+              }
+            }),
             ...paramFiles,
             ...textParam
           ]
         } else {
-          params.content = textParam;
+          if (oldMsgList.length > 0) {
+            params.content = [
+              ...questionList.map((item: { content: any; }) => {
+                return {
+                  type: 'text',
+                  text: item.content
+                }
+              }),
+              ...textParam
+            ];
+          } else {
+            params.content = textParam;
+          }
         }
       } else {
-        params.content = [{ type: 'text', text: message }]
+        params.content = [
+          { type: 'text', text: message }
+        ]
       }
+      /**
+       * 模拟请求延迟
+       */
+      setTimeout(() => {
+        onUpdate('loading');
+      }, 500);
+
       await exampleRequest.create(
         {
           messages: [params],
+          // response_format: {"type": "json_object"}
         },
         {
           onSuccess: function (chunks: any): void {
             const fullContent = chunks[0].choices[0].message.content;
-            let currentContent = '';
-
-            const id = setInterval(() => {
-              currentContent = fullContent.slice(0, currentContent.length + 10);
-              onUpdate(currentContent);
-
-              if (currentContent === fullContent) {
-                clearInterval(id);
-                onSuccess(fullContent);
-              }
-            }, 100);
+            onSuccess(fullContent);
           },
           onError: function (error: Error): void {
             console.log(error);
@@ -290,7 +310,8 @@ const Independent: React.FC = () => {
     if (!nextContent) return;
     const jsonStrContent = JSON.stringify({
       content: nextContent,
-      files: attachedFiles
+      files: attachedFiles,
+      oldMsgList: items
     });
     onRequest(jsonStrContent);
     setContent('');
@@ -349,6 +370,7 @@ const Independent: React.FC = () => {
   );
 
   const items: GetProp<typeof Bubble.List, 'items'> = messages.map((item) => {
+    console.log(item, '@@@@item')
     const { id, message, status } = item;
     let msgContent = '';
     if (status === 'local' && isIndexOfFiles(message as string)) {
@@ -359,7 +381,7 @@ const Independent: React.FC = () => {
     }
     return {
       key: id,
-      loading: status === 'loading',
+      loading: message == 'loading',
       role: status === 'local' ? 'local' : 'ai',
       content: msgContent,
       messageRender: (content: any) => {
