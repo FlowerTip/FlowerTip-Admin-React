@@ -26,7 +26,7 @@ import { isIndexOfFiles } from '@/utils/tool';
 
 // const md = markdownit({ html: true, breaks: true });
 
-const renderMarkdown: BubbleProps['messageRender'] = (content: string | JSX.Element) => (
+const renderMarkdown: BubbleProps<JSX.Element>['messageRender'] = (content: JSX.Element) => (
   // <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
   content
 );
@@ -363,19 +363,31 @@ const Independent: React.FC = () => {
       role: status === 'local' ? 'local' : 'ai',
       content: msgContent,
       messageRender: (content: any) => {
-        if (status == 'local' && content.files && content.files.length > 0) {
-          const componentListName = content.files.map((item: any) => {
-            return <Image width={250} src={item.url} style={{display: 'block'}}/>
-          })
-          const diyConponent = (
-            <div style={{width: '250px'}}>
-              {componentListName}
-              <p>{content.content}</p>
-            </div>
-          )
-          return renderMarkdown(diyConponent as unknown as string);
+        if (status == 'local') {
+          if (content.files && content.files.length > 0) {
+            const diyComponent = (
+              <div style={{ width: '250px' }}>
+                {
+                  content.files.map((item: any, index: number) => {
+                    return <Image key={index} width={250} src={item.url} style={{ display: 'block' }} />
+                  })
+                }
+                <p>{content.content}</p>
+              </div>
+            )
+            return renderMarkdown(diyComponent);
+          } else {
+            const diyComponent = (
+              <p>{typeof content == 'string' ? content : content.content}</p>
+            )
+            return renderMarkdown(diyComponent);
+          }
         } else {
-          return renderMarkdown(content);
+          console.log(content, '内容@@')
+          const diyComponent = (
+            <p>{content}</p>
+          )
+          return renderMarkdown(diyComponent);
         }
       }
     }
