@@ -31,7 +31,7 @@ import { ClearOutlined, CopyOutlined, SyncOutlined } from '@ant-design/icons';
 const md = markdownit({ html: true, breaks: true });
 
 const renderMarkdown: BubbleProps<JSX.Element>['messageRender'] = (content: JSX.Element) => (
-  isMdelement(content) ? <p dangerouslySetInnerHTML={{ __html: md.renderInline(content) }}></p> : content
+  isMdelement(content) ? <p dangerouslySetInnerHTML={{ __html: md.render(content) }}></p> : content
 );
 
 // https://api.siliconflow.cn/v1/chat/completions

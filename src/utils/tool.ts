@@ -126,5 +126,6 @@ export function isIndexOfFiles(str: string): boolean {
 
 export function isMdelement(element: JSX.Element): boolean {
   console.log(element, 'e@@@@')
-  return !element.type && typeof element == 'string';
+  const markdownRegex = /(#+ .+)|(\* .+)|(- .+)|(\d+\. .+)|(\[.+\]\(.+\))|(\*\*.*?\*\*)|(`.*?`)/;
+  return !element.type && markdownRegex.test(element as unknown as string);
 }
