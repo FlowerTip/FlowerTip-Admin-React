@@ -19,15 +19,16 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
 import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
-import { Flex, Badge, Button, Spin, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
+import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
 import { isIndexOfFiles } from '@/utils/tool';
 
 const md = markdownit({ html: true, breaks: true });
 
-const renderMarkdown: BubbleProps['messageRender'] = (content) => (
-  <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
+const renderMarkdown: BubbleProps['messageRender'] = (content: string | JSX.Element) => (
+  // <div dangerouslySetInnerHTML={{ __html: md.render(content) }} />
+  content
 );
 
 // https://api.siliconflow.cn/v1/chat/completions
@@ -362,17 +363,20 @@ const Independent: React.FC = () => {
       role: status === 'local' ? 'local' : 'ai',
       content: msgContent,
       messageRender: (content: any) => {
-        let renderContent = '';
         if (status == 'local' && content.files && content.files.length > 0) {
-          let str = '';
-          content.files.map((item: any) => {
-            str += `<img src='${item.url}' style='width: 100px; height: auto;' alt='${item.name}' />`
+          const componentListName = content.files.map((item: any) => {
+            return <Image width={250} src={item.url} style={{display: 'block'}}/>
           })
-          renderContent = `${str}<p>${content.content}</p>`;
+          const diyConponent = (
+            <div style={{width: '250px'}}>
+              {componentListName}
+              <p>{content.content}</p>
+            </div>
+          )
+          return renderMarkdown(diyConponent as unknown as string);
         } else {
-          renderContent = content;
+          return renderMarkdown(content);
         }
-        return renderMarkdown(renderContent);
       }
     }
   });
