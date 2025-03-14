@@ -280,10 +280,14 @@ const Independent: React.FC = () => {
 
   // ==================== Event ====================
   const onCopyResult = (content: any) => {
-    console.log(content, '###messages')
-    const text = content;
-    navigator.clipboard.writeText(text);
-    messageApi.success('复制成功');
+    const replaceHtmlStr = md.render(content).replace(/<[^>]*>?/gm, '');
+    navigator.clipboard.writeText(replaceHtmlStr);
+    const text = content.slice(0, 10);
+    if (content.length > 10) {
+      messageApi.success('复制成功，粘贴内容：' + text + '...');
+    } else {
+      messageApi.success('复制成功，粘贴内容：' + text);
+    }
   };
 
   const roles: GetProp<typeof Bubble.List, 'roles'> = {
@@ -374,6 +378,12 @@ const Independent: React.FC = () => {
     </Space>
   );
 
+
+  const onReplyRequest = (content: string) => {
+    console.log(content, '@@@onReplyRequest');
+    onRequest(content);
+  }
+
   const items: GetProp<typeof Bubble.List, 'items'> = messages.map((item) => {
     console.log(item, '@@@@item')
     const { id, message, status } = item;
@@ -384,14 +394,23 @@ const Independent: React.FC = () => {
     } else {
       msgContent = message;
     }
+
+    const renderFooterContent = {
+      local: (<Space size="small">
+        <Button color="primary" variant="outlined" size="small" icon={<SyncOutlined />} onClick={() => onReplyRequest(msgContent)}>再试一次</Button>
+      </Space>),
+      loading: null,
+      ai: (<Space size="small">
+        <Button color="primary" variant="outlined" size="small" icon={<CopyOutlined />} onClick={() => onCopyResult(item.message)}>复制内容</Button>
+      </Space>)
+    }
+
     return {
       key: id,
       loading: message == 'loading',
       role: status === 'local' ? 'local' : 'ai',
       content: msgContent,
-      footer: (status == 'local' || message == 'loading') ? null : (<Space size="small">
-        <Button color="primary" variant="outlined" size="small" icon={<CopyOutlined />} onClick={() => onCopyResult(msgContent)}>复制内容</Button>
-      </Space>),
+      footer: status == 'local' ? renderFooterContent[status] : message == 'loading' ? renderFooterContent['loading'] : renderFooterContent['ai'],
       messageRender: (content: any) => {
         if (status == 'local') {
           if (content.files && content.files.length > 0) {
