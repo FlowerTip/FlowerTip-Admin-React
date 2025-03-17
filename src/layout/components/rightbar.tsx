@@ -12,7 +12,7 @@ import BellOutlined from '@ant-design/icons/BellOutlined';
 import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import OpenAIOutlined from '@ant-design/icons/OpenAIOutlined';
+import OpenAIFilled from '@ant-design/icons/OpenAIFilled';
 // import CustomerServiceOutlined from '@ant-design/icons/CustomerServiceOutlined';
 import Icon from '@ant-design/icons';
 import React, { useState, useEffect, useRef } from 'react';
@@ -296,10 +296,17 @@ const Rightbar = () => {
       title: '使用AI助手',
       description: '点击右侧AI按钮，即可开启AI助手',
       placement: 'right',
-      target: () => aiBtnRef.current,
+      target: () => {
+        return aiBtnRef.current;
+      },
     },
   ];
+
   const [tourOpen, setTourOpen] = useState(false);
+
+  const handleTourFinish = () => {
+    setAiOpen(true);
+  }
 
   const toggleLayout = (layoutName: string) => {
     sStore.updateSetting({
@@ -688,13 +695,12 @@ const Rightbar = () => {
         shape="square"
         type="primary"
         style={{ insetInlineEnd: 0, marginBottom: 350 }}
-        icon={<OpenAIOutlined />}
+        icon={<OpenAIFilled />}
         onClick={() => setAiOpen(true)}
       />
-      <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} />
+      <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} onFinish={handleTourFinish}/>
       {modalContextHolder}
       {contextHolder}
-
     </>
   )
 }

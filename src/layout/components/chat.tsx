@@ -19,6 +19,7 @@ import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
 import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
+import SendOutlined from '@ant-design/icons/SendOutlined';
 import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space, message } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
@@ -282,12 +283,7 @@ const Independent: React.FC = () => {
   const onCopyResult = (content: any) => {
     const replaceHtmlStr = md.render(content).replace(/<[^>]*>?/gm, '');
     navigator.clipboard.writeText(replaceHtmlStr);
-    const text = content.slice(0, 10);
-    if (content.length > 10) {
-      messageApi.success('复制成功，粘贴内容：' + text + '...');
-    } else {
-      messageApi.success('复制成功，粘贴内容：' + text);
-    }
+    messageApi.success('复制成功，请粘贴内容');
   };
 
   const roles: GetProp<typeof Bubble.List, 'roles'> = {
@@ -303,7 +299,6 @@ const Independent: React.FC = () => {
       },
       typing: { step: 5, interval: 20 },
       style: {
-        maxWidth: 530,
         marginInlineEnd: 16
       },
       styles: {
@@ -323,7 +318,6 @@ const Independent: React.FC = () => {
       header: uStore.userInfo.username,
       avatar: { icon: <UserAddOutlined />, style: { background: '#3170FF' } },
       style: {
-        maxWidth: 530,
         marginInlineStart: 16
       },
     },
@@ -496,7 +490,7 @@ const Independent: React.FC = () => {
   // ==================== Render =================
   return (
     <div className={styles.layout}>
-      <div className={styles.chat} style={{ whiteSpace: 'pre-line', height: '800px', overflowY: 'auto' }}>
+      <div className={styles.chat} style={{ whiteSpace: 'pre-line', height: 'calc(100vh - 110px)', overflowY: 'auto' }}>
         {/* 🌟 消息列表 */}
         <Bubble.List
           // 🌟 消息列表
@@ -509,7 +503,7 @@ const Independent: React.FC = () => {
           <Button
             color="primary"
             variant="outlined"
-            icon={<SyncOutlined />}
+            icon={<SendOutlined />}
             onClick={() => {
               setAttachedFiles([]);
               setHeaderOpen(false);
