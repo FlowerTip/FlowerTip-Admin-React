@@ -685,7 +685,7 @@ const Rightbar = () => {
           </div>
         </div >
       </Drawer >
-      <Drawer title="FlowerTip Admin AI 智能对话交互助手" closeIcon={false} onClose={onClose} open={aiOpen} width={600}>
+      <Drawer title="FlowerTip Admin 智能对话交互助手" closeIcon={false} onClose={onClose} open={aiOpen} width={600}>
         <div>
           <ChatAi />
         </div>

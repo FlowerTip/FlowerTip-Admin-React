@@ -350,8 +350,8 @@ const Independent: React.FC = () => {
       <Welcome
         variant="borderless"
         icon="https://www.flowertip.site/pro/favicon.svg"
-        title="你好, 我是AI智能交互助手"
-        description="我是狗尾巴花的尖，FlowerTip Admin AI 智能对话交互助手"
+        title="您好, 我是您的智能对话交互助手"
+        description="我是狗尾巴花的尖，FlowerTip Admin 智能对话交互助手"
         style={{
           width: '530px'
         }}
