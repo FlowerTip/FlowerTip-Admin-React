@@ -113,7 +113,7 @@ const Maintenance: React.FC = () => {
       align: 'center',
       width: 220,
       render: (_, record) => [
-        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.workPostId}>
           <Button size='small' onClick={() => editModal(record)}>编辑岗位</Button>
           <Popconfirm
             title="删除提示"

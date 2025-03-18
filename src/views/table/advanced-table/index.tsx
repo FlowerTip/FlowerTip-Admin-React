@@ -127,7 +127,7 @@ export default () => {
       align: 'center',
       width: 160,
       render: (_, record) => [
-        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.id}>
           <Button size='small' onClick={() => editModal(record)}>编辑</Button>
           <Popconfirm
             title="删除提示"
@@ -144,7 +144,7 @@ export default () => {
       ],
     },
   ];
-  const ModalStudentRef = useRef<any>();
+  const ModalStudentRef = useRef<any>(null);
   const addModal = () => {
     ModalStudentRef.current!.acceptParams({
       api: reqSaveStudent,

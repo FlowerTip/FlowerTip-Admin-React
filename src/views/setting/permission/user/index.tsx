@@ -48,7 +48,7 @@ export default () => {
       align: 'center',
       width: 300,
       render: (_, record) => [
-        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.id}>
           {
             record.id !== 8 ? (
               <><Button size='small' onClick={() => batchModal(record)}>分配角色</Button><Button size='small' onClick={() => editModal(record)}>编辑账号</Button><Popconfirm

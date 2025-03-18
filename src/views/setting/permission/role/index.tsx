@@ -40,7 +40,7 @@ export default () => {
       align: 'center',
       width: 300,
       render: (_, record) => [
-        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.id}>
           {
             record.id !== 1 ? (
               <><Button size='small' onClick={() => assignModal(record)}>分配权限</Button><Button size='small' onClick={() => editModal(record)}>编辑角色</Button><Popconfirm

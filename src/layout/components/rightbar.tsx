@@ -1,7 +1,3 @@
-// import {
-//   Bubble,
-//   Sender,
-// } from '@ant-design/x';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import DownOutlined from '@ant-design/icons/DownOutlined';
 import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
@@ -13,7 +9,6 @@ import CommentOutlined from '@ant-design/icons/CommentOutlined';
 import AlertOutlined from '@ant-design/icons/AlertOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import OpenAIFilled from '@ant-design/icons/OpenAIFilled';
-// import CustomerServiceOutlined from '@ant-design/icons/CustomerServiceOutlined';
 import Icon from '@ant-design/icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
@@ -39,6 +34,7 @@ const Rightbar = () => {
     const splitTime = currentTime.split(" ");
     return Array.isArray(splitTime) && splitTime[1];
   };
+
 
   useEffect(() => {
     screenfull.on("change", () => {

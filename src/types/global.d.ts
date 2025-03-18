@@ -71,15 +71,16 @@ declare type RouteType = {
   redirect: string;
   meta: {
     title: string;
-    icon: JSX.Element
+    icon: JSX.Element | null;
+    parentName?: string;
   };
-  Component: JSX.Element;
+  Component: JSX.Element | null;
   children: RouteType[];
 }
 
 declare type MetaType = {
   title: string;
-  icon: JSX.Element;
+  icon: JSX.Element | null;
   redirect: string;
   path: string;
   parentName: string;

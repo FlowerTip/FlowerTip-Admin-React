@@ -63,7 +63,7 @@ const Maintenance: React.FC = () => {
       align: 'center',
       width: 300,
       render: (_, record) => [
-        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.departmentId}>
           <Button size='small' onClick={() => batchModal(record)}>添加部门</Button>
           <Button size='small' onClick={() => editModal(record)}>编辑部门</Button>
           <Popconfirm
@@ -81,8 +81,8 @@ const Maintenance: React.FC = () => {
       ],
     },
   ];
-  const actionRef = useRef<ActionType>();
-  const ModalAccountRef = useRef<any>();
+  const actionRef = useRef<ActionType>(null);
+  const ModalAccountRef = useRef<any>(null);
 
   const updateTableList = async (params: RequestListApi): Promise<any> => {
     const { code, data } = await reqDepartmentList({
