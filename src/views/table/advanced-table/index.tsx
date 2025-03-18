@@ -78,6 +78,7 @@ export default () => {
       render: (_, record) => (
         <span style={{ display: 'inline-block', verticalAlign: 'middle' }}>{record.hobby}</span>
       ),
+      width: 160,
     },
     {
       title: '性别',
@@ -106,13 +107,14 @@ export default () => {
       fieldProps: {
         placeholder: '请输入学校名称'
       },
+      width: 160,
     },
     {
       title: '档案时间',
       dataIndex: 'time',
       align: 'center',
       sorter: true,
-      width: 160,
+      width: 200,
       valueType: 'dateTime',
       fieldProps: {
         placeholder: '请选择档案时间'
@@ -123,7 +125,7 @@ export default () => {
       valueType: 'option',
       key: 'option',
       align: 'center',
-      width: 300,
+      width: 160,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <Button size='small' onClick={() => editModal(record)}>编辑</Button>

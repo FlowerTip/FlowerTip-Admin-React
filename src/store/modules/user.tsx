@@ -1,4 +1,5 @@
 import { proxy } from 'valtio'
+import { message } from 'antd';
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
 import { asyncRoute } from '@/router/modules/routes';
@@ -31,6 +32,7 @@ export const userStore = proxy({
     if (code === 200) {
       userStore.userInfo.token = data.token;
       setToken(data.token);
+      message.success(data.message);
       return Promise.resolve(data);
     }
   },

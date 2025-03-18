@@ -254,6 +254,7 @@ declare namespace Res {
    */
   interface LoginData {
     token: string;
+    message: string;
   }
   /**
    * 用户信息接口返回的数据格式

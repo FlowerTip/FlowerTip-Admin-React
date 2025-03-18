@@ -11,13 +11,14 @@ import { userStore } from '@/store';
 const Login: React.FC = () => {
   const formRef = useRef(null); // 创建一个 ref 
   const navigate = useNavigate();
+  
   const login = async () => {
     if (formRef.current) {
       const res = await (formRef.current as FormInstance).validateFields();
       if (res) {
         const loginParam = res;
         const result = await userStore.login(loginParam)
-        if (result?.token) {
+        if (result && result.token) {
           navigate('/')
         }
       }
@@ -67,7 +68,7 @@ const Login: React.FC = () => {
             <h4>温馨提示：</h4>
             <p>1.系统管理员登入添加系统用户账号分配角色权限使用</p>
             <p>2.权限操作涉及的页面在系统管理的权限管理模块使用</p>
-            <p>3.系统服务器配置不稳定，速度慢，仅限学习技术使用</p>
+            <p>3.账号无需注册，输入账号密码自动注册激活当前账号</p>
           </Form.Item>
         </Form>
       </div>

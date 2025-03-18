@@ -188,11 +188,11 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
         ]} initialValue={rowFormItem?.time} />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText width="md" name="color" label="性格色彩" placeholder="请输入性格色彩" rules={[
+        <ProFormText width="md" name="color" label="性格色彩" placeholder="输入 #1890ff 16进制颜色值" rules={[
           {
             required: true,
           },
-        ]} initialValue={rowFormItem?.color} />
+        ]} initialValue={rowFormItem?.color || '#1890ff'} />
         <ProFormUploadButton
           name="avatarUrl"
           label="学员头像"
