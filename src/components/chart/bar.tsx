@@ -76,7 +76,7 @@ const BarChart = (props: {
 
     // 监听侧边栏显示隐藏
     let flag = true;
-    let targetNode = sidebarMenuNode; //content监听的元素
+    let targetNode = sidebarMenuNode || null; //content监听的元素
     // options：监听的属性
     const options = {
       attributes: true,
@@ -94,12 +94,12 @@ const BarChart = (props: {
       }
     }
     const mutationObserver = new MutationObserver(callback);
-    mutationObserver.observe(targetNode, options);
+    targetNode && mutationObserver.observe(targetNode, options);
     return () => {
       window.removeEventListener("resize", () => {
         myChart.resize()
       });
-      sidebarMenuNode.removeEventListener("transitionend", () => {
+      sidebarMenuNode && sidebarMenuNode.removeEventListener("transitionend", () => {
         myChart.resize()
       });
     }

@@ -4,14 +4,18 @@ import { message } from 'antd';
 import { useSnapshot } from "valtio";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import Mixbar from "@/layout/mixbar";
-import Simplebar from "@/layout/simplebar";
-import Sidebar from "@/layout/sidebar";
-import Topbar from "@/layout/topbar";
+import lazyLoad from '@/router/utils/lazyLoad';
 import useRouteMeta from "@/hooks/useRouteMeta";
 import { getToken, removeToken } from '@/utils/auth'
 import { getPageTitle } from '@/utils/tool'
 import { userStore, tagsViewStore, settingStore } from '@/store'
+
+
+const Mixbar = lazyLoad(React.lazy(() => import("@/layout/mixbar")));
+const Simplebar = lazyLoad(React.lazy(() => import("@/layout/simplebar")));
+const Sidebar = lazyLoad(React.lazy(() => import("@/layout/sidebar")));
+const Topbar = lazyLoad(React.lazy(() => import("@/layout/topbar")));
+
 
 // 进度条配置对象
 NProgress.configure({
@@ -48,13 +52,13 @@ const RouterGuard: React.FC = () => {
           })
           NProgress.done(); // 结束进度条
           if (sStore.globalSet.layout === 'simplebar') {
-            return <Simplebar />;
+            return Simplebar;
           } else if (sStore.globalSet.layout === 'sidebar') {
-            return <Sidebar />;
+            return Sidebar;
           } else if (sStore.globalSet.layout === 'topbar') {
-            return <Topbar />;
+            return Topbar;
           } else {
-            return <Mixbar />;
+            return Mixbar;
           }
         } else {
           message.warning('未分配权限，请登录系统管理员分配权限');
