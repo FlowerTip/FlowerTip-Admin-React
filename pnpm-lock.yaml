@@ -39,8 +39,8 @@ dependencies:
     specifier: ^3.7.1
     version: 3.7.1(@types/react@18.3.5)(antd@5.22.2)(react-dom@18.3.1)(react@18.3.1)
   axios:
-    specifier: ^1.7.7
-    version: 1.7.7
+    specifier: ^1.8.3
+    version: 1.8.3
   dayjs:
     specifier: ^1.11.13
     version: 1.11.13
@@ -2326,8 +2326,8 @@ packages:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==, tarball: https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz}
     dev: false
 
-  /axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==, tarball: https://registry.npmmirror.com/axios/-/axios-1.7.7.tgz}
+  /axios@1.8.3:
+    resolution: {integrity: sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==, tarball: https://registry.npmmirror.com/axios/-/axios-1.8.3.tgz}
     dependencies:
       follow-redirects: 1.15.8
       form-data: 4.0.0
@@ -2792,6 +2792,7 @@ packages:
   /follow-redirects@1.15.8:
     resolution: {integrity: sha512-xgrmBhBToVKay1q2Tao5LI26B83UhrB/vM1avwVSDzt8rx3rO6AizBAaF46EgksTVr+rFTQaqZZ9MVBfUe4nig==, tarball: https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.8.tgz}
     engines: {node: '>=4.0'}
+    deprecated: Browser detection issues fixed in v1.15.9
     peerDependencies:
       debug: '*'
     peerDependenciesMeta:
