@@ -35,6 +35,7 @@ body {
   .layout-header {
     // background-color: #282E38;
     border-bottom: var(--ant-line-width) var(--ant-line-type) var(--ant-color-split);
+
     .layout-header-logo {
       max-width: 260px;
       height: 32px;
@@ -62,9 +63,10 @@ body {
     }
 
     .wrapper {
-      flex: 1;  
+      flex: 1;
       display: flex;
       flex-direction: column;
+
       .navbar {
         // background-color: #fff;
       }
@@ -78,6 +80,7 @@ body {
       }
     }
   }
+
   .footip-bar {
     // background-color: #fff;
     background-color: var(--ant-color-bg-container);
@@ -98,8 +101,15 @@ body {
 /* 进度条颜色 */
 #nprogress .bar {
   background: #3170FF !important;
-} 
+}
 
-.vue-office-excel, .vue-office-excel-main {
+.vue-office-excel,
+.vue-office-excel-main {
   height: 400px !important;
+}
+
+.ant-upload-list-item-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

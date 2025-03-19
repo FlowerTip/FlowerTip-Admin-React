@@ -7,16 +7,25 @@ import {
   ProFormDateTimePicker,
   ProFormUploadButton
 } from '@ant-design/pro-components';
-import { Form, message } from 'antd';
+import { Form, message, Image } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 import { useState, useImperativeHandle, forwardRef, Ref } from 'react';
 import { reqUploadAvatar } from '@/api/upload'
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 type ModalProps = {
   api: (params: StudentItem) => Promise<Res.SaveStudentData>,
   reload: () => {},
   rowData: StudentItem
 }
+
+const getBase64 = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
 
 const ModalStudent = ({ }, ref: Ref<unknown>) => {
   const [form] = Form.useForm<StudentItem>();
@@ -46,20 +55,22 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
   };
 
   const submitFinish = async (values: StudentItem) => {
-    const { code, data } = await modalProps!.api({
+    const req = {
       ...rowFormItem,
       ...values,
-    });
+      avatarUrl: fileList.length > 0 ? '' : rowFormItem?.avatarUrl,
+    }
+    const { code, data } = await modalProps!.api(req);
     if (code === 200) {
       if (fileList.length > 0) {
         handleUpload({
           name: '用户头像',
           id: data.id
         })
+      } else {
         message.success('操作成功');
         modalProps!.reload();
         setModalVisiable(false);
-        return true;
       }
     }
   }
@@ -67,13 +78,18 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
   useImperativeHandle(ref, () => ({
     acceptParams
   }))
-  type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-  const handleUpload = async (fileParams: {name:string, id: string}) => {
+  const handleUpload = async (fileParams: { name: string, id: string }) => {
+    console.log(fileList, 'fileList', fileList[0])
     const formData = new FormData();
     formData.append("filename", fileParams.name);
     formData.append("itemId", fileParams.id as string);
-    formData.append("file", fileList[0] as FileType);
+    const file = fileList[0]?.originFileObj || fileList[0];
+    if (!file) {
+      message.error('请选择文件');
+      return;
+    }
+    formData.append("file", file as FileType, file.name);
     setUploading(true);
     console.log(uploading);
     const { code, data } = await reqUploadAvatar(formData);
@@ -83,24 +99,40 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
         uid: data.url as string,
         name: '学员头像',
         status: 'done',
-        url: data.url
+        url: data.url,
       }]);
+      message.success('操作成功');
+      modalProps!.reload();
+      setModalVisiable(false);
     }
   };
+
   const props: UploadProps = {
+    beforeUpload: () => {
+      return false;
+    },
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
-    beforeUpload: (file) => {
-      setFileList([...fileList, file]);
-      console.log(file, fileList, 'befit');
-      return false;
+    onChange: ({ fileList: newFileList }) => {
+      console.log(newFileList, '$$$$newFileList');
+      return setFileList(newFileList);
+    },
+    onPreview: async (file: UploadFile) => {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj as FileType);
+      }
+
+      setPreviewImage(file.url || (file.preview as string));
+      setPreviewOpen(true);
     },
     fileList,
   };
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
 
   return (
     <ModalForm<StudentItem>
@@ -210,6 +242,17 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
             },
           ]} initialValue={rowFormItem?.avatarUrl}
         />
+        {previewImage && (
+          <Image
+            wrapperStyle={{ display: 'none' }}
+            preview={{
+              visible: previewOpen,
+              onVisibleChange: (visible) => setPreviewOpen(visible),
+              afterOpenChange: (visible) => !visible && setPreviewImage(''),
+            }}
+            src={previewImage}
+          />
+        )}
       </ProForm.Group>
     </ModalForm>
   );

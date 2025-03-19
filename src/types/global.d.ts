@@ -234,7 +234,7 @@ declare type StudentItem = {
   hobby: string;
   school: string;
   time: Date | string;
-  avatarUrl: string;
+  avatarUrl?: string;
   bigLabel?: string;
   sexLabel?: string;
 };
