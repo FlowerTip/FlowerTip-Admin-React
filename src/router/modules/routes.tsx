@@ -30,7 +30,7 @@ import PreviewFile from '@/views/tool/preview/index.tsx';
 import WaterMark from '@/views/tool/watermark/index.tsx';
 import AiEditor from '@/views/tool/aiEditor/index.tsx';
 import Calendar from '@/views/tool/calendar/index.tsx';
-import QRCode from '@/views/tool/qrCode/index.tsx';
+import QRCode from '@/views/tool/qrcode/index.tsx';
 import TourComponent from '@/views/tool/tour/index.tsx';
 
 import ListPage from '@/views/tool/test/list/index.tsx';
