@@ -199,9 +199,11 @@ const Independent: React.FC = () => {
         role: 'user',
         content: []
       }
-      console.log(isIndexOfFiles(message as string), message, messages, items, 'ceshi')
-      if (isIndexOfFiles(message as string)) {
-        const jsContentObj = JSON.parse(message as string);
+      const messageStr =
+        typeof message === "object" ? JSON.stringify(message) : message;
+      console.log(isIndexOfFiles(messageStr as string), messageStr, messages, items, 'ceshi')
+      if (isIndexOfFiles(messageStr as string)) {
+        const jsContentObj = JSON.parse(messageStr as string);
         console.log(jsContentObj, '参数附件')
         const { content, files, oldMsgList } = jsContentObj;
         const questionList = oldMsgList.filter((item: any) => item && typeof item.content == 'string')
@@ -242,7 +244,7 @@ const Independent: React.FC = () => {
         }
       } else {
         params.content = [
-          { type: 'text', text: message }
+          { type: 'text', text: messageStr }
         ]
       }
       /**
