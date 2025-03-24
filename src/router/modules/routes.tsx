@@ -495,20 +495,20 @@ export const asyncRoute = [
     path: "/document",
     name: "document",
     meta: {
-      title: "在线文档",
+      title: "知识库",
       icon: '',
       hidden: false,
     },
     Component: HighFnComponent,
-    redirect: "https://juejin.cn/column/7388686221892976703",
+    redirect: "https://www.flowertip.site",
     children: [
       {
-        path: "https://juejin.cn/column/7388686221892976703",
+        path: "https://www.flowertip.site/",
         name: "vitepress-blog",
         meta: {
           title: (
-            <a href="https://juejin.cn/column/7388686221892976703" target="_blank" rel="noopener noreferrer">
-              <PaperClipOutlined /><span>在线文档</span>
+            <a href="https://www.flowertip.site" target="_blank" rel="noopener noreferrer">
+              <PaperClipOutlined /><span>知识库</span>
             </a>
           ), icon: '', hidden: false
         },
