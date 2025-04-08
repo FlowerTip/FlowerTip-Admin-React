@@ -32,7 +32,7 @@ const SidebarLayout: React.FC = () => {
   const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
-  const topMenuList = uStore.userInfo.authMenuList as unknown as any;
+  const topMenuList = uStore.userInfo.authMenuList as MenuConfig.LocalRouteItem[];
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
 
