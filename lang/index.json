@@ -31,7 +31,7 @@
 	},
 	"bl95m94": {
 		"zh-cn": "头像上传",
-		"en": "Profile picture upload",
+		"en": "Profile upload",
 		"ko": "아바타 업로드",
 		"ja": "画像アップロードです"
 	},
@@ -127,7 +127,7 @@
 	},
 	"jd1wo34": {
 		"zh-cn": "防抖节流",
-		"en": "Anti-shake throttling",
+		"en": "Shake throttling",
 		"ko": "절전 절제",
 		"ja": "手ブレ補正流です"
 	},
@@ -139,7 +139,7 @@
 	},
 	"dzxure4": {
 		"zh-cn": "水印功能",
-		"en": "Watermarking function",
+		"en": "Watermarking",
 		"ko": "워터마크 기능",
 		"ja": "透かし機能です"
 	},
@@ -157,7 +157,7 @@
 	},
 	"ms2q9c5": {
 		"zh-cn": "漫游式导航",
-		"en": "Roaming navigation",
+		"en": "Roaming nav",
 		"ko": "로밍 네비게이션",
 		"ja": "漫遊ナビゲーションです"
 	},
@@ -253,19 +253,19 @@
 	},
 	"gzj3um4": {
 		"zh-cn": "菜单管理",
-		"en": "Menu management",
+		"en": "Menu",
 		"ko": "메뉴 관리",
 		"ja": "メニュー管理です"
 	},
 	"hxhx7p4": {
 		"zh-cn": "角色管理",
-		"en": "Role management",
+		"en": "Role",
 		"ko": "역할 관리",
 		"ja": "役割管理です"
 	},
 	"f6y6dw4": {
 		"zh-cn": "用户管理",
-		"en": "User management",
+		"en": "User",
 		"ko": "사용자 관리",
 		"ja": "ユーザー管理です"
 	},
@@ -277,13 +277,13 @@
 	},
 	"iwitmt4": {
 		"zh-cn": "部门管理",
-		"en": "Department management",
+		"en": "Department",
 		"ko": "부문별 관리",
 		"ja": "部門管理です"
 	},
 	"c0mrh74": {
 		"zh-cn": "岗位管理",
-		"en": "Position management",
+		"en": "Workpost",
 		"ko": "직위 관리",
 		"ja": "持ち場管理です"
 	},

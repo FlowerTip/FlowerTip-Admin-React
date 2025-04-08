@@ -39,13 +39,13 @@ const MibBarLayout: React.FC = () => {
   const findCurrentTab = () => {
     return tStore.tabsMenuList.find((item) => item.key === routeMeta.path);
   };
-  
+
   // 关闭所有菜单
   const closeAllTab = () => {
     tagsViewStore.closeMultipleTab();
     navigate("/");
   };
-  
+
   // 关闭当前菜单
   const closeCurrent = () => {
     const current = findCurrentTab();
@@ -57,19 +57,19 @@ const MibBarLayout: React.FC = () => {
       }
     }
   };
-  
+
   // 关闭左侧菜单
   const closeLeft = () => {
     const current = findCurrentTab();
     current && tStore.closeTabsOnSide(current.key as string, "left");
   };
-  
+
   // 关闭右侧菜单
   const closeRight = () => {
     const current = findCurrentTab();
     current && tStore.closeTabsOnSide(current.key as string, "right");
   };
-  
+
   // 关闭其他菜单
   const closeOther = () => {
     const current = findCurrentTab();
@@ -130,57 +130,55 @@ const MibBarLayout: React.FC = () => {
   }
 
   const handlerSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
-    const hasOnlyOne = topMenuList.find((menu: MenuConfig.LocalRouteItem) => menu.key == key);
+    // 优化点1：使用更清晰的变量名
+    const currentMenu = topMenuList.find((menu: MenuConfig.LocalRouteItem) => menu.key === key);
     let redirectUrl = '';
+
+    // 优化点2：简化URL拼接逻辑
     if (keyPath.length > 1) {
-      keyPath.reverse().forEach((path: string, index: number) => {
-        if (index == 0) {
-          redirectUrl = path;
-        } else {
-          redirectUrl = redirectUrl + '/' + path;
-        }
-      })
+      redirectUrl = keyPath.reverse().join('/');
     } else {
-      if (hasOnlyOne && hasOnlyOne.redirect) {
-        redirectUrl = hasOnlyOne.redirect
-        // setShowSidebar(false)
-      } else {
-        redirectUrl = key;
-        // setShowSidebar(true)
-      }
+      redirectUrl = currentMenu?.redirect || key;
     }
+
     if (!isExternalFn(redirectUrl)) {
-
       const childList = topRoute.children;
-      const isMoreLevel = childList.length > 1 && childList.every((item) => item.redirect);
+      const isMultiLevel = childList.length > 1 && childList.every(item => item.redirect);
 
-      console.log(redirectUrl, isMoreLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
+      // 优化点3：移除开发日志
+      // console.log(redirectUrl, isMultiLevel, key, currPath, sidebarPath, topRoute, routeMeta, '点击后更新菜单');
 
-      if (isMoreLevel) {
-        console.log(keyPath, redirectUrl, routeMeta, topRoute, '无法跳转的哈市');
-        const findChild = childList.find((child) => child.redirect.includes(redirectUrl));
-        console.log(findChild, '测试举手哈');
-        if (findChild) {
-          redirectUrl = findChild.redirect
-          setCurrPath(findChild.path);
-          setSidebarPath(findChild.children[0].path);
+      // 优化点4：提取路径处理逻辑
+      const handleMultiLevel = () => {
+        const matchedChild = childList.find(child =>
+          child.redirect.startsWith(redirectUrl) // 优化点5：更精确的路径匹配
+        );
+
+        if (matchedChild) {
+          redirectUrl = matchedChild.redirect;
+          setCurrPath(matchedChild.path);
+          setSidebarPath(matchedChild.children[0]?.path || key);
         } else {
-          setCurrPath(key)
+          setCurrPath(key);
           setSidebarPath(key);
         }
-      } else {
-        const tempPath = redirectUrl.replace('/' + key, '');
-        console.log(tempPath, 'tempPath');
-        setCurrPath(tempPath)
+      };
+
+      const handleSingleLevel = () => {
+        const basePath = redirectUrl.replace(new RegExp(`/${key}$`), '');
+        setCurrPath(basePath);
         setSidebarPath(key);
+      };
+
+      isMultiLevel ? handleMultiLevel() : handleSingleLevel();
+
+      // 优化点6：添加导航保护
+      if (redirectUrl !== location.pathname) {
+        navigate(redirectUrl);
       }
-
-      console.log(redirectUrl, 'redirectUrl');
-
-      navigate(redirectUrl);
     } else {
-      setActiveIndex(hasOnlyOne.key);
-      // setShowSidebar(showSidebar);
+      // 优化点7：添加空值保护
+      currentMenu && setActiveIndex(currentMenu.key);
     }
   }
 
@@ -317,7 +315,7 @@ const MibBarLayout: React.FC = () => {
   useEffect(() => {
     setPathName(location.pathname)
   }, [location])
-  
+
   return (
     <Layout className='layout-wrapper'>
       <TopHeader {...HeaderProps} />
