@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import screenfull from "screenfull";
@@ -20,9 +20,13 @@ const SidebarLayout: React.FC = () => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
-  const contentStyle: React.CSSProperties = {
-    marginLeft: collapsed ? '50px' : '200px'
-  };
+  const contentStyle = useMemo<React.CSSProperties>(() => (
+    {
+      marginLeft: collapsed ? '50px' : '200px'
+    }
+  ), [
+    collapsed
+  ]);
   const breadcrumbItems = [];
   const navigate = useNavigate();
   const tStore = useSnapshot(tagsViewStore)

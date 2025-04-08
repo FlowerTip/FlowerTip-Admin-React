@@ -11,7 +11,7 @@ import {
   CloseSquareOutlined
 } from '@ant-design/icons';
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { tagsViewStore } from '@/store'
 import { Breadcrumb, Tabs, Button, Dropdown, Space, type MenuProps } from 'antd';
 import { useSnapshot } from 'valtio'
@@ -69,20 +69,31 @@ const NavBar = (props: NavbarComponentProps) => {
   const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
   const isMenuDark = sStore.globalSet.modelAlgorithm == 'menu-dark';
 
-  const toggleBtnStyle = {
-    display: sStore.globalSet.layout === 'topbar' ? 'none' : 'block',
-    marginLeft: '12px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    color: isMenuDark ? '#555555' : isLightTheme ? '#555555' : '#ffffff'
-  }
+  const toggleBtnStyle = useMemo<React.CSSProperties>(() => (
+    {
+      display: sStore.globalSet.layout === 'topbar' ? 'none' : 'block',
+      marginLeft: '12px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      color: isMenuDark ? '#555555' : isLightTheme ? '#555555' : '#ffffff'
+    }
+  ), [
+    sStore.globalSet.layout,
+    isMenuDark,
+    isLightTheme
+  ])
 
-  const tagsViewStyle = {
-    borderTop: isMenuDark ? '1px solid #D9D9D9' : isLightTheme ? '1px solid #D9D9D9' : '1px solid #555555',
-    padding: '0 12px',
-    height: '39px',
-    flex: 1
-  }
+  const tagsViewStyle = useMemo<React.CSSProperties>(() => (
+    {
+      borderTop: isMenuDark ? '1px solid #D9D9D9' : isLightTheme ? '1px solid #D9D9D9' : '1px solid #555555',
+      padding: '0 12px',
+      height: '39px',
+      flex: 1
+    }
+  ), [
+    isMenuDark,
+    isLightTheme
+  ])
 
   const location = useLocation();
   const [pathName, setPathName] = useState(location.pathname);

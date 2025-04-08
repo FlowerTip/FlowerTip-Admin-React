@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { HeaderComponentProps } from '../types/index'
 import { useSnapshot } from 'valtio'
 import { Layout, Menu, Button } from 'antd';
-import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import defaultSetting from '@/setting';
 import { userStore, settingStore } from '@/store'
 import Rightbar from './rightbar';
@@ -33,15 +33,17 @@ const TopHeader = (props: HeaderComponentProps) => {
   })
 
   // 顶部栏的样式
-  const headerStyle: React.CSSProperties = {
-    position: 'sticky',
-    top: 0,
-    zIndex: 1,
-    width: '100%',
-    display: sStore.globalSet.showHeaderBar ? 'flex' : 'none',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  }
+  const headerStyle = useMemo<React.CSSProperties>(() => (
+    {
+      position: 'sticky',
+      top: 0,
+      zIndex: 1,
+      width: '100%',
+      display: sStore.globalSet.showHeaderBar ? 'flex' : 'none',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    }
+  ), [sStore.globalSet.showHeaderBar])
 
   return (
     <Header className='layout-header' style={headerStyle}>

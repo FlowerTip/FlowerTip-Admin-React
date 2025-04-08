@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSnapshot } from 'valtio'
 import defaultSetting from '@/setting';
 import { settingStore } from '@/store'
@@ -9,28 +9,46 @@ const Sidebar = (props: SidebarComponentProps) => {
   const { Sider } = Layout;
   const sStore = useSnapshot(settingStore);
   const isMenuDark = sStore.globalSet.modelAlgorithm == 'menu-dark';
-  const siderStyle: React.CSSProperties = {
-    overflow: 'auto',
-    height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'calc(100vh - 50px)' : '100vh',
-    position: 'fixed',
-    insetInlineStart: 0,
-    top: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 50 : 0,
-    bottom: 0,
-    scrollbarWidth: 'thin',
-    scrollbarColor: 'unset',
-    display: props.showSidebar ? 'block' : 'none',
-  };
+  const siderStyle = useMemo<React.CSSProperties>(() => (
+    {
+      overflow: 'auto',
+      height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'calc(100vh - 50px)' : '100vh',
+      position: 'fixed',
+      insetInlineStart: 0,
+      top: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 50 : 0,
+      bottom: 0,
+      scrollbarWidth: 'thin',
+      scrollbarColor: 'unset',
+      display: props.showSidebar ? 'block' : 'none',
+    }
+  ), [
+    sStore.globalSet.layout,
+    props.showSidebar
+  ]);
 
-  const headLogoStyle: React.CSSProperties = {
-    display: props.collapsed || sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'none' : 'block',
-    fontSize: '20px',
-    fontWeight: 'bold', 
-    textAlign: 'center',
-    height: '50px',
-    lineHeight: '50px',
-    backgroundColor: isMenuDark ? '#282E38' : 'var(--ant-color-bg-container)',
-    color: isMenuDark ? '#fff' : 'var(--ant-color-text-base)',
-  }
+  const headLogoStyle = useMemo<React.CSSProperties>(() => (
+    {
+      display: props.collapsed || sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? 'none' : 'block',
+      fontSize: '20px',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      height: '50px',
+      lineHeight: '50px',
+      backgroundColor: isMenuDark ? '#282E38' : 'var(--ant-color-bg-container)',
+      color: isMenuDark ? '#fff' : 'var(--ant-color-text-base)',
+    }
+  ), [
+    props.collapsed,
+    sStore.globalSet.layout,
+    isMenuDark
+  ])
+
+  const menuHeightStyle = useMemo<React.CSSProperties>(() => (
+    {
+      height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
+    }
+  ), [sStore.globalSet.layout])
+
   // 侧边栏只保持一个展开
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   let parentKey: string[] = []
@@ -73,9 +91,7 @@ const Sidebar = (props: SidebarComponentProps) => {
       <div className="layout-header-logo" style={headLogoStyle}>{defaultSetting.title}</div>
       <Menu
         theme={sStore.globalSet.modelAlgorithm == 'menu-dark' ? 'dark' : 'light'}
-        style={{
-          height: sStore.globalSet.layout === 'mixbar' || sStore.globalSet.layout === 'sidebar' ? '100%' : 'calc(100% - 50px)'
-        }}
+        style={menuHeightStyle}
         items={props.menus}
         onSelect={props.onSelect}
         selectedKeys={[props.selectedKeys]}
