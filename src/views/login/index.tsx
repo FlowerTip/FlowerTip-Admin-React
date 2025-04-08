@@ -36,8 +36,12 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     const lang = window.localStorage.getItem('lang');
-    const chekced = lang && lang == 'zhcn';
-    setIsChecked(chekced as boolean);
+    if (!lang) {
+      setIsChecked(true);
+    } else {
+      lang === 'zhcn' && setIsChecked(true);
+      lang === 'en' && setIsChecked(false);
+    }
   }, [])
 
   return (
