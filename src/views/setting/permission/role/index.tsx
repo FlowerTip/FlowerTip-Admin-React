@@ -1,7 +1,7 @@
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, message, Popconfirm } from 'antd';
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import { PlusOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import { reqRoleList, reqSaveRole, reqDelRole, reqBatchPermission } from '@/api/role'
 import ModalRole from './components/ModalRole';
@@ -53,7 +53,7 @@ export default () => {
               >
                 <Button danger size='small'>删除角色</Button>
               </Popconfirm></>
-            ) : <span style={{color: 'rgba(0, 0, 0, 0.45)'}}>——</span>
+            ) : <span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>——</span>
           }
         </Space >
         ,

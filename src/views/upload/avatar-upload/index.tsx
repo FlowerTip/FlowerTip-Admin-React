@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import LoadingOutlined from "@ant-design/icons/LoadingOutlined"
-import PlusOutlined from "@ant-design/icons/PlusOutlined"
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 import { Flex, message, Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
 
@@ -50,7 +49,7 @@ const AvatarUpload: React.FC = () => {
   );
 
   return (
-    <Flex gap="middle" wrap style={{height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20}} justify='center' align='center'>
+    <Flex gap="middle" wrap style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20 }} justify='center' align='center'>
       <Upload
         name="avatar"
         listType="picture-card"

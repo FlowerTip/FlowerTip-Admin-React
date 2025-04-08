@@ -47,46 +47,50 @@ import Maintenance from '@/views/setting/department/maintenance/index.tsx';
 import Software from '@/views/setting/department/software/index.tsx';
 
 import RouterViewPage from '@/views/tool/test/index.tsx';
-import MacCommandOutlined from '@ant-design/icons/MacCommandOutlined';
-import ConsoleSqlOutlined from '@ant-design/icons/ConsoleSqlOutlined';
-import SortDescendingOutlined from '@ant-design/icons/SortDescendingOutlined';
-import UsergroupAddOutlined from '@ant-design/icons/UsergroupAddOutlined';
-import BorderOuterOutlined from '@ant-design/icons/BorderOuterOutlined';
-import ExperimentOutlined from '@ant-design/icons/ExperimentOutlined';
-import MenuOutlined from '@ant-design/icons/MenuOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import VerifiedOutlined from '@ant-design/icons/VerifiedOutlined';
-import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
-import ToolOutlined from '@ant-design/icons/ToolOutlined';
-import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
-import RadiusUprightOutlined from '@ant-design/icons/RadiusUprightOutlined';
-import FileWordOutlined from '@ant-design/icons/FileWordOutlined';
-import ProductOutlined from '@ant-design/icons/ProductOutlined';
-import DotChartOutlined from '@ant-design/icons/DotChartOutlined';
-import StockOutlined from '@ant-design/icons/StockOutlined';
-import AreaChartOutlined from '@ant-design/icons/AreaChartOutlined';
-import RadarChartOutlined from '@ant-design/icons/RadarChartOutlined';
-import LineChartOutlined from '@ant-design/icons/LineChartOutlined';
-import BarChartOutlined from '@ant-design/icons/BarChartOutlined';
-import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
-import FundOutlined from '@ant-design/icons/FundOutlined';
-import FormOutlined from '@ant-design/icons/FormOutlined';
-import TableOutlined from '@ant-design/icons/TableOutlined';
-import EditOutlined from '@ant-design/icons/EditOutlined';
-import OrderedListOutlined from '@ant-design/icons/OrderedListOutlined';
-import CompassOutlined from '@ant-design/icons/CompassOutlined';
-import InsertRowAboveOutlined from '@ant-design/icons/InsertRowAboveOutlined';
-import InsertRowLeftOutlined from '@ant-design/icons/InsertRowLeftOutlined';
-import FolderAddOutlined from '@ant-design/icons/FolderAddOutlined';
-import UserSwitchOutlined from '@ant-design/icons/UserSwitchOutlined';
-import FileImageOutlined from '@ant-design/icons/FileImageOutlined';
-import FileAddOutlined from '@ant-design/icons/FileAddOutlined';
-import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
-import TrademarkOutlined from '@ant-design/icons/TrademarkOutlined';
-import OpenAIOutlined from '@ant-design/icons/OpenAIOutlined';
-import ScheduleOutlined from '@ant-design/icons/ScheduleOutlined';
-import QrcodeOutlined from '@ant-design/icons/QrcodeOutlined';
-import SelectOutlined from '@ant-design/icons/SelectOutlined';
+
+// 统一使用命名导入方式
+import { 
+  MacCommandOutlined,
+  ConsoleSqlOutlined,
+  SortDescendingOutlined,
+  UsergroupAddOutlined,
+  BorderOuterOutlined,
+  ExperimentOutlined,
+  MenuOutlined,
+  SettingOutlined,
+  VerifiedOutlined,
+  PaperClipOutlined,
+  ToolOutlined,
+  HistoryOutlined,
+  RadiusUprightOutlined,
+  FileWordOutlined,
+  ProductOutlined,
+  DotChartOutlined,
+  StockOutlined,
+  AreaChartOutlined,
+  RadarChartOutlined,
+  LineChartOutlined,
+  BarChartOutlined,
+  PieChartOutlined,
+  FundOutlined,
+  FormOutlined,
+  TableOutlined,
+  EditOutlined,
+  OrderedListOutlined,
+  CompassOutlined,
+  InsertRowAboveOutlined,
+  InsertRowLeftOutlined,
+  FolderAddOutlined,
+  UserSwitchOutlined,
+  FileImageOutlined,
+  FileAddOutlined,
+  CloseSquareOutlined,
+  TrademarkOutlined,
+  OpenAIOutlined,
+  ScheduleOutlined,
+  QrcodeOutlined,
+  SelectOutlined
+} from '@ant-design/icons';
 
 /**
  * 路由meta对象参数说明

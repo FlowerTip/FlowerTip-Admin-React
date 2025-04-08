@@ -1,11 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Input, Tree } from 'antd';
-import type { TreeDataNode, TreeProps } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Space, message, Popconfirm } from 'antd';
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
-import ApartmentOutlined from '@ant-design/icons/ApartmentOutlined';
+import {  Input, Tree, Button, Space, message, Popconfirm, type TreeDataNode, type TreeProps } from 'antd';
+import { PlusOutlined, ApartmentOutlined } from '@ant-design/icons';
 import { reqDepartmentList } from '@/api/department'
 import { reqWorkPostList, reqSaveWorkPost, reqDelWorkPost } from '@/api/workPost'
 import ModalAccount from './components/ModalAccount';
@@ -28,7 +25,7 @@ const Maintenance: React.FC = () => {
         return {
           ...item,
           icon: <ApartmentOutlined />,
-          selectable: !item.children
+          selectable: !item.children,
         }
       })
 
@@ -42,7 +39,7 @@ const Maintenance: React.FC = () => {
   useEffect(() => {
     selectedKeys.length > 0 && actionRef.current?.reload();
   }, [selectedKeys])
-  
+
   useEffect(() => {
     getTreeData()
   }, [searchValue])
@@ -135,7 +132,7 @@ const Maintenance: React.FC = () => {
 
   const updateTableList = async (params: Req.WorkPostListParam): Promise<any> => {
     console.log(params, '第一次请求参数');
-    
+
     const { code, data } = await reqWorkPostList({
       currentPage: params.current,
       ...params,
@@ -146,7 +143,7 @@ const Maintenance: React.FC = () => {
         data: data.list.map(item => {
           return {
             ...item,
-            departmentName: originTreeData.find(record => record.departmentId === item.departmentId)?.departmentName
+            departmentName: originTreeData.find(record => record.departmentId === item.departmentId)?.departmentName,
           }
         }),
         success: true,
@@ -227,7 +224,7 @@ const Maintenance: React.FC = () => {
             ...pagination,
             ...params
           })}
-          rowKey="id"
+          rowKey="workPostId"
           search={{
             labelWidth: 'auto',
           }}

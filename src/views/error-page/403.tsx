@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Result } from 'antd';
-import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 
 const NotPermissionPage: React.FC = () => {

@@ -35,49 +35,44 @@ const MibBarLayout: React.FC = () => {
   const topMenuList = uStore.userInfo.authMenuList as unknown as any;
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
+  // 提取公共函数，用于查找当前激活的菜单项
+  const findCurrentTab = () => {
+    return tStore.tabsMenuList.find((item) => item.key === routeMeta.path);
+  };
+  
   // 关闭所有菜单
   const closeAllTab = () => {
     tagsViewStore.closeMultipleTab();
-    navigate("/")
+    navigate("/");
   };
-
+  
   // 关闭当前菜单
   const closeCurrent = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
-    console.log(current, "ccurrent");
+    const current = findCurrentTab();
     if (current) {
       const returnNextTab = tStore.removeTab(current.key as string, true);
-      console.log(returnNextTab, 'returnNextTab');
       if (returnNextTab && returnNextTab.key) {
         navigate(returnNextTab.redirect);
         setCurrPath(returnNextTab.key);
       }
     }
   };
-
+  
   // 关闭左侧菜单
   const closeLeft = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
+    const current = findCurrentTab();
     current && tStore.closeTabsOnSide(current.key as string, "left");
   };
-
+  
   // 关闭右侧菜单
   const closeRight = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
+    const current = findCurrentTab();
     current && tStore.closeTabsOnSide(current.key as string, "right");
   };
-
+  
   // 关闭其他菜单
   const closeOther = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
+    const current = findCurrentTab();
     current && tStore.closeMultipleTab(current.key);
   };
   const moreTabClick: MenuProps['onClick'] = ({ key }) => {
@@ -133,54 +128,6 @@ const MibBarLayout: React.FC = () => {
   } else {
     breadcrumbItems.push(parentItem, childItem);
   }
-  useEffect(() => {
-    if (!routeMeta.redirect) {
-      const backMenuList = uStore.userInfo.backMenuList;
-      navigate((backMenuList[0] as any).redirect);
-      setCurrPath((backMenuList[0] as any).path);
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!routeMeta.redirect) return;
-    const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
-    const key = pathList[pathList.length - 1];
-    const keys: string[] = [];
-    pathList.forEach((path: string, index: number) => {
-      if (index === 0) {
-        keys.push('/' + path);
-      } else {
-        keys.push(path);
-      }
-    });
-    const keyPath = keys.reverse();
-    const selectedKeys = [key];
-    const defaultSelectParam = {
-      key, keyPath, selectedKeys, item: null as unknown as React.ReactInstance, domEvent: null as unknown as React.MouseEvent<HTMLElement>
-    }
-    handlerSelect && handlerSelect(defaultSelectParam)
-    if (routeMeta.children && routeMeta.children.length === 1) {
-      setShowSidebar(false);
-    } else {
-      setShowSidebar(true);
-    }
-    const childList = topRoute.children;
-    let menuList = [] as MenuConfig.LocalRouteItem[];
-    if (childList.length > 1 && childList.every((item) => item.redirect)) {
-      if (routeMeta.children) {
-        menuList = reorganizeMenu(routeMeta.children as any);
-        setActiveIndex(topRoute.path);
-      } else {
-        const findChildren = childList.find((child) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
-        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children as unknown as MenuConfig.LocalRouteItem[]))
-        findChildren && setActiveIndex(findChildren.path);
-      }
-    } else {
-      menuList = reorganizeMenu(childList as unknown as MenuConfig.LocalRouteItem[]);
-      setActiveIndex(topRoute.path);
-    }
-    uStore.updateLeftMenus(menuList as unknown as MenuConfig.LocalRouteItem[]);
-  }, [currPath])
 
   const handlerSelect: MenuProps['onSelect'] = ({ key, keyPath }) => {
     const hasOnlyOne = topMenuList.find((menu: MenuConfig.LocalRouteItem) => menu.key == key);
@@ -310,14 +257,67 @@ const MibBarLayout: React.FC = () => {
     toggleCollapsed,
     breadcrumbItems
   }
+
   const location = useLocation();
   const [pathName, setPathName] = useState(location.pathname);
-  useEffect(() => {
-    setPathName(location.pathname)
-  }, [location])
+
   const getShowFootip = () => {
     return pathName.includes('home') ? false : sStore.globalSet.showFooterBar;
   }
+
+  useEffect(() => {
+    if (!routeMeta.redirect) {
+      const backMenuList = uStore.userInfo.backMenuList;
+      navigate((backMenuList[0] as any).redirect);
+      setCurrPath((backMenuList[0] as any).path);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!routeMeta.redirect) return;
+    const pathList = routeMeta.redirect.split('/').filter((path: string) => path);
+    const key = pathList[pathList.length - 1];
+    const keys: string[] = [];
+    pathList.forEach((path: string, index: number) => {
+      if (index === 0) {
+        keys.push('/' + path);
+      } else {
+        keys.push(path);
+      }
+    });
+    const keyPath = keys.reverse();
+    const selectedKeys = [key];
+    const defaultSelectParam = {
+      key, keyPath, selectedKeys, item: null as unknown as React.ReactInstance, domEvent: null as unknown as React.MouseEvent<HTMLElement>
+    }
+    handlerSelect && handlerSelect(defaultSelectParam)
+    if (routeMeta.children && routeMeta.children.length === 1) {
+      setShowSidebar(false);
+    } else {
+      setShowSidebar(true);
+    }
+    const childList = topRoute.children;
+    let menuList = [] as MenuConfig.LocalRouteItem[];
+    if (childList.length > 1 && childList.every((item) => item.redirect)) {
+      if (routeMeta.children) {
+        menuList = reorganizeMenu(routeMeta.children as any);
+        setActiveIndex(topRoute.path);
+      } else {
+        const findChildren = childList.find((child) => child.redirect.includes(routeMeta.redirect.replace('/' + routeMeta.path, '')));
+        findChildren && findChildren.children && (menuList = reorganizeMenu(findChildren.children as unknown as MenuConfig.LocalRouteItem[]))
+        findChildren && setActiveIndex(findChildren.path);
+      }
+    } else {
+      menuList = reorganizeMenu(childList as unknown as MenuConfig.LocalRouteItem[]);
+      setActiveIndex(topRoute.path);
+    }
+    uStore.updateLeftMenus(menuList as unknown as MenuConfig.LocalRouteItem[]);
+  }, [currPath])
+
+  useEffect(() => {
+    setPathName(location.pathname)
+  }, [location])
+  
   return (
     <Layout className='layout-wrapper'>
       <TopHeader {...HeaderProps} />

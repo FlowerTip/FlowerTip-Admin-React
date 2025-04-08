@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Input, Tree } from 'antd';
 import type { TreeDataNode } from 'antd';
-import Icon from '@ant-design/icons';
-import EditFilled from '@ant-design/icons/EditFilled';
+import Icon, { EditFilled } from '@ant-design/icons';
 
 import './index.scss';
 
@@ -168,7 +167,11 @@ const DialogTable: React.FC = () => {
             {
               radioList.map(radio => {
                 return (
-                  <div className={radio.id === currRadioId ? 'radio-item active' : 'radio-item'} onClick={() => radioClick(radio.id)}>
+                  <div
+                    key={radio.id} // 添加唯一key
+                    className={radio.id === currRadioId ? 'radio-item active' : 'radio-item'}
+                    onClick={() => radioClick(radio.id)}
+                  >
                     <Icon component={radio.icon as React.ForwardRefExoticComponent<any>} className='radio-icon' />
                     {radio.label}
                   </div>
@@ -183,7 +186,11 @@ const DialogTable: React.FC = () => {
             {
               radioList.map(radio => {
                 return (
-                  <div className={checkboxIndex.includes(radio.id) ? 'radio-item active' : 'radio-item'} onClick={() => checkboxClick(radio.id)}>
+                  <div
+                    key={radio.id}
+                    className={checkboxIndex.includes(radio.id) ? 'radio-item active' : 'radio-item'}
+                    onClick={() => checkboxClick(radio.id)}
+                  >
                     <Icon component={radio.icon as React.ForwardRefExoticComponent<any>} className='radio-icon' />
                     {radio.label}
                   </div>

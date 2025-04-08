@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.22.0
     version: 1.22.0(react-dom@18.3.1)(react@18.3.1)
   '@ant-design/icons':
-    specifier: ^5.4.0
-    version: 5.4.0(react-dom@18.3.1)(react@18.3.1)
+    specifier: ^6.0.0
+    version: 6.0.0(react-dom@18.3.1)(react@18.3.1)
   '@ant-design/pro-components':
     specifier: ^2.7.16
     version: 2.7.16(antd@5.22.2)(rc-field-form@2.5.1)(react-dom@18.3.1)(react@18.3.1)
@@ -141,6 +141,12 @@ packages:
       '@ctrl/tinycolor': 3.6.1
     dev: false
 
+  /@ant-design/colors@8.0.0:
+    resolution: {integrity: sha512-6YzkKCw30EI/E9kHOIXsQDHmMvTllT8STzjMb4K2qzit33RW2pqCJP0sk+hidBntXxE+Vz4n1+RvCTfBw6OErw==, tarball: https://registry.npmmirror.com/@ant-design/colors/-/colors-8.0.0.tgz}
+    dependencies:
+      '@ant-design/fast-color': 3.0.0
+    dev: false
+
   /@ant-design/cssinjs-utils@1.1.1(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-2HAiyGGGnM0es40SxdszeQAU5iWp41wBIInq+ONTCKjlSKOrzQfnw4JDtB8IBmqE6tQaEKwmzTP2LGdt5DSwYQ==, tarball: https://registry.npmmirror.com/@ant-design/cssinjs-utils/-/cssinjs-utils-1.1.1.tgz}
     peerDependencies:
@@ -178,24 +184,13 @@ packages:
       '@babel/runtime': 7.26.0
     dev: false
 
-  /@ant-design/icons-svg@4.4.2:
-    resolution: {integrity: sha512-vHbT+zJEVzllwP+CM+ul7reTEfBR0vgxFe7+lREAsAA7YGsYpboiq2sQNeQeRvh09GfQgs/GyFEvZpJ9cLXpXA==, tarball: https://registry.npmmirror.com/@ant-design/icons-svg/-/icons-svg-4.4.2.tgz}
+  /@ant-design/fast-color@3.0.0:
+    resolution: {integrity: sha512-eqvpP7xEDm2S7dUzl5srEQCBTXZMmY3ekf97zI+M2DHOYyKdJGH0qua0JACHTqbkRnD/KHFQP9J1uMJ/XWVzzA==, tarball: https://registry.npmmirror.com/@ant-design/fast-color/-/fast-color-3.0.0.tgz}
+    engines: {node: '>=8.x'}
     dev: false
 
-  /@ant-design/icons@5.4.0(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-QZbWC5xQYexCI5q4/fehSEkchJr5UGtvAJweT743qKUQQGs9IH2DehNLP49DJ3Ii9m9CijD2HN6fNy3WKhIFdA==, tarball: https://registry.npmmirror.com/@ant-design/icons/-/icons-5.4.0.tgz}
-    engines: {node: '>=8'}
-    peerDependencies:
-      react: '>=16.0.0'
-      react-dom: '>=16.0.0'
-    dependencies:
-      '@ant-design/colors': 7.1.0
-      '@ant-design/icons-svg': 4.4.2
-      '@babel/runtime': 7.25.6
-      classnames: 2.5.1
-      rc-util: 5.43.0(react-dom@18.3.1)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+  /@ant-design/icons-svg@4.4.2:
+    resolution: {integrity: sha512-vHbT+zJEVzllwP+CM+ul7reTEfBR0vgxFe7+lREAsAA7YGsYpboiq2sQNeQeRvh09GfQgs/GyFEvZpJ9cLXpXA==, tarball: https://registry.npmmirror.com/@ant-design/icons-svg/-/icons-svg-4.4.2.tgz}
     dev: false
 
   /@ant-design/icons@5.5.2(react-dom@18.3.1)(react@18.3.1):
@@ -210,6 +205,21 @@ packages:
       '@babel/runtime': 7.26.0
       classnames: 2.5.1
       rc-util: 5.43.0(react-dom@18.3.1)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /@ant-design/icons@6.0.0(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-o0aCCAlHc1o4CQcapAwWzHeaW2x9F49g7P3IDtvtNXgHowtRWYb7kiubt8sQPFvfVIVU/jLw2hzeSlNt0FU+Uw==, tarball: https://registry.npmmirror.com/@ant-design/icons/-/icons-6.0.0.tgz}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      '@ant-design/colors': 8.0.0
+      '@ant-design/icons-svg': 4.4.2
+      '@rc-component/util': 1.2.1(react-dom@18.3.1)(react@18.3.1)
+      classnames: 2.5.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
@@ -2222,6 +2232,17 @@ packages:
       rc-util: 5.43.0(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /@rc-component/util@1.2.1(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-AUVu6jO+lWjQnUOOECwu8iR0EdElQgWW5NBv5vP/Uf9dWbAX3udhMutRlkVXjuac2E40ghkFy+ve00mc/3Fymg==, tarball: https://registry.npmmirror.com/@rc-component/util/-/util-1.2.1.tgz}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-is: 18.3.1
     dev: false
 
   /@remirror/core-constants@3.0.0:

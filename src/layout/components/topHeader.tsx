@@ -2,8 +2,7 @@ import React from 'react';
 import { HeaderComponentProps } from '../types/index'
 import { useSnapshot } from 'valtio'
 import { Layout, Menu, Button } from 'antd';
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
+import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import defaultSetting from '@/setting';
 import { userStore, settingStore } from '@/store'
 import Rightbar from './rightbar';

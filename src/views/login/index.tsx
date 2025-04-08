@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Input, Carousel, FormInstance, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom'
-import UserOutlined from '@ant-design/icons/UserOutlined';
-import LockOutlined from '@ant-design/icons/LockOutlined';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import defaultSetting from '../../setting'
 import './index.scss';

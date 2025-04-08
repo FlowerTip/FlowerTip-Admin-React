@@ -1,7 +1,7 @@
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, message, Popconfirm } from 'antd';
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import { PlusOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import { reqBatchRole, reqAccountList, reqSaveAccount, reqDelAccount } from '@/api/account'
 import ModalAccount from './components/ModalAccount';
@@ -61,7 +61,7 @@ export default () => {
               >
                 <Button danger size='small'>删除账号</Button>
               </Popconfirm></>
-            ) : <span style={{color: 'rgba(0, 0, 0, 0.45)'}}>——</span>
+            ) : <span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>——</span>
           }
         </Space >
         ,

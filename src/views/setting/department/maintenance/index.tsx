@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, message, Popconfirm } from 'antd';
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import { PlusOutlined } from '@ant-design/icons';
 import { reqDepartmentList, reqSaveDepartment, reqDelDepartMent } from '@/api/department'
 import ModalAccount from './components/ModalAccount';
 

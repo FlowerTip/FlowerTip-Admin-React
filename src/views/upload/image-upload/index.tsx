@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import PlusOutlined from "@ant-design/icons/PlusOutlined"
+import { PlusOutlined } from "@ant-design/icons"
 import { Flex, Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 
@@ -75,7 +75,7 @@ const ImageUpload: React.FC = () => {
     </button>
   );
   return (
-    <Flex style={{height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20}} justify='center' align='center'>
+    <Flex style={{ height: '100%', backgroundColor: 'var(--ant-color-bg-container)', padding: 20 }} justify='center' align='center'>
       <Upload
         action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
         listType="picture-card"

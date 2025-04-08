@@ -1,4 +1,4 @@
-import UploadOutlined from '@ant-design/icons/UploadOutlined';
+import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, message, Upload, UploadProps } from 'antd';
 const props: UploadProps = {
   name: 'file',
@@ -26,10 +26,10 @@ const props: UploadProps = {
   },
 };
 const FileUpload = () => (
-  <Card style={{height: '100%'}}>
+  <Card style={{ height: '100%' }}>
     <Upload {...props}>
-    <Button icon={<UploadOutlined />}>点击上传文件</Button>
-  </Upload>
+      <Button icon={<UploadOutlined />}>点击上传文件</Button>
+    </Upload>
   </Card>
 );
 export default FileUpload;

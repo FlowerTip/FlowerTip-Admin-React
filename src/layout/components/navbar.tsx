@@ -1,22 +1,24 @@
-import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
-import MenuUnfoldOutlined from '@ant-design/icons/MenuUnfoldOutlined';
-import DownOutlined from '@ant-design/icons/DownOutlined';
-import RedoOutlined from '@ant-design/icons/RedoOutlined';
-import FullscreenOutlined from '@ant-design/icons/FullscreenOutlined';
-import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import DoubleLeftOutlined from '@ant-design/icons/DoubleLeftOutlined';
-import DoubleRightOutlined from '@ant-design/icons/DoubleRightOutlined';
-import MinusCircleOutlined from '@ant-design/icons/MinusCircleOutlined';
-import CloseSquareOutlined from '@ant-design/icons/CloseSquareOutlined';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  DownOutlined,
+  RedoOutlined,
+  FullscreenOutlined,
+  CloseCircleOutlined,
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  MinusCircleOutlined,
+  CloseSquareOutlined
+} from '@ant-design/icons';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import type { MenuProps } from 'antd';
 import { tagsViewStore } from '@/store'
-import { Breadcrumb, Tabs, Button, Dropdown, Space } from 'antd';
+import { Breadcrumb, Tabs, Button, Dropdown, Space, type MenuProps } from 'antd';
 import { useSnapshot } from 'valtio'
 import { NavbarComponentProps } from '../types/index'
 import { settingStore } from '@/store'
 import Rightbar from './rightbar';
+
 const NavBar = (props: NavbarComponentProps) => {
   const items: MenuProps['items'] = [
     {
@@ -72,12 +74,12 @@ const NavBar = (props: NavbarComponentProps) => {
     marginLeft: '12px',
     cursor: 'pointer',
     fontSize: '16px',
-    color:  isMenuDark ? '#555555' : isLightTheme ? '#555555' : '#ffffff'
+    color: isMenuDark ? '#555555' : isLightTheme ? '#555555' : '#ffffff'
   }
 
   const tagsViewStyle = {
-    borderTop: isMenuDark ? '1px solid #D9D9D9' : isLightTheme ? '1px solid #D9D9D9' : '1px solid #555555', 
-    padding: '0 12px', 
+    borderTop: isMenuDark ? '1px solid #D9D9D9' : isLightTheme ? '1px solid #D9D9D9' : '1px solid #555555',
+    padding: '0 12px',
     height: '39px',
     flex: 1
   }
@@ -89,7 +91,7 @@ const NavBar = (props: NavbarComponentProps) => {
   }, [location])
   const navbarstyle = {
     display: !pathName.includes('home') ? 'block' : sStore.globalSet.layout === 'topbar' && pathName.includes('home') ? 'none' : props.showSidebar ? 'block' : 'none',
-    backgroundColor:  isMenuDark ? '#ffffff' : isLightTheme ? '#fff' : '#141414',
+    backgroundColor: isMenuDark ? '#ffffff' : isLightTheme ? '#fff' : '#141414',
   }
   return (
     <div className='navbar' style={navbarstyle}>

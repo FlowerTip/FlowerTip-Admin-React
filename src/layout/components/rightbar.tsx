@@ -1,15 +1,16 @@
-import UserOutlined from '@ant-design/icons/UserOutlined';
-import DownOutlined from '@ant-design/icons/DownOutlined';
-import ChromeOutlined from '@ant-design/icons/ChromeOutlined';
-import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
-import BellOutlined from '@ant-design/icons/BellOutlined';
-import CommentOutlined from '@ant-design/icons/CommentOutlined';
-import AlertOutlined from '@ant-design/icons/AlertOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import OpenAIFilled from '@ant-design/icons/OpenAIFilled';
-import Icon from '@ant-design/icons';
+import Icon, {
+  UserOutlined,
+  DownOutlined,
+  ChromeOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  AppstoreOutlined,
+  BellOutlined,
+  CommentOutlined,
+  AlertOutlined,
+  MessageOutlined,
+  OpenAIFilled
+} from '@ant-design/icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
@@ -694,7 +695,7 @@ const Rightbar = () => {
         icon={<OpenAIFilled />}
         onClick={() => setAiOpen(true)}
       />
-      <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} onFinish={handleTourFinish}/>
+      <Tour open={tourOpen} onClose={() => setTourOpen(false)} steps={steps} onFinish={handleTourFinish} />
       {modalContextHolder}
       {contextHolder}
     </>

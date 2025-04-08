@@ -1,4 +1,4 @@
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Image, Button, Space, Popconfirm, message } from 'antd';

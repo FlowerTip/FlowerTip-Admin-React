@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.22.0",
-    "@ant-design/icons": "^5.4.0",
+    "@ant-design/icons": "^6.0.0",
     "@ant-design/pro-components": "^2.7.16",
     "@ant-design/x": "^1.0.5",
     "@js-preview/docx": "^1.6.2",

@@ -12,14 +12,6 @@ import {
 import markdownit from 'markdown-it';
 import { createStyles } from 'antd-style';
 import React from 'react';
-import CloudUploadOutlined from '@ant-design/icons/CloudUploadOutlined';
-import FireOutlined from '@ant-design/icons/FireOutlined';
-import NotificationOutlined from '@ant-design/icons/NotificationOutlined';
-import PaperClipOutlined from '@ant-design/icons/PaperClipOutlined';
-import ReadOutlined from '@ant-design/icons/ReadOutlined';
-import ProfileOutlined from '@ant-design/icons/ProfileOutlined';
-import UserAddOutlined from '@ant-design/icons/UserAddOutlined';
-import SendOutlined from '@ant-design/icons/SendOutlined';
 import { Flex, Badge, Button, Spin, Image, type GetProp, type GetRef, type UploadProps, Space, message } from 'antd';
 import { SSEFields } from '@ant-design/x/es/x-stream';
 import { Attachment } from '@ant-design/x/es/attachments';
@@ -27,7 +19,17 @@ import { isIndexOfFiles, isMdelement } from '@/utils/tool';
 import { userStore } from '@/store';
 import { BubbleContentType } from '@ant-design/x/es/bubble/interface';
 import { useSnapshot } from 'valtio';
-import { ClearOutlined, CopyOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+  CloudUploadOutlined,
+  FireOutlined,
+  NotificationOutlined,
+  PaperClipOutlined,
+  ReadOutlined,
+  ProfileOutlined,
+  UserAddOutlined,
+  SendOutlined,
+  ClearOutlined, CopyOutlined, SyncOutlined
+} from '@ant-design/icons';
 
 const md = markdownit({ html: true, breaks: true });
 
