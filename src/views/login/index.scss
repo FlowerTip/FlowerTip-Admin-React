@@ -7,6 +7,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  position: relative;
 
   .login-form {
     width: 1000px;
@@ -14,7 +15,12 @@
     display: flex;
     align-items: center;
   }
-
+  .lang {
+    position: absolute;
+    right: 20px;
+    bottom: 100px;
+    z-index: 1;
+  }
   .banner-wrapper {
     width: 600px;
 

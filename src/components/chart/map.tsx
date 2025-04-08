@@ -1,7 +1,7 @@
 import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { generateUUID } from "@/utils/tool";
-import BJGeoJson from "@/mock/geo/beijing";
+import BJGeoJson from "../../../mock/geo/beijing";
 import { settingStore } from '@/store/index';
 import { useSnapshot } from 'valtio'
 

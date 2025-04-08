@@ -62,13 +62,13 @@ const ModalStudent = ({ }, ref: Ref<unknown>) => {
     }
     const { code, data } = await modalProps!.api(req);
     if (code === 200) {
-      if (fileList.length > 0) {
+      if (fileList.length > 0 && fileList.every(file => file.status !== 'done')) {
         handleUpload({
           name: '用户头像',
           id: data.id
         })
       } else {
-        message.success('操作成功');
+        message.success(data.message);
         modalProps!.reload();
         setModalVisiable(false);
       }
