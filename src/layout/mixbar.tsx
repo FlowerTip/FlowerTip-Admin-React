@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import { HeaderComponentProps, SidebarComponentProps, NavbarComponentProps } from './types/index'
@@ -23,9 +23,13 @@ const MibBarLayout: React.FC = () => {
     setCollapsed(!collapsed);
   };
   const [showSidebar, setShowSidebar] = useState(true)
-  const contentStyle: React.CSSProperties = {
-    marginLeft: showSidebar && collapsed ? '50px' : showSidebar && !collapsed ? '200px' : !showSidebar ? '0px' : '0px'
-  };
+
+  const contentStyle = useMemo<React.CSSProperties>(() => (
+    {
+      marginLeft: showSidebar && collapsed ? '50px' : showSidebar && !collapsed ? '200px' : !showSidebar ? '0px' : '0px'
+    }
+  ), [collapsed, showSidebar]);
+
   const breadcrumbItems = [];
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState('');

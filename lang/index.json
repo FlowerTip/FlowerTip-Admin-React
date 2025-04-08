@@ -1,7 +1,7 @@
 {
 	"ndmd53": {
 		"zh-cn": "驾驶舱",
-		"en": "cockpit",
+		"en": "Cockpit",
 		"ko": "조종석",
 		"ja": "コクピットです"
 	},
@@ -577,13 +577,13 @@
 	},
 	"laqnjgp": {
 		"zh-cn": "2.系统管理员账号添加用户账号需分配角色权限后使用",
-		"en": "2. System Administrator account To add a user account",
+		"en": "2. System Administrator account To add a user account.",
 		"ko": "2. 시스템 관리자 계정 사용자 계정을 추가하려면 역할 권한을 할당한 후에 사용해야 합니다",
 		"ja": "2.システム管理者アカウントユーザーアカウントを追加するには役割を割り当ててから使う必要があります。"
 	},
 	"gk8uuxp": {
 		"zh-cn": "3.权限操作涉及的页面在系统管理的权限管理模块展示",
-		"en": "3. The page involved in the permission operation is displayed in the rights management module",
+		"en": "3. The page involved in the permission operation.",
 		"ko": "3. 페이지와 관련된 권한 작업은 시스템 관리의 권한 관리 모듈에서 보여집니다",
 		"ja": "3.権限操作に関するページはシステム管理の権限管理モジュールに表示されています。"
 	},

@@ -46,7 +46,7 @@ const Login: React.FC = () => {
   return (
     <div className='login-wrapper'>
       <div className="lang">
-        <Switch checkedChildren="中文" unCheckedChildren="英文" checked={isChecked} onChange={handlerLangChange} />
+        <Switch size="default" checkedChildren="中文" unCheckedChildren="英文" checked={isChecked} onChange={handlerLangChange} />
       </div>
       <div className='login-form'>
         <div className='banner-wrapper'>
