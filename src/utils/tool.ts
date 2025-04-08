@@ -114,7 +114,6 @@ export function generateUUID(): string {
   return uuid;
 }
 
-
 /**
  * 判断一个字符串是否为有效的 JSON 字符串
  * @param {string} str - 待判断的字符串
@@ -124,8 +123,12 @@ export function isIndexOfFiles(str: string): boolean {
   return typeof str === 'string' && str.includes('files')
 }
 
+/**
+ * 判断是否为md元素
+ * @param element 元素
+ * @returns 是否为md元素
+ */
 export function isMdelement(element: JSX.Element): boolean {
-  console.log(element, 'e@@@@')
   const markdownRegex = /(#+ .+)|(\* .+)|(- .+)|(\d+\. .+)|(\[.+\]\(.+\))|(\*\*.*?\*\*)|(`.*?`)/;
   return !element.type && markdownRegex.test(element as unknown as string);
 }

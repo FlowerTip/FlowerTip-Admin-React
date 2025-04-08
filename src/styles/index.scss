@@ -13,10 +13,6 @@
   border-radius: 6px;
 }
 
-// body {
-//   height: 100vh;
-// }
-
 html,
 body {
   height: 100vh;
@@ -33,7 +29,6 @@ body {
   overflow: hidden;
 
   .layout-header {
-    // background-color: #282E38;
     border-bottom: var(--ant-line-width) var(--ant-line-type) var(--ant-color-split);
 
     .layout-header-logo {

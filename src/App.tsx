@@ -8,48 +8,53 @@ import { useSnapshot } from 'valtio'
 
 const App: React.FC = () => {
   const sStore = useSnapshot(settingStore);
-  const isLightTheme = sStore.globalSet.modelAlgorithm == 'light';
-  const isMenuDark = sStore.globalSet.modelAlgorithm == 'menu-dark';
+  const { modelAlgorithm, color } = sStore.globalSet;
+  const isLightTheme = modelAlgorithm === 'light';
+  const isMenuDark = modelAlgorithm === 'menu-dark';
+  const isDarkTheme = !(isLightTheme || isMenuDark);
+
+  // 全局主题配置
+  const themeConfig = {
+    components: {
+      Layout: {
+        headerHeight: 50,
+        headerPadding: 16,
+        headerColor: isMenuDark ? '#fff' : isLightTheme ? '#141414' : '#fff',
+        bodyBg: isDarkTheme ? '#000000' : '#f0f0f0',
+        headerBg: isMenuDark ? '#282E38' : isLightTheme ? '#fff' : '#141414',
+      },
+      Table: {
+        headerBg: color,
+        headerColor: '#fff',
+        headerSplitColor: color,
+        headerSortActiveBg: color,
+        headerSortHoverBg: color,
+      },
+      Menu: {
+        darkItemBg: '#282E38',
+        darkPopupBg: '#282E38',
+        darkItemSelectedBg: sStore.globalSet.color,
+        fontSize: 15,
+      },
+      Tree: {
+        nodeSelectedBg: sStore.globalSet.color,
+        nodeHoverBg: sStore.globalSet.color,
+        nodeHoverColor: '#fff',
+        nodeSelectedColor: '#fff',
+      },
+      Card: {
+        headerHeight: 36,
+      }
+    },
+    token: {
+      colorPrimary: color,
+    },
+    cssVar: true,
+    algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm
+  };
 
   return (
-    <ConfigProvider locale={zhCN} theme={{
-      components: {
-        Layout: {
-          headerHeight: 50,
-          headerPadding: 16,
-          headerColor: isMenuDark ? '#fff' : isLightTheme ? '#141414' : '#fff',
-          bodyBg: isMenuDark || isLightTheme ? '#f0f0f0' : '#000000',
-          headerBg: isMenuDark ? '#282E38' : isLightTheme ? '#fff' : '#141414',
-        },
-        Table: {
-          headerBg: sStore.globalSet.color,
-          headerColor: '#fff',
-          headerSplitColor: sStore.globalSet.color,
-          headerSortActiveBg: sStore.globalSet.color,
-          headerSortHoverBg: sStore.globalSet.color,
-        },
-        Menu: {
-          darkItemBg: '#282E38',
-          darkPopupBg: '#282E38',
-          darkItemSelectedBg: sStore.globalSet.color,
-          fontSize: 15,
-        },
-        Tree: {
-          nodeSelectedBg: sStore.globalSet.color,
-          nodeHoverBg: sStore.globalSet.color,
-          nodeHoverColor: '#fff',
-          nodeSelectedColor: '#fff',
-        },
-        Card: {
-          headerHeight: 36,
-        }
-      },
-      token: {
-        colorPrimary: sStore.globalSet.color,
-      },
-      cssVar: true,
-      algorithm: isMenuDark || isLightTheme ? theme.defaultAlgorithm : theme.darkAlgorithm
-    }}>
+    <ConfigProvider locale={zhCN} theme={themeConfig}>
       <HashRouter>
         <RouterComponent />
       </HashRouter>

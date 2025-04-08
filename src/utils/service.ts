@@ -8,7 +8,6 @@ const config = {
   timeout: 5000, // 请求超时时间，这里的单位是毫秒
 };
 
-
 const errorHandler = (statusCode: number) => {
   switch (statusCode) {
     case 400:

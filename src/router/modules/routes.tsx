@@ -1,4 +1,3 @@
-
 import React, { Fragment } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom'
 import HighFnComponent from './tool';
