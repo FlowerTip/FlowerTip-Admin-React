@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter } from 'react-router-dom';
 import { ConfigProvider, theme } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
+import enGB from 'antd/locale/en_GB';
 import RouterComponent from '@/router/modules/routes';
 import { settingStore } from '@/store';
 import { useSnapshot } from 'valtio'
@@ -52,9 +53,16 @@ const App: React.FC = () => {
     cssVar: true,
     algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm
   };
-
+  const lang = localStorage.getItem('lang');
+  let locale = zhCN;
+  if (!lang) {
+    locale = zhCN;
+  } else {
+    lang === 'en' && (locale = enGB);
+    lang === 'zh' && (locale = zhCN);
+  }
   return (
-    <ConfigProvider locale={zhCN} theme={themeConfig}>
+    <ConfigProvider locale={locale} theme={themeConfig}>
       <HashRouter>
         <RouterComponent />
       </HashRouter>
