@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
-import screenfull from "screenfull";
 import type { MenuProps } from 'antd';
 import { Layout } from 'antd';
 import useRouteMeta from '@/hooks/useRouteMeta';
+import useTabOperations from '@/hooks/useTabOperations';
 import { userStore, tagsViewStore, settingStore } from '@/store'
 import { isExternalFn } from '@/utils/validate';
 import { SidebarComponentProps, NavbarComponentProps, HeaderComponentProps } from './types/index'
@@ -30,92 +30,15 @@ const SidebarLayout: React.FC = () => {
   ]);
   const breadcrumbItems = [];
   const navigate = useNavigate();
-  const tStore = useSnapshot(tagsViewStore)
   const uStore = useSnapshot(userStore);
   const sStore = useSnapshot(settingStore);
+  const tStore = useSnapshot(tagsViewStore);
   const topMenuList = uStore.userInfo.authMenuList as MenuConfig.LocalRouteItem[];
 
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
 
-  // 关闭所有菜单
-  const closeAllTab = () => {
-    tagsViewStore.closeMultipleTab();
-    navigate("/")
-  };
-
-  // 关闭当前菜单
-  const closeCurrent = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
-    console.log(current, "ccurrent");
-    if (current) {
-      const returnNextTab = tStore.removeTab(current.key as string, true);
-      console.log(returnNextTab, 'returnNextTab');
-      if (returnNextTab && returnNextTab.key) {
-        navigate(returnNextTab.redirect);
-        setSidebarPath(returnNextTab.key);
-      }
-    }
-  };
-
-  // 关闭左侧菜单
-  const closeLeft = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
-    current && tStore.closeTabsOnSide(current.key as string, "left");
-  };
-
-  // 关闭右侧菜单
-  const closeRight = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
-    current && tStore.closeTabsOnSide(current.key as string, "right");
-  };
-
-  // 关闭其他菜单
-  const closeOther = () => {
-    const current = tStore.tabsMenuList.find(
-      (item) => item.key === routeMeta.path
-    );
-    current && tStore.closeMultipleTab(current.key);
-  };
-  const moreTabClick: MenuProps['onClick'] = ({ key }) => {
-    switch (key) {
-      case "refresh":
-        setTimeout(() => {
-          window.location.reload();
-        }, 0);
-        break;
-      case "fullScreen": {
-        const dom: HTMLDivElement = document.querySelector(".view-layout")!;
-        screenfull.request(dom);
-        break;
-      }
-      case "closeAll":
-        closeAllTab();
-        break;
-      case "closeCurrent":
-        closeCurrent();
-        break;
-      case "closeLeft":
-        closeLeft();
-        break;
-      case "closeRight":
-        closeRight();
-        break;
-      case "closeOther":
-        closeOther();
-        break;
-      default:
-        console.log("默认操作");
-    }
-
-  }
-
-  const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
+  const [sidebarPath, setSidebarPath] = useState(routeMeta.path);
+  const { moreTabClick } = useTabOperations(routeMeta, setSidebarPath);
   const parentItem = {
     title: topRoute.meta?.title,
     onClick: () => {
@@ -189,7 +112,7 @@ const SidebarLayout: React.FC = () => {
   }
 
   const onTabClick = (key: string) => {
-    const currTab = tagsViewStore.tabsMenuList.find((tab) => tab.key === key);
+    const currTab = tStore.tabsMenuList.find((tab) => tab.key === key);
     currTab && navigate(currTab.redirect);
     if (key == '/home') {
       setSidebarPath('/home');
