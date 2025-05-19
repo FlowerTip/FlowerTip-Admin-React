@@ -42,7 +42,7 @@ export default () => {
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.id}>
           {
-            record.id !== 1 ? (
+            record.roleName !== '超级管理员' ? (
               <><Button size='small' onClick={() => assignModal(record)}>分配权限</Button><Button size='small' onClick={() => editModal(record)}>编辑角色</Button><Popconfirm
                 title="删除提示"
                 description="确认要删除该角色吗?"

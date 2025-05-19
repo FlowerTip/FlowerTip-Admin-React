@@ -50,7 +50,7 @@ export default () => {
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.id}>
           {
-            record.id !== 8 ? (
+            record.username !== '系统管理员' ? (
               <><Button size='small' onClick={() => batchModal(record)}>分配角色</Button><Button size='small' onClick={() => editModal(record)}>编辑账号</Button><Popconfirm
                 title="删除提示"
                 description="确认要删除该账号吗?"
