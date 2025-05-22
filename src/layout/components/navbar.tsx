@@ -3,7 +3,6 @@ import {
   MenuUnfoldOutlined,
   DownOutlined,
   RedoOutlined,
-  FullscreenOutlined,
   CloseCircleOutlined,
   DoubleLeftOutlined,
   DoubleRightOutlined,
