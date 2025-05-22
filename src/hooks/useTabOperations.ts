@@ -1,4 +1,3 @@
-import screenfull from "screenfull";
 import { useSnapshot } from 'valtio'
 import { useNavigate } from "react-router-dom";
 import type { MenuProps } from 'antd';
@@ -54,11 +53,6 @@ const useTabOperations = (routeMeta: MetaType, setCurrPath: (path: string) => vo
           window.location.reload();
         }, 0);
         break;
-      case "fullScreen": {
-        const dom: HTMLDivElement = document.querySelector(".view-layout")!;
-        screenfull.request(dom);
-        break;
-      }
       case "closeAll":
         closeAllTab();
         break;

@@ -27,11 +27,6 @@ const NavBar = (props: NavbarComponentProps) => {
       icon: <RedoOutlined />,
     },
     {
-      key: 'fullScreen',
-      label: '最大化',
-      icon: <FullscreenOutlined />,
-    },
-    {
       type: 'divider',
     },
     {
