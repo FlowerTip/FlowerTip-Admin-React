@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import {  Input, Tree, Button, Space, message, Popconfirm, type TreeDataNode, type TreeProps } from 'antd';
+import { Input, Tree, Button, Space, message, Popconfirm, type TreeDataNode, type TreeProps } from 'antd';
 import { PlusOutlined, ApartmentOutlined } from '@ant-design/icons';
 import { reqDepartmentList } from '@/api/department'
 import { reqWorkPostList, reqSaveWorkPost, reqDelWorkPost } from '@/api/workPost'
@@ -111,7 +111,7 @@ const Maintenance: React.FC = () => {
       width: 220,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.workPostId}>
-          <Button size='small' onClick={() => editModal(record)}>编辑岗位</Button>
+          <Button size='small' disabled={record.workPostId == 21 || record.workPostId == 22} onClick={() => editModal(record)}>编辑岗位</Button>
           <Popconfirm
             title="删除提示"
             description="确认要删除该岗位吗?"
@@ -120,7 +120,7 @@ const Maintenance: React.FC = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button danger size='small'>删除岗位</Button>
+            <Button danger size='small' disabled={record.workPostId == 21 || record.workPostId == 22}>删除岗位</Button>
           </Popconfirm>
         </Space >
         ,

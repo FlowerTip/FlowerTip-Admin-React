@@ -64,8 +64,8 @@ const Maintenance: React.FC = () => {
       width: 300,
       render: (_, record) => [
         <Space style={{ width: '100%', display: 'flex', justifyContent: 'center' }} key={record.departmentId}>
-          <Button size='small' onClick={() => batchModal(record)}>添加部门</Button>
-          <Button size='small' onClick={() => editModal(record)}>编辑部门</Button>
+          <Button size='small' disabled={record.departmentId == 92 || record.departmentId == 93 || record.departmentId == 94} onClick={() => batchModal(record)}>添加部门</Button>
+          <Button size='small' disabled={record.departmentId == 92 || record.departmentId == 93 || record.departmentId == 94} onClick={() => editModal(record)}>编辑部门</Button>
           <Popconfirm
             title="删除提示"
             description="确认要删除该部门吗?"
@@ -74,7 +74,7 @@ const Maintenance: React.FC = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button danger size='small'>删除部门</Button>
+            <Button danger size='small' disabled={record.departmentId == 92 || record.departmentId == 93 || record.departmentId == 94}>删除部门</Button>
           </Popconfirm>
         </Space >
         ,
