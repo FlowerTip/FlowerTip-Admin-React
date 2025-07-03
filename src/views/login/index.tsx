@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, Carousel, FormInstance, Switch } from 'antd';
+import React, { useRef } from 'react';
+import { Button, Form, Input, Carousel, FormInstance } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
@@ -24,30 +24,8 @@ const Login: React.FC = () => {
     }
   }
 
-  const [isChecked, setIsChecked] = useState(true);
-
-  const handlerLangChange = (flag: boolean) => {
-    const lang = flag ? 'zhcn' : 'en';
-    window.localStorage.setItem('lang', lang);
-    window.location.reload()
-    setIsChecked(flag);
-  }
-
-  useEffect(() => {
-    const lang = window.localStorage.getItem('lang');
-    if (!lang) {
-      setIsChecked(true);
-    } else {
-      lang === 'zhcn' && setIsChecked(true);
-      lang === 'en' && setIsChecked(false);
-    }
-  }, [])
-
   return (
     <div className='login-wrapper'>
-      {/* <div className="lang">
-        <Switch size="default" checkedChildren="中文" unCheckedChildren="英文" checked={isChecked} onChange={handlerLangChange} />
-      </div> */}
       <div className='login-form'>
         <div className='banner-wrapper'>
           <Carousel autoplay dots={{ className: 'dotsClass' }}>
