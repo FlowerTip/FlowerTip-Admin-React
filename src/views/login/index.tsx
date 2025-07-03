@@ -45,9 +45,9 @@ const Login: React.FC = () => {
 
   return (
     <div className='login-wrapper'>
-      <div className="lang">
+      {/* <div className="lang">
         <Switch size="default" checkedChildren="中文" unCheckedChildren="英文" checked={isChecked} onChange={handlerLangChange} />
-      </div>
+      </div> */}
       <div className='login-form'>
         <div className='banner-wrapper'>
           <Carousel autoplay dots={{ className: 'dotsClass' }}>

@@ -1,5 +1,5 @@
 // import vitePluginsAutoI18n, { YoudaoTranslator } from 'vite-auto-i18n-plugin'
-import vitePluginsAutoI18n from 'vite-auto-i18n-plugin'
+// import vitePluginsAutoI18n from 'vite-auto-i18n-plugin'
 import { loadEnv, defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import viteCompression from 'vite-plugin-compression'
@@ -10,13 +10,13 @@ import viteCompression from 'vite-plugin-compression'
  * 点击立即使用，注册账号申请key
  */
 
-const i18nPlugin = vitePluginsAutoI18n({
-  targetLangList: ['en'],
-  // translator: new YoudaoTranslator({
-  //   appId: '',
-  //   appKey: ''
-  // })
-})
+// const i18nPlugin = vitePluginsAutoI18n({
+//   targetLangList: ['en'],
+//   translator: new YoudaoTranslator({
+//     appId: '',
+//     appKey: ''
+//   })
+// })
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
         algorithm: 'gzip', // 使用gzip压缩
         ext: '.gz', // 生成压缩包的扩展名
       }),
-      i18nPlugin  // 国际化翻译
+      // i18nPlugin  // 国际化翻译
     ],
     server: {
       open: true,

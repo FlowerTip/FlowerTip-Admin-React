@@ -1,9 +1,12 @@
 import { useSnapshot } from 'valtio'
 import { useNavigate } from "react-router-dom";
+import { useFullscreen } from 'ahooks';
 import type { MenuProps } from 'antd';
 import { tagsViewStore } from '@/store';
 
-const useTabOperations = (routeMeta: MetaType, setCurrPath: (path: string) => void) => {
+const useTabOperations = (routeMeta: MetaType, setCurrPath: (path: string) => void, eleRef: React.RefObject<HTMLDivElement>) => {
+
+  const [_, { enterFullscreen }] = useFullscreen(eleRef, {});
   const tStore = useSnapshot(tagsViewStore);
   const navigate = useNavigate();
   // 提取公共函数，用于查找当前激活的菜单项
@@ -48,6 +51,9 @@ const useTabOperations = (routeMeta: MetaType, setCurrPath: (path: string) => vo
   };
   const moreTabClick: MenuProps['onClick'] = ({ key }) => {
     switch (key) {
+      case "max":
+        enterFullscreen();
+        break;
       case "refresh":
         setTimeout(() => {
           window.location.reload();
@@ -74,7 +80,7 @@ const useTabOperations = (routeMeta: MetaType, setCurrPath: (path: string) => vo
   }
 
   return {
-    moreTabClick
+    moreTabClick,
   };
 };
 
