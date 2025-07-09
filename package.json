@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/cssinjs": "^1.22.0",
     "@ant-design/icons": "^6.0.0",
+    "@ant-design/plots": "^2.6.0",
     "@ant-design/pro-components": "^2.7.16",
     "@ant-design/x": "^1.0.5",
     "@js-preview/docx": "^1.6.2",
@@ -19,6 +20,7 @@
     "@js-preview/pdf": "^2.0.8",
     "ahooks": "^3.8.1",
     "aieditor": "^1.2.7",
+    "animate.css": "^4.1.1",
     "antd": "^5.22.2",
     "antd-style": "^3.7.1",
     "axios": "^1.8.3",
@@ -28,6 +30,7 @@
     "nprogress": "^0.2.0",
     "rc-resize-observer": "^1.4.0",
     "react": "^18.3.1",
+    "react-countup": "^6.5.3",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
     "screenfull": "^6.0.2",

@@ -1,14 +1,150 @@
-.ant-card-body {
-  height: calc(100% - 56px);
-  padding: 10px !important;
+.dashboard-container {
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 100px);
 }
 
-.chart-children-wrapper {
-  display: flex;
-  height: 100%;
-  .child-item {
-    flex: 1;
-    width: 50%;
-    height: 100%;
-  }
+.mb-20 {
+  margin-bottom: 12px;
 }
+
+.data-card {
+  transition: all 0.3s;
+}
+
+.data-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-number {
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 38px;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.trend span:first-child {
+  color: rgba(0, 0, 0, 0.45);
+  margin-right: 8px;
+}
+
+.up {
+  color: #67c23a;
+}
+
+.down {
+  color: #f56c6c;
+}
+
+.rank-list .rank-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rank-number {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  background: #fafafa;
+  border-radius: 4px;
+  margin-right: 12px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.rank-number.top-three {
+  color: #fff;
+}
+
+.rank-number.top-three:nth-child(1) {
+  background-color: #f56c6c;
+}
+
+.rank-number.top-three:nth-child(2) {
+  background-color: #e6a23c;
+}
+
+.rank-number.top-three:nth-child(3) {
+  background-color: #409eff;
+}
+
+.feedback-item {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feedback-content {
+  margin-left: 12px;
+  flex: 1;
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.username {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.45);
+  margin-left: 8px;
+}
+
+.feedback-text {
+  margin-bottom: 8px;
+}
+
+.feedback-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hollow-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: #fff;
+}
+
+// .ant-card-body {
+//   height: calc(100% - 56px);
+//   padding: 10px !important;
+// }
+
+// .chart-children-wrapper {
+//   display: flex;
+//   height: 100%;
+//   .child-item {
+//     flex: 1;
+//     width: 50%;
+//     height: 100%;
+//   }
+// }

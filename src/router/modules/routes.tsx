@@ -5,7 +5,7 @@ import NotFoundPage from '@/views/error-page/404.tsx';
 import NotNetWorkPage from '@/views/error-page/500.tsx';
 import NotPermissionPage from '@/views/error-page/403.tsx';
 import Login from '@/views/login/index.tsx';
-import Cockpit from '@/views/cockpit/index.tsx';
+import Cockpit from '@/views/cockpit/index';
 import AdvancedTable from '@/views/table/advanced-table/index.tsx';
 import DialogTable from '@/views/table/dialog-table/index.tsx';
 import AvatarUpload from '@/views/upload/avatar-upload/index';
