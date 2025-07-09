@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import { HeaderComponentProps, SidebarComponentProps, NavbarComponentProps } from './types/index'
@@ -42,8 +42,7 @@ const MibBarLayout: React.FC = () => {
 
   const [currPath, setCurrPath] = useState('/')
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
-  const layoutRef = useRef(null);
-  const { moreTabClick } = useTabOperations(routeMeta, setCurrPath, layoutRef);
+  const { moreTabClick } = useTabOperations(routeMeta, setCurrPath);
 
   const parentItem = {
     title: topRoute.meta?.title,
@@ -260,7 +259,6 @@ const MibBarLayout: React.FC = () => {
           <Navbar {...navbarProps} />
           <Content
             className='view-layout'
-            ref={layoutRef}
           >
             <Outlet />
           </Content>

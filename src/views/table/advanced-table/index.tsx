@@ -213,7 +213,7 @@ export default () => {
           setting: {
             listsHeight: 400,
           },
-          fullScreen: true
+          fullScreen: false
         }}
         pagination={{
           showSizeChanger: true,

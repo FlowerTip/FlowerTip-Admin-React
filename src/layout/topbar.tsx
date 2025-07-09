@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import type { MenuProps } from 'antd';
@@ -32,8 +32,7 @@ const LayoutWrapper: React.FC = () => {
 
 
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path);
-  const layoutRef = useRef(null);
-  const { moreTabClick } = useTabOperations(routeMeta, setSidebarPath, layoutRef);
+  const { moreTabClick } = useTabOperations(routeMeta, setSidebarPath);
 
   const parentItem = {
     title: topRoute.meta?.title,
@@ -133,7 +132,6 @@ const LayoutWrapper: React.FC = () => {
           <Navbar {...navbarProps} />
           <Content
             className='view-layout'
-            ref={layoutRef}
           >
             <Outlet />
           </Content>

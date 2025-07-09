@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSnapshot } from 'valtio'
 import type { MenuProps } from 'antd';
@@ -37,8 +37,7 @@ const SidebarLayout: React.FC = () => {
   let { routeMeta, topRoute } = useRouteMeta(uStore.userInfo.backMenuList as unknown as RouteType[]);
 
   const [sidebarPath, setSidebarPath] = useState(routeMeta.path)
-  const layoutRef = useRef(null);
-  const { moreTabClick } = useTabOperations(routeMeta, setSidebarPath, layoutRef);
+  const { moreTabClick } = useTabOperations(routeMeta, setSidebarPath);
   const parentItem = {
     title: topRoute.meta?.title,
     onClick: () => {
@@ -154,7 +153,6 @@ const SidebarLayout: React.FC = () => {
           <Navbar {...navbarProps} />
           <Content
             className='view-layout'
-            ref={layoutRef}
           >
             <Outlet />
           </Content>

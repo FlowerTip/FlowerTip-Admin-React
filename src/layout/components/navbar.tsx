@@ -8,7 +8,6 @@ import {
   DoubleRightOutlined,
   MinusCircleOutlined,
   CloseSquareOutlined,
-  ExpandOutlined
 } from '@ant-design/icons';
 import { useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from 'react';
@@ -21,11 +20,6 @@ import Rightbar from './rightbar';
 
 const NavBar = (props: NavbarComponentProps) => {
   const items: MenuProps['items'] = [
-    {
-      key: 'max',
-      label: '最大化',
-      icon: <ExpandOutlined />,
-    },
     {
       key: 'refresh',
       label: '刷新页面',
