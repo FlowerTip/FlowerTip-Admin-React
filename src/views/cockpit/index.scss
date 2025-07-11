@@ -9,6 +9,9 @@
 
 .data-card {
   transition: all 0.3s;
+  height: 200px; // 统一高度
+  display: flex;
+  flex-direction: column;
 }
 
 .data-card:hover {
@@ -21,11 +24,19 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  flex-shrink: 0; // 防止压缩
 }
 
 .title {
   font-size: 16px;
   font-weight: 600;
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-number {
@@ -44,6 +55,11 @@
 .trend span:first-child {
   color: rgba(0, 0, 0, 0.45);
   margin-right: 8px;
+}
+
+.card-chart {
+  margin-top: auto; // 推到底部
+  height: 50px; // 统一图表高度
 }
 
 .up {
@@ -133,18 +149,3 @@
   border: 2px solid currentColor;
   background: #fff;
 }
-
-// .ant-card-body {
-//   height: calc(100% - 56px);
-//   padding: 10px !important;
-// }
-
-// .chart-children-wrapper {
-//   display: flex;
-//   height: 100%;
-//   .child-item {
-//     flex: 1;
-//     width: 50%;
-//     height: 100%;
-//   }
-// }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Area } from '@ant-design/plots';
+import { Tiny } from '@ant-design/plots';
 
 interface MiniAreaProps {
   data: number[];
@@ -29,7 +29,7 @@ const MiniArea: React.FC<MiniAreaProps> = ({ data, height }) => {
     height,
   };
 
-  return <Area {...config} />
+  return <Tiny.Area {...config} />
 };
 
 export default MiniArea;

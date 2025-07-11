@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column } from '@ant-design/plots';
+import { Tiny } from '@ant-design/plots';
 
 interface MiniBarProps {
   data: number[];
@@ -25,7 +25,7 @@ const MiniBar: React.FC<MiniBarProps> = ({ data, height }) => {
     height,
   };
 
-  return <Column {...config} />;
+  return <Tiny.Column {...config} />;
 };
 
 export default MiniBar;

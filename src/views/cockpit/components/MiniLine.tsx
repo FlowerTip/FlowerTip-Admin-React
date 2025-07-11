@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from '@ant-design/plots';
+import { Tiny } from '@ant-design/plots';
 
 interface MiniLineProps {
   data: number[];
@@ -26,7 +26,7 @@ const MiniLine: React.FC<MiniLineProps> = ({ data, height }) => {
     height,
   };
 
-  return <Line {...config} />;
+  return <Tiny.Line {...config} />;
 };
 
 export default MiniLine;

@@ -6,7 +6,6 @@ import './index.scss';
 import MiniArea from './components/MiniArea';
 import MiniLine from './components/MiniLine';
 import MiniBar from './components/MiniBar';
-import MiniProgress from './components/MiniProgress';
 import TrendChart from './components/TrendChart';
 
 interface TagsItem {
@@ -97,6 +96,11 @@ const Cockpit: React.FC = () => {
     { rank: 3, name: '智能音箱 Mini', sales: 986, growth: -5.2 },
     { rank: 4, name: '运动手环 4', sales: 876, growth: 15.8 },
     { rank: 5, name: '智能摄像头', sales: 765, growth: 7.4 },
+    { rank: 6, name: '智能门锁', sales: 654, growth: 22.1 },
+    { rank: 7, name: '智能台灯', sales: 543, growth: 18.9 },
+    { rank: 8, name: '智能体脂秤', sales: 432, growth: -3.5 },
+    { rank: 9, name: '智能窗帘', sales: 321, growth: 25.6 },
+    { rank: 10, name: '智能插座', sales: 210, growth: 11.2 },
   ];
 
   // 实时动态数据
@@ -180,7 +184,11 @@ const Cockpit: React.FC = () => {
           {type === 'success' && <MiniArea data={data} height={50} />}
           {type === 'warning' && <MiniLine data={data} height={50} />}
           {type === 'error' && <MiniBar data={data} height={50} />}
-          {type === 'info' && <MiniProgress percentage={75} height={50} />}
+          {type === 'info' && (
+            <div style={{ height: 50, display: 'flex', alignItems: 'center' }}>
+              <Progress percent={75} strokeColor="#409eff" showInfo={false} size="small" style={{ width: '100%' }} />
+            </div>
+          )}
         </div>
       </Card>
     </Col>
@@ -221,7 +229,7 @@ const Cockpit: React.FC = () => {
               <div className="title">热门产品</div>
               <Button type="primary" size="small">查看更多</Button>
             </div>
-            <div className="card-content" style={{ height: '380px', overflowY: 'auto' }}>
+            <div className="card-content" style={{ height: '350px', overflowY: 'auto' }}>
               <Table
                 dataSource={hotProducts}
                 columns={[
@@ -256,7 +264,7 @@ const Cockpit: React.FC = () => {
               <div className="title">实时动态</div>
               <Button type="primary" size="small">查看更多</Button>
             </div>
-            <div className="card-content" style={{ height: '280px', overflowY: 'auto' }}>
+            <div className="card-content" style={{ height: '260px', overflowY: 'auto' }}>
               <Timeline style={{ padding: '10px' }}>
                 {activities.map((activity, index) => (
                   <Timeline.Item
@@ -285,7 +293,7 @@ const Cockpit: React.FC = () => {
                 <Radio.Button value="monthly">月榜</Radio.Button>
               </Radio.Group>
             </div>
-            <div className="card-content" style={{ height: '280px', overflowY: 'auto' }}>
+            <div className="card-content" style={{ height: '260px', overflowY: 'auto' }}>
               <div className={`rank-list ${!loading ? 'animate__animated animate__fadeIn' : ''}`}>
                 {salesRankList.map((item, index) => (
                   <div key={index} className="rank-item">
@@ -323,7 +331,7 @@ const Cockpit: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="card-content" style={{ height: '280px', overflowY: 'auto' }}>
+            <div className="card-content" style={{ height: '260px', overflowY: 'auto' }}>
               {userFeedbacks.map((feedback, index) => (
                 <div key={index} className="feedback-item">
                   <Avatar size={40} src={feedback.avatar} />

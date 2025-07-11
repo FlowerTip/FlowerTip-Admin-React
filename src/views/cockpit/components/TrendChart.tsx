@@ -1,79 +1,78 @@
 import React, { useMemo } from 'react';
-import { Line } from '@ant-design/plots';
+import { DualAxes } from '@ant-design/plots';
 import { Spin } from 'antd';
 
 interface TrendChartProps {
   loading: boolean;
-  timeRange: 'year' | 'month' | 'week' | undefined;
+  timeRange: 'year' | 'month' | 'week';
 }
 
 const TrendChart: React.FC<TrendChartProps> = ({ loading, timeRange }) => {
-  const chartData = useMemo(() => {
-    // 模拟不同时间范围的数据
-    const generateData = (count: number) => {
-      return Array.from({ length: count }, (_, index) => ({
-        date: timeRange === 'year'
-          ? `${2024}年${index + 1}月`
-          : timeRange === 'month'
-          ? `${index + 1}日`
-          : `周${index + 1}`,
-        value: Math.floor(Math.random() * 1000000 + 500000),
-        type: '销售额',
-      }));
-    };
-
+  // 生成数据
+  const { salesData, visitData } = useMemo(() => {
     const dataCount = timeRange === 'year' ? 12 : timeRange === 'month' ? 30 : 7;
-    return generateData(dataCount);
+    const salesData: { date: string; value: number }[] = [];
+    const visitData: { date: string; count: number }[] = [];
+    for (let i = 0; i < dataCount; i++) {
+      const date =
+        timeRange === 'year'
+          ? `${i + 1}月`
+          : timeRange === 'month'
+            ? `6/${i + 11}` // 6/11 ~ 7/10
+            : `周${i + 1}`;
+      salesData.push({
+        date,
+        value: Math.floor(Math.random() * 800 + 600), // 600~1400元
+      });
+      visitData.push({
+        date,
+        count: Math.floor(Math.random() * 2000 + 1000), // 1000~3000次
+      });
+    }
+    return { salesData, visitData };
   }, [timeRange]);
+  const result = salesData.map((item, index) => {
+    return {
+      time: item.date,
+      call: item.value + visitData[index].count,
+      '销售额': item.value,
+      '访问量': visitData[index].count
+    }
+  });
+  console.log(salesData, visitData, result, 'cehsi ')
 
   const config = {
-    data: chartData,
-    xField: 'date',
-    yField: 'value',
-    seriesField: 'type',
-    smooth: true,
-    animation: {
-      appear: {
-        animation: 'wave-in',
-        duration: 1000,
+    xField: 'time',
+    data: result,
+    legend: {
+      color: {
+        itemMarker: (v: string) => {
+          if (v === '销售额') return 'rect';
+          return 'smooth';
+        },
       },
     },
-    xAxis: {
-      label: {
-        autoRotate: true,
-        autoHide: false,
-        autoEllipsis: true,
+    scale: {},
+    children: [
+      {
+        type: 'interval',
+        yField: '销售额',
       },
-    },
-    yAxis: {
-      label: {
-        formatter: (value: string) => `¥${Number(value).toLocaleString()}`,
+      {
+        type: 'line',
+        yField: '访问量',
+        shapeField: 'smooth',
+        scale: { color: { relations: [['访问量', '#fdae6b']] } },
+        axis: { y: { position: 'right' } },
+        style: { lineWidth: 2 },
       },
-    },
-    point: {
-      size: 4,
-      shape: 'circle',
-      style: {
-        fill: 'white',
-        stroke: '#409EFF',
-        lineWidth: 2,
-      },
-    },
-    tooltip: {
-      formatter: (datum: any) => {
-        return {
-          name: datum.type,
-          value: `¥${datum.value.toLocaleString()}`,
-        };
-      },
-    },
-    legend: false,
+    ],
   };
 
   return (
     <Spin spinning={loading}>
-      <div style={{ height: '380px' }}>
-        <Line {...config} />
+      <div style={{ height: '350px' }}>
+        <DualAxes {...config} />
       </div>
     </Spin>
   );

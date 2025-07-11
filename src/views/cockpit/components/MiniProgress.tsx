@@ -1,17 +1,13 @@
 import React from 'react';
-import { Tiny } from '@ant-design/plots';
+import { Progress } from 'antd';
 
 interface MiniProgressProps {
   percentage: number;
   height: number;
   /**
-   * 进度条颜色，[已完成颜色, 未完成颜色]
+   * 进度条颜色
    */
-  colors?: [string, string];
-  /**
-   * 进度条宽度比例，取值范围 0-1
-   */
-  barWidthRatio?: number;
+  color?: string;
   /**
    * 是否显示进度信息
    */
@@ -29,22 +25,22 @@ interface MiniProgressProps {
 const MiniProgress: React.FC<MiniProgressProps> = ({
   percentage,
   height,
-  colors = ['#909399', '#E8E8E8'],
-  barWidthRatio = 0.3,
+  color = '#409eff',
   showInfo = false,
   style,
   className
 }) => {
-  const config = {
-    height,
-    autoFit: true,
-    percent: percentage / 100,
-    color: colors,
-    barWidthRatio,
-    showInfo,
-  };
-
-  return <Tiny.Line {...config} style={style} className={className} />;
+  return (
+    <div style={{ height, display: 'flex', alignItems: 'center', ...style }} className={className}>
+      <Progress
+        percent={percentage}
+        strokeColor={color}
+        showInfo={showInfo}
+        size="small"
+        style={{ width: '100%' }}
+      />
+    </div>
+  );
 };
 
 export default MiniProgress;
