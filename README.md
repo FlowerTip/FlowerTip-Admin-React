@@ -128,7 +128,7 @@
 
 2. 驾驶舱
 
-   ![驾驶舱页面](docs/image-1.png)
+    ![驾驶舱页面](docs/imageimage.png)
 
 3. 表格组件-高级表格
 
