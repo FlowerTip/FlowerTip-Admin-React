@@ -4,7 +4,7 @@
 
 ## 项目预览
 
-- 在线地址：https://flowertip.cn/pro/#/login
+- 在线地址：https://www.flowertip.cn/pro/#/login
 - 默认填充的有超级管理员的账号密码，直接登录
 - 可以自行添加测试账号，分配权限
 
