@@ -503,14 +503,14 @@ export const asyncRoute = [
       hidden: false,
     },
     Component: HighFnComponent,
-    redirect: "https://www.flowertip.site",
+    redirect: "https://www.flowertip.cn",
     children: [
       {
-        path: "https://www.flowertip.site/",
+        path: "https://www.flowertip.cn/",
         name: "vitepress-blog",
         meta: {
           title: (
-            <a href="https://www.flowertip.site" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.flowertip.cn" target="_blank" rel="noopener noreferrer">
               <PaperClipOutlined /><span>知识库</span>
             </a>
           ), icon: '', hidden: false

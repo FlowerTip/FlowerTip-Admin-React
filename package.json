@@ -53,5 +53,8 @@
     "vite": "^5.4.1",
     "vite-auto-i18n-plugin": "^1.0.23",
     "vite-plugin-compression": "^0.5.1"
+  },
+  "volta": {
+    "node": "18.12.0"
   }
 }

@@ -45,7 +45,7 @@ export default defineConfig(({ mode }) => {
         //   rewrite: (path: string) => path.replace(/^\/api/, ""),
         // },
         [env.VITE_APP_BASE_API]: {
-          target: "https://www.flowertip.site:9000/admin-api",
+          target: "https://www.flowertip.cn:9000/admin-api",
           // 需要代理跨域
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/api/, ""),

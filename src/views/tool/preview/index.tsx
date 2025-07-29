@@ -10,7 +10,7 @@ const PreviewFile: React.FC = () => {
     setModal1Open(true);
     setFileType('docx');
     setTimeout(() => {
-      preview('docx', 'https://www.flowertip.site/docs/test.docx', document.getElementById('previewContainer2') as HTMLDivElement)
+      preview('docx', 'https://www.flowertip.cn/docs/test.docx', document.getElementById('previewContainer2') as HTMLDivElement)
     }, 100)
   }
 
@@ -18,7 +18,7 @@ const PreviewFile: React.FC = () => {
     setModal1Open(true);
     setFileType('pdf');
     setTimeout(() => {
-      preview('pdf', 'https://www.flowertip.site/docs/test.pdf', document.getElementById('previewContainer1') as HTMLDivElement)
+      preview('pdf', 'https://www.flowertip.cn/docs/test.pdf', document.getElementById('previewContainer1') as HTMLDivElement)
     }, 100)
   }
 
@@ -26,7 +26,7 @@ const PreviewFile: React.FC = () => {
     setModal1Open(true);
     setFileType('excel');
     setTimeout(() => {
-      preview('excel', 'https://www.flowertip.site/docs/test.xlsx', document.getElementById('previewContainer3') as HTMLDivElement)
+      preview('excel', 'https://www.flowertip.cn/docs/test.xlsx', document.getElementById('previewContainer3') as HTMLDivElement)
     }, 100)
   }
   return (
